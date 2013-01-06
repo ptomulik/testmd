@@ -33,12 +33,12 @@ are several documents.
 
 For all:
 
-  - compiling: <a href="HOWTO/compile.md">HOWTO/compile.md</a>
+  - compiling: `HOWTO/compile.md`
 
 For developers:
 
-  - creating new source file: <a href="HOWTO/create-source.md">HOWTO/create-source.md</a>
-  - adding new class module: <a href="HOWTO/addclass.md">HOWTO/addclass.md</a>
+  - creating new source file: `HOWTO/create-source.md`
+  - adding new class module: `HOWTO/addclass.md`
 
 
 DIRECTORY STRUCTURE
