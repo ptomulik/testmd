@@ -1,86 +1,64 @@
-<!--- 
-@COPYRIGHT@
+== Class: apache2::defaults
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-..
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This class represents default settings of apache2 puppet module.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
--->
+=== Parameters
 
-DIMBO - a DIstributed platform for the simulation of MultiBody systems
-######################################################################
+This class has no parameters.
 
-Welcome to the DIMBO development tree.
+[*sample_parameter*]
+  Explanation of what this parameter affects and what it defaults to.
+  e.g. "Specify one or more upstream ntp servers as an array."
 
-HOWTO
-=====
+=== Variables
 
-See files under `HOWTO/` directory to read about most common routines. There
-are several documents.
+The apache2::defaults defines following variables:
 
-For all:
+[*$apache2::defaults::mpm*]
+  Default MPM module used to run apache daemon. Type: string. 
+  Value: `'prefork'`.
 
-  - compiling: `HOWTO/compile.md`
+=== Examples
 
-For developers:
+ class { 'apache2::defaults' }
 
-  - creating new source file: `HOWTO/create-source.md`
-  - adding new class module: `HOWTO/addclass.md`
+=== Authors
 
+Paweł Tomulik <ptomulik@meil.pw.edu.pl>
 
-DIRECTORY STRUCTURE
-===================
+=== Copyright
 
-Top level source directory contains following subdirs:
+Copyright 2013 Paweł Tomulik.
 
-  - `bin/` - contains mainainer scripts and additional utilities,
-  - `build/`  - this is main (default) variant directory, all the results of
-     compilation go here.
-  - `HOWTO/` - several HOWTO documents are placed here,
-  - `debian/` - debian packaging files (currently empty),
-  - `rpm/` - rpm packaging files (currently empty)
-  - `site_scons/` - extensions used by scons,
-  - `src/`  - main source tree with source files to be compiled,
-  - `template/` - templates for source files,
-  - `valgrind/` - configuration files for valgrind
+ptomulik@tea:$ puppet doc manifests/defaults.pp 
+== Class: apache2::defaults
 
-LICENSE
-=======
+This class represents default settings of apache2 puppet module.
 
-@COPYRIGHT@
+=== Parameters
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This class has no parameters.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+[*sample_parameter*]
+  Explanation of what this parameter affects and what it defaults to.
+  e.g. "Specify one or more upstream ntp servers as an array."
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+=== Variables
 
-<!---
-vim: set expandtab tabstop=2 shiftwidth=2 syntax=markdown: 
-vim: set foldmethod=marker foldcolumn=4:
--->
+The apache2::defaults defines following variables:
+
+[*$apache2::defaults::mpm*]
+  Default MPM module used to run apache daemon. Type: string. 
+  Value: `'prefork'`.
+
+=== Examples
+
+ class { 'apache2::defaults' }
+
+=== Authors
+
+Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+
+=== Copyright
+
+Copyright 2013 Paweł Tomulik.
