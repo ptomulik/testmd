@@ -1,8 +1,8 @@
-## Class: apache2::defaults
+== Class: apache2::defaults
 
 This class represents default settings of apache2 puppet module.
 
-### Parameters
+=== Parameters
 
 This class has no parameters.
 
@@ -10,7 +10,7 @@ This class has no parameters.
   Explanation of what this parameter affects and what it defaults to.
   e.g. "Specify one or more upstream ntp servers as an array."
 
-### Variables
+=== Variables
 
 The apache2::defaults defines following variables:
 
@@ -18,7 +18,7 @@ The apache2::defaults defines following variables:
   Default MPM module used to run apache daemon. Type: string. 
   Value: `'prefork'`.
 
-### Examples
+=== Examples
 
  class { 'apache2::defaults' }
 
