@@ -7,7 +7,7 @@ Configure build options for FreeBSD ports.
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
 3. [Setup - The basics of getting started with Bsdportconfig](#setup)
-    * [What Bsdportconfig affects](#what-[bsdportconfig]-affects)
+    * [What Bsdportconfig affects](#what-bsdportconfig-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with Bsdportconfig](#beginning-with-Bsdportconfig)
 4. [Usage - Configuration options and additional functionality](#usage)
