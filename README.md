@@ -40,11 +40,9 @@ This module affects:
 
 * `$port_dbdir/*/options` where `$port_dbdir='/var/db/ports'` by default.
 
-###Setup Requirements **OPTIONAL**
+###Setup Requirements
 
-TODO:
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+You may need to enable pluginsync.
 
 ###Beginning with Bsdportconfig
 
@@ -56,9 +54,9 @@ Ensure that 'www/apache22' is configured without CGID module:
 
     bsdportconfig {'www/apache22': options => { CGID => off } }
 
-Note, that the module changes only options listed in `options` parameter. Other
-options are left unaltered (even if they currently differ from their default
-values).
+Note, that the resource modifies only the options listed in `options`
+parameter. Other options are left unaltered (even if they currently differ from
+their default values).
 
 Install 'www/apache22' package with LDAP module enabled:
 
@@ -76,23 +74,23 @@ Install 'www/apache22' package with LDAP module enabled:
 
 #####`ensure`
 
-Ensure that port configuration is synchronized with options. Accepts values:
-insync, outofsync.
+Ensure that port configuration is synchronized with the resource. Accepts
+values: `insync`, `outofsync`. Defaults to `insync`.
 
 #####`name`
 
-The package name. It has the same meaning and syntax as the $name parameter to
-the package resource from core puppet (for the **ports** provider).
+The package name. It has the same meaning and syntax as the `$name` parameter
+to the **package** resource from core puppet (for the **ports** provider).
 
 #####`options`
 
 Options for the package. This is a hash with keys being option names and values
-being on/off strings
+being `'on'`/`'off`' strings.
 
 #####`portsdir`
 
 Location of the ports tree (absolute path). This is */usr/ports* on FreeBSD and
-OpenBSD, and */usr/pkgsrc* on NetBSD.
+OpenBSD, and */usr/pkgsrc* on NetBSD. 
 
 #####`port_dbdir`
 
@@ -101,24 +99,14 @@ Directory where the result of configuring options are stored. Defaults to
 
 ##Reference
 
-TODO:
-
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
-
 ##Limitations
 
-TODO:
-
-This is where you list OS compatibility, version compatibility, etc.
+Currently tested on FreeBSD only.
 
 ##Development
 
-TODO:
+Project is held on GitHub:
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+https://github.com/ptomulik/puppet-bsdportconfig
 
-##Release Notes/Contributors/Etc **Optional**
-
-TODO:
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+Feel free to submit issue reports to issure tracker or create pull requests.
