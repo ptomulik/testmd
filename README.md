@@ -70,27 +70,27 @@ Install 'www/apache22' package with LDAP module enabled:
 
 ####Parameters within `bsdportconfig:
 
-#####`ensure`
+#####`ensure` (optional)
 
 Ensure that port configuration is synchronized with the resource. Accepts
 value: `insync`. Defaults to `insync`.
 
-#####`name`
+#####`name` (required)
 
 The package name. It has the same meaning and syntax as the `$name` parameter
 to the **package** resource from core puppet (for the **ports** provider).
 
-#####`options`
+#####`options` (optional)
 
 Options for the package. This is a hash with keys being option names and values
-being `'on'`/`'off`' strings.
+being `'on'`/`'off`' strings. Defaults to an empty hash.
 
-#####`portsdir`
+#####`portsdir` (optional)
 
 Location of the ports tree (absolute path). This is */usr/ports* on FreeBSD and
 OpenBSD, and */usr/pkgsrc* on NetBSD. 
 
-#####`port_dbdir`
+#####`port_dbdir` (optional)
 
 Directory where the result of configuring options are stored. Defaults to
 */var/db/ports*.
