@@ -38,34 +38,34 @@ Source code is available at: https://github.com/ptomulik/puppet-bsdportconfig
 
 This module affects:
 
-* the `${port_dbdir}/*/options`, (`$port_dbdir='/var/db/ports'` by default).                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                               
-###Setup Requirements **OPTIONAL**                                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                               
-TODO:                                                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                                                               
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here.                                                                                                                                                                          
-                                                                                                                                                                                                                                                                               
-###Beginning with Bsdportconfig                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                               
-Ensure that 'www/apache22' is configured with LDAP and CGID modules:                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                                               
-    bsdportconfig {'www/apache22': options => { LDAP => on, CGID => on } }                                                                                                                                                                                                     
-                                                                                                                                                                                                                                                                               
-Ensure that 'www/apache22' is configured without CGID module:                                                                                                                                                                                                                  
-                                                                                                                                                                                                                                                                               
-    bsdportconfig {'www/apache22': options => { CGID => off } }                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                               
-Note, that the module changes only options listed in `options` parameter. Other                                                                                                                                                                                                
-options are left unaltered (even if they currently differ from their default                                                                                                                                                                                                   
-values).                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                               
-Install 'www/apache22' package with LDAP module enabled:                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                               
-    bsdportconfig {'www/apache22': options => { LDAP => on }                                                                                                                                                                                                                   
-    package { 'www/apache22': require => Bsdportconfig['www/apache22'] }                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                               
-##Usage                                                                                                                                                                                                                                                                        
+* `$port_dbdir/*/options` where `$port_dbdir='/var/db/ports'` by default.
+
+###Setup Requirements **OPTIONAL**
+
+TODO:
+
+If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+
+###Beginning with Bsdportconfig
+
+Ensure that 'www/apache22' is configured with LDAP and CGID modules:
+
+    bsdportconfig {'www/apache22': options => { LDAP => on, CGID => on } }
+
+Ensure that 'www/apache22' is configured without CGID module:
+
+    bsdportconfig {'www/apache22': options => { CGID => off } }
+
+Note, that the module changes only options listed in `options` parameter. Other
+options are left unaltered (even if they currently differ from their default
+values).
+
+Install 'www/apache22' package with LDAP module enabled:
+
+    bsdportconfig {'www/apache22': options => { LDAP => on }
+    package { 'www/apache22': require => Bsdportconfig['www/apache22'] }
+
+##Usage
 
 ###Defined types
 
