@@ -38,11 +38,12 @@ Source code is available at: https://github.com/ptomulik/puppet-bsdportconfig
 
 This module affects:
 
-* `$port_dbdir/*/options` where `$port_dbdir='/var/db/ports'` by default.
+* config options for given ports, it's done by modifying
+  `$port_dbdir/*/options`, where `$port_dbdir='/var/db/ports'` by default.
 
 ###Setup Requirements
 
-You may need to enable pluginsync.
+You may need to enable **pluginsync** in your *puppet.conf*.
 
 ###Beginning with Bsdportconfig
 
@@ -56,7 +57,7 @@ Ensure that 'www/apache22' is configured without CGID module:
 
 Note, that the resource modifies only the options listed in `options`
 parameter. Other options are left unaltered (even if they currently differ from
-their default values).
+their default values defined by port's Makefile).
 
 Install 'www/apache22' package with LDAP module enabled:
 
@@ -65,17 +66,14 @@ Install 'www/apache22' package with LDAP module enabled:
 
 ##Usage
 
-###Defined types
+###Defined type: `bsdportconfig`
 
-####Defined type: bsdportconfig
-
-**Parameters within `bsdportconfig`:**
-
+####Parameters within `bsdportconfig:
 
 #####`ensure`
 
 Ensure that port configuration is synchronized with the resource. Accepts
-values: `insync`, `outofsync`. Defaults to `insync`.
+value: `insync`. Defaults to `insync`.
 
 #####`name`
 
