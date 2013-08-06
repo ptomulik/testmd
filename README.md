@@ -144,11 +144,11 @@ by `apachex::package`
     we must chose appropriate package with compiled-in MPM module).
     Apache `2.4` and later support loadable MPMs.
 
-    **Note**: on FreeBSD the `mpm` selects package name for apache 2.2 or
-    alters build options for apache >= 2.4. In the later case (>=2.4) you may
-    need to uninstall apache manually in order to apply changes in `mpm`. 
-    If you don't, it'll probably happen that the new MPM will not be set (as a
-    default) for apache package and there will be no warning about this.
+    **Note**: on FreeBSD the `mpm` parameter works in different ways for
+    apache 2.2 and for apache >= 2.4. In the later case (>=2.4) you may need to
+    uninstall apache manually in order to apply changes in `mpm`. If you don't,
+    the new MPM will probably not be set (as a default) for apache package and
+    there will be no warning about this.
 
   - `mpm_shared`
 
