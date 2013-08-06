@@ -33,41 +33,42 @@ options).
 
 This module tries to fill this gap. It helps to ensure, that certain
 configuration options are set (or unset) for certain ports. You may chain the
-**bsdportconfig** resource with **package** to achieve automatic configuration    
-of ports before they get installed.                                               
-                                                                                  
-The module supports only the **on/off** options.                                  
-                                                                                  
-##Setup                                                                                                                                                                             
-                                                                                                                                                                                    
-###What Bsdportconfig affects                                                                                                                                                       
-                                                                                                                                                                                    
-This module affects:                                                                                                                                                                
-                                                                                                                                                                                    
-* config options for given ports, it's done by modifying                                                                                                                            
-  `$port_dbdir/*/options`, where `$port_dbdir='/var/db/ports'` by default.                                                                                                          
-                                                                                                                                                                                    
-###Setup Requirements                                                                                                                                                               
-                                                                                                                                                                                    
-You may need to enable **pluginsync** in your *puppet.conf*.                                                                                                                        
-                                                                                                                                                                                    
-###Beginning with Bsdportconfig                                                                                                                                                     
-                                                                                                                                                                                    
-*Example*:                                                                                                                                                                          
-                                                                                                                                                                                    
-Ensure that 'www/apache22' is configured with LDAP and CGID modules:                                                                                                                
-                                                                                                                                                                                    
-    bsdportconfig {'www/apache22': options => { 'LDAP' => on, 'CGID' => on } }                                                                                                      
-                                                                                                                                                                                    
-*Example*:                                                                                                                                                                          
-                                                                                                                                                                                    
-Ensure that 'www/apache22' is configured without CGID module:                                                                                                                       
-                                                                                                                                                                                    
-    bsdportconfig {'www/apache22': options => { 'CGID' => off } }                                                                                                                   
-                                                                                                                                                                                    
-Note, that the resource modifies only the options listed in `options`                                                                                                               
+**bsdportconfig** resource with **package** to achieve automatic configuration
+of ports before they get installed.
+
+The module supports only the **on/off** options.
+
+##Setup
+
+###What Bsdportconfig affects
+
+This module affects:
+
+* config options for given ports, it's done by modifying options files
+  `$port_dbdir/*/options`, where `$port_dbdir='/var/db/ports'` by default.
+
+###Setup Requirements
+
+You may need to enable **pluginsync** in your *puppet.conf*.
+
+###Beginning with Bsdportconfig
+
+**Note**: the resource modifies only the options listed in `options`
 parameter. Other options are left unaltered (even if they currently differ from
 their default values defined by port's Makefile).
+
+
+*Example*:
+
+Ensure that 'www/apache22' is configured with SUEXEC and CGID modules:
+
+    bsdportconfig {'www/apache22': options => { 'SUEXEC' => on, 'CGID' => on } }
+
+*Example*:
+
+Ensure that 'www/apache22' is configured without CGID module:
+
+    bsdportconfig {'www/apache22': options => { 'CGID' => off } }
 
 *Example*:
 
