@@ -99,7 +99,7 @@ by `apachex::package`
     **Note**: On FreeBSD/ports `build_options` can be applied fully only if
     the apache package is initially absent (or is going to be reinstalled 
     by puppet due to some other reasons). If apache is already installed
-    and only the build_options have changed in your manifest, the new options
+    and only the `build_options` have changed in your manifest, the new options
     will be saved to options' file (/var/db/ports/xxx/options), but the
     package will not be reinstalled with new configuration (so, still old
     configuration will be in use). This behavior may be changed in future.
@@ -143,6 +143,12 @@ by `apachex::package`
     the selected apache doesn't support loadable MPM modules (in which case
     we must chose appropriate package with compiled-in MPM module).
     Apache `2.4` and later support loadable MPMs.
+
+    **Note**: on FreeBSD the `mpm` selects package name for apache 2.2 or
+    alters build options for apache >= 2.4. In the later case (>=2.4) you may
+    need to uninstall apache manually in order to apply changes in `mpm`. 
+    If you don't, it'll probably happen that the new MPM will not be set (as a
+    default) for apache package and there will be no warning about this.
 
   - `mpm_shared`
 
