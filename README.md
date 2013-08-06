@@ -1,116 +1,188 @@
-#bsdportconfig
+#apachex
 
-Configure build options for FreeBSD ports.
-
-Source code is available at: [https://github.com/ptomulik/puppet-bsdportconfig](https://github.com/ptomulik/puppet-bsdportconfig)
+This is very early development. Do not use it in production!
 
 ####Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description](#module-description)
-3. [Setup](#setup)
-    * [What Bsdportconfig affects](#what-bsdportconfig-affects)
+2. [Module Description - What the module does and why it is useful](#module-description)
+3. [Setup - The basics of getting started with [Modulename]](#setup)
+    * [What [Modulename] affects](#what-[apachex]-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with Bsdportconfig](#beginning-with-bsdportconfig)
-4. [Usage](#usage)
-5. [Limitations](#limitations)
-6. [Development](#development)
+    * [Beginning with [Modulename]](#beginning-with-[Modulename])
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
 ##Overview
 
-This module provides a **bsdportconfig** resource which ensures that certain
-build options are set (or unset) for a given BSD port.
+A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
 
 ##Module Description
 
-The **bsdportconfig** module helps to configure BSD ports.
-
-Installation and de-installation of FreeBSD ports is handled quite well by
-`package` resource provided by core **puppet**. However, it provides no way to
-set configuration options for ports (no `"make config"` stage), and all
-installs packages with their default configurations (or with manually pre-set
-options).
-
-This module tries to fill this gap. It helps to ensure, that certain
-configuration options are set (or unset) for certain ports. You may chain the
-**bsdportconfig** resource with **package** to achieve automatic configuration
-of ports before they get installed.
-
-The module supports only the **on/off** options.
+If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
+    
+If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
 
 ##Setup
 
-###What Bsdportconfig affects
+###What [Modulename] affects
 
-This module affects:
+* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
+* This is a great place to stick any warnings.
+* Can be in list or paragraph form. 
 
-* config options for given ports, it's done by modifying options files
-  `$port_dbdir/*/options`, where `$port_dbdir='/var/db/ports'` by default.
+###Setup Requirements **OPTIONAL**
 
-###Setup Requirements
+If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
 
-You may need to enable **pluginsync** in your *puppet.conf*.
+###Beginning with [Modulename]
 
-###Beginning with Bsdportconfig
+The very basic steps needed for a user to get the module up and running. 
 
-**Note**: the resource modifies only the options listed in `options`
-parameter. Other options are left unaltered (even if they currently differ from
-their default values defined by port's Makefile).
-
-
-**Example**: ensure that 'www/apache22' is configured with SUEXEC and CGID
-modules:
-
-    bsdportconfig {'www/apache22': options => { 'SUEXEC'=>on, 'CGID'=>on } }
-
-**Example**: ensure that 'www/apache22' is configured without CGID module:
-
-    bsdportconfig {'www/apache22': options => { 'CGID'=>off } }
-
-**Example**: install 'www/apache22' package with LDAP module enabled:
-
-    bsdportconfig {'www/apache22': options => { 'LDAP'=>on } }
-    package { 'www/apache22': require => Bsdportconfig['www/apache22'] }
+If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
 
 ##Usage
 
-###Resource type: `bsdportconfig`
+Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
 
-####Parameters within `bsdportconfig:
+##Reference
 
-#####`ensure` (optional)
+### Class: `apachex::package`
 
-Ensure that port configuration is synchronized with the resource. Accepts
-value: `insync`. Defaults to `insync`. 
+This class represents apache package to install on the target OS.
 
-#####`name` (required)
+**Note**: on FreeBSD we assume, that ports are used to manage apache package.
+Other providers are not supported. You should either set the default package
+provider to be `ports` or set `provider` parameter here to be +'ports'+.
+Otherwise your manifests may stop working (`$build_options` and `$mpm` will
+be ignored in best case, worse things can happen in other cases).
 
-The package name. It has the same meaning and syntax as the `$name` parameter
-to the **package** resource from core puppet (for the **ports** provider).
+#### Parameters
 
-#####`options` (optional)
+Most parameters are passed directly to the
+package[http://docs.puppetlabs.com/references/latest/type.html#package]
+resource, so they have exactly same meaning and syntax as for the package
+resource. Defaults set by +Package { foo => bar }+ are fully honored. Here we
+mention only the affected package's parameters and new parameters introduced
+by +apachex::package+
 
-Options for the package. This is a hash with keys being option names and values
-being `'on'`/`'off`' strings. Defaults to an empty hash.
 
-#####`portsdir` (optional)
+  - `auto_deinstall`
+    Some changes, such as changing MPM on FreeBSD/ports, require to
+    de-install currently installed package (e.g. www/apache22) and
+    install a new package (e.g. www/apache22-worker-mpm). The
+    `auto_deinstall` parameter, if set to true, allows for automatic
+    de-installation of currently installed apache package when necessary.
+    By default it is set to `false`, and any de-installation is forced to 
+    be done manually by user.
 
-Location of the ports tree (absolute path). This is */usr/ports* on FreeBSD and
-OpenBSD, and */usr/pkgsrc* on NetBSD. 
+  - `bsd_ports_dir`
+    Relevant only on BSD systems. Defines location of the ports tree.
+    Defaults to +/usr/ports+ on FreeBSD and OpenBSD and +/usr/pkgsrc+ on
+    NetBSD and to `undef` on other systems.
 
-#####`port_dbdir` (optional)
+  - `bsd_port_dbdir`
+    Relevant only on BSD systems. Defines directory where the results of
+    configuration OPTIONS are stored. Defaults to +/var/db/ports+.
 
-Directory where the result of configuring options are stored. Defaults to
-*/var/db/ports*.
+  - `build_options`
+    Options used when the apache package is built (for example in FreeBSD
+    ports packages are built on target machine and are customizable via build
+    options). The format of this argument depends on the agent's system.
+
+    **Note**: On FreeBSD/ports `build_options` can be applied fully only if
+    the apache package is initially absent (or is going to be reinstalled 
+    by puppet due to some other reasons). If apache is already installed
+    and only the build_options have changed in your manifest, the new options
+    will be saved to options' file (/var/db/ports/xxx/options), but the
+    package will not be reinstalled with new configuration (so, still old
+    configuration will be in use). This behavior may be changed in future.
+    Currently reinstallation is left to user to be done "manually". In
+    simplest case it may be done manually by manipulating puppet manifests
+    as follows: set +ensure=>absent+ for apachex::package, apply your
+    manifest, then set new `options` and `ensure` and apply the manifest
+    again.
+
+  - `ensure`
+    This has merely same effect as the *ensure* parameter to the `package`
+    resource. The difference here is an enhanced versioning. If you pass
+    "two-digit" version number (`2.2` for example), it shall still work, even
+    if the underlying `package`'s provider is not versionable. Exact version
+    numbers (for example `2.4.6-2`) are supported only by versionable
+    providers.
+
+    If you pass `2.X` style version number to fully versionable
+    +apachex::package+, it will install most recent `2.X` apache package
+    available in repositories. In case the apache package is already
+    installed, the installation (+$ensure => '2.X'+) is triggered only if the
+    installed version does not match the version in +$ensure+. For example,
+    if +$ensure == '2.4'+ and the installed version is `2.4.6-2`, no upgrade
+    will be triggered, even if there is newer version in package repository.
+    The upgrade (reinstall) will be triggered, however, if +$ensure == '2.4'+
+    and the installed version is, for example, `2.2.22-13`.
+
+    Note, that on some systems, migrations between '2.X' and '2.Y' would
+    fail. For example, packages providing apache modules may depend on
+    particular (installed) version of apache. Some package managers are not
+    smart enough to handle the changes in dependencies and reinstall
+    appropriate versions of modules automatically.
+
+
+  - `mpm`
+    MPM module to be used by apache. The list of all possible values is
+    `event`, `itk`, `peruser`, `prefork`, `worker`. The list of supported
+    values depends on agent's OS. This parameter is important only, when
+    the selected apache doesn't support loadable MPM modules (in which case
+    we must chose appropriate package with compiled-in MPM module).
+    Apache `2.4` and later support loadable MPMs.
+
+  - `mpm_shared`
+    Whether to enable MPM as loadable module (DSO). Defaults to true.
+    Relevant only for apache >= 2.4 on systems, where pre-compiled
+    packages are not used (FreeBSD ports, for example).
+
+#### Variables
+
+  - `::osfamily`
+    Fact from facter
+
+  - `::operatingsystem`
+    Fact from facter
+
+  - `::apachex_installed_version`
+    Fact added by ptomulik-apachex module
+
+  - `::apachex_repo_versions`
+    Fact added by ptomulik-apachex module
+
+#### Examples
+
+Use all default parameters
+
+  class { 'apachex::package': }
+
+Stick to '2.2' line of apache. This shall work even with non-versionable
+package providers:
+
+  class { 'apachex::package': ensure => '2.2' }
+
+Require particular version from repository. This works only with versionable
+package providers:
+
+  class { 'apachex::package': ensure => '2.2.13-1' }
+
+
 
 ##Limitations
 
-Currently tested on FreeBSD only.
+This is where you list OS compatibility, version compatibility, etc.
 
 ##Development
 
-Project is held on GitHub:
+Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
 
-[https://github.com/ptomulik/puppet-bsdportconfig](https://github.com/ptomulik/puppet-bsdportconfig)
+##Release Notes/Contributors/Etc **Optional**
 
-Feel free to submit issue reports to issue tracker or create pull requests.
+If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
