@@ -186,6 +186,35 @@ package providers:
 
     class { 'apachex::package': ensure => '2.2.13-1' }
 
+Install for use with `worker` MPM
+
+    class { 'apachex::package': mpm => 'worker' } 
+
+Install for use with `event` MPM, automatically reinstall when necessary
+(applies to FreeBSD)
+
+    class { 'apachex::package':
+      mpm => 'worker',
+      auto_deinstall => true,
+    } 
+
+Install FreeBSD port with additional options enabled:
+
+    class { 'apachex::package':
+      mpm => 'worker',
+      build_options => {
+        'SUEXEC' => on,
+        'PROXY' => on,
+        'PROXY_HTTP' => on,
+      },
+    } 
+
+Install FreeBSD port for apache 2.4, but disable shared MPM modules:
+
+    class { 'apachex::package':
+      ensure => '2.4',
+      mpm_shared => false,
+    } 
 
 
 ##Limitations
