@@ -55,39 +55,43 @@ This class represents apache package to install on the target OS.
 
 **Note**: on FreeBSD we assume, that ports are used to manage apache package.
 Other providers are not supported. You should either set the default package
-provider to be `ports` or set `provider` parameter here to be +'ports'+.
+provider to be `ports` or set `provider` parameter here to be `ports`.
 Otherwise your manifests may stop working (`$build_options` and `$mpm` will
 be ignored in best case, worse things can happen in other cases).
 
 #### Parameters
 
 Most parameters are passed directly to the
-package[http://docs.puppetlabs.com/references/latest/type.html#package]
+[package](http://docs.puppetlabs.com/references/latest/type.html#package)
 resource, so they have exactly same meaning and syntax as for the package
-resource. Defaults set by +Package { foo => bar }+ are fully honored. Here we
+resource. Defaults set by `Package { foo => bar }` are fully honored. Here we
 mention only the affected package's parameters and new parameters introduced
 by +apachex::package+
 
 
   - `auto_deinstall`
+
     Some changes, such as changing MPM on FreeBSD/ports, require to
     de-install currently installed package (e.g. www/apache22) and
     install a new package (e.g. www/apache22-worker-mpm). The
-    `auto_deinstall` parameter, if set to true, allows for automatic
+    `auto_deinstall` parameter, if set to `true`, enables automatic
     de-installation of currently installed apache package when necessary.
-    By default it is set to `false`, and any de-installation is forced to 
+    By default it is set to `false` for safety, and any de-installation has to
     be done manually by user.
 
   - `bsd_ports_dir`
+
     Relevant only on BSD systems. Defines location of the ports tree.
     Defaults to +/usr/ports+ on FreeBSD and OpenBSD and +/usr/pkgsrc+ on
     NetBSD and to `undef` on other systems.
 
   - `bsd_port_dbdir`
+
     Relevant only on BSD systems. Defines directory where the results of
     configuration OPTIONS are stored. Defaults to +/var/db/ports+.
 
   - `build_options`
+
     Options used when the apache package is built (for example in FreeBSD
     ports packages are built on target machine and are customizable via build
     options). The format of this argument depends on the agent's system.
@@ -106,6 +110,7 @@ by +apachex::package+
     again.
 
   - `ensure`
+
     This has merely same effect as the *ensure* parameter to the `package`
     resource. The difference here is an enhanced versioning. If you pass
     "two-digit" version number (`2.2` for example), it shall still work, even
@@ -131,6 +136,7 @@ by +apachex::package+
 
 
   - `mpm`
+
     MPM module to be used by apache. The list of all possible values is
     `event`, `itk`, `peruser`, `prefork`, `worker`. The list of supported
     values depends on agent's OS. This parameter is important only, when
@@ -139,6 +145,7 @@ by +apachex::package+
     Apache `2.4` and later support loadable MPMs.
 
   - `mpm_shared`
+
     Whether to enable MPM as loadable module (DSO). Defaults to true.
     Relevant only for apache >= 2.4 on systems, where pre-compiled
     packages are not used (FreeBSD ports, for example).
