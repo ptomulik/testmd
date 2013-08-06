@@ -66,7 +66,7 @@ Most parameters are passed directly to the
 resource, so they have exactly same meaning and syntax as for the package
 resource. Defaults set by `Package { foo => bar }` are fully honored. Here we
 mention only the affected package's parameters and new parameters introduced
-by +apachex::package+
+by `apachex::package`
 
 
   - `auto_deinstall`
@@ -82,13 +82,13 @@ by +apachex::package+
   - `bsd_ports_dir`
 
     Relevant only on BSD systems. Defines location of the ports tree.
-    Defaults to +/usr/ports+ on FreeBSD and OpenBSD and +/usr/pkgsrc+ on
+    Defaults to `/usr/ports` on FreeBSD and OpenBSD and `/usr/pkgsrc` on
     NetBSD and to `undef` on other systems.
 
   - `bsd_port_dbdir`
 
     Relevant only on BSD systems. Defines directory where the results of
-    configuration OPTIONS are stored. Defaults to +/var/db/ports+.
+    configuration OPTIONS are stored. Defaults to `/var/db/ports`.
 
   - `build_options`
 
@@ -105,7 +105,7 @@ by +apachex::package+
     configuration will be in use). This behavior may be changed in future.
     Currently reinstallation is left to user to be done "manually". In
     simplest case it may be done manually by manipulating puppet manifests
-    as follows: set +ensure=>absent+ for apachex::package, apply your
+    as follows: set `ensure=>absent` for apachex::package, apply your
     manifest, then set new `options` and `ensure` and apply the manifest
     again.
 
@@ -119,13 +119,13 @@ by +apachex::package+
     providers.
 
     If you pass `2.X` style version number to fully versionable
-    +apachex::package+, it will install most recent `2.X` apache package
+    `apachex::package`, it will install most recent `2.X` apache package
     available in repositories. In case the apache package is already
-    installed, the installation (+$ensure => '2.X'+) is triggered only if the
-    installed version does not match the version in +$ensure+. For example,
-    if +$ensure == '2.4'+ and the installed version is `2.4.6-2`, no upgrade
+    installed, the installation (`$ensure => '2.X'`) is triggered only if the
+    installed version does not match the version in `$ensure`. For example,
+    if `$ensure == '2.4'` and the installed version is `2.4.6-2`, no upgrade
     will be triggered, even if there is newer version in package repository.
-    The upgrade (reinstall) will be triggered, however, if +$ensure == '2.4'+
+    The upgrade (reinstall) will be triggered, however, if `$ensure == '2.4'`
     and the installed version is, for example, `2.2.22-13`.
 
     Note, that on some systems, migrations between '2.X' and '2.Y' would
