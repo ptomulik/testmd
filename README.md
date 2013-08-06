@@ -12,6 +12,7 @@ This is very early development. Do not use it in production!
     * [Beginning with [Modulename]](#beginning-with-[Modulename])
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+    * [Class: apachex::package](#class-apachexpackage)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
@@ -209,7 +210,7 @@ Install FreeBSD port with additional options enabled:
       },
     } 
 
-Install FreeBSD port for apache 2.4, but disable shared MPM modules:
+Install FreeBSD port of apache 2.4, but disable shared MPM modules:
 
     class { 'apachex::package':
       ensure => '2.4',
