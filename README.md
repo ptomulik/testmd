@@ -172,19 +172,19 @@ by `apachex::package`
 
 #### Examples
 
-Use all default parameters
+Use all default parameters:
 
-  class { 'apachex::package': }
+    class { 'apachex::package': }
 
 Stick to '2.2' line of apache. This shall work even with non-versionable
 package providers:
 
-  class { 'apachex::package': ensure => '2.2' }
+    class { 'apachex::package': ensure => '2.2' }
 
 Require particular version from repository. This works only with versionable
 package providers:
 
-  class { 'apachex::package': ensure => '2.2.13-1' }
+    class { 'apachex::package': ensure => '2.2.13-1' }
 
 
 
