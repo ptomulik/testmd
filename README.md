@@ -58,23 +58,18 @@ parameter. Other options are left unaltered (even if they currently differ from
 their default values defined by port's Makefile).
 
 
-*Example*:
+**Example**: ensure that 'www/apache22' is configured with SUEXEC and CGID
+modules:
 
-Ensure that 'www/apache22' is configured with SUEXEC and CGID modules:
+    bsdportconfig {'www/apache22': options => { 'SUEXEC'=>on, 'CGID'=>on } }
 
-    bsdportconfig {'www/apache22': options => { 'SUEXEC' => on, 'CGID' => on } }
+**Example**: ensure that 'www/apache22' is configured without CGID module:
 
-*Example*:
+    bsdportconfig {'www/apache22': options => { 'CGID'=>off } }
 
-Ensure that 'www/apache22' is configured without CGID module:
+**Example**: install 'www/apache22' package with LDAP module enabled:
 
-    bsdportconfig {'www/apache22': options => { 'CGID' => off } }
-
-*Example*:
-
-Install 'www/apache22' package with LDAP module enabled:
-
-    bsdportconfig {'www/apache22': options => { 'LDAP' => on }
+    bsdportconfig {'www/apache22': options => { 'LDAP'=>on } }
     package { 'www/apache22': require => Bsdportconfig['www/apache22'] }
 
 ##Usage
