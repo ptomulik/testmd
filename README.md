@@ -56,7 +56,7 @@ This class represents apache package to install on the target OS.
 
 **Note**: on Debian we assume, that `apt` or `aptitude` provider is used to
 manage apache package. Other providers are not well supported. You should
-either set the default package provider to be `apt` or `aptitude` or or set
+either set the default package provider to be `apt` or `aptitude` or set
 `provider` parameter here appropriately. Otherwise your manifests may stop
 working (the variables `$apachex::package::actual_name` and
 `$apachex::package::actual_version` may have incorrect values).
@@ -90,13 +90,14 @@ by `apachex::package`
   - `bsd_ports_dir`
 
     Relevant only on BSD systems. Defines location of the ports tree.
-    Defaults to `/usr/ports` on FreeBSD and OpenBSD and `/usr/pkgsrc` on
-    NetBSD and to `undef` on other systems.
+    If `bsd_ports_dir` is not provided (undef), the default locations are
+    `/usr/ports` on FreeBSD and OpenBSD and `/usr/pkgsrc` on NetBSD.
 
   - `bsd_port_dbdir`
 
     Relevant only on BSD systems. Defines directory where the results of
-    configuration OPTIONS are stored. Defaults to `/var/db/ports`.
+    configuration OPTIONS are stored. If not provided (undef), the default
+    location is `/var/db/ports`.
 
   - `build_options`
 
@@ -105,7 +106,7 @@ by `apachex::package`
     options). The format of this argument depends on the agent's system.
 
     **FreeBSD (ports)**: `build_options` should be a hash of the form `{ 'OPT1'
-    => $flag1, ... }`, where `$flagN` is either `'on'` or `'off'`, for example:
+    => $val1, ... }`, where `$valX` is either `'on'` or `'off'`, for example:
 
         class {'apachex::package':
           build_options => {
@@ -117,15 +118,17 @@ by `apachex::package`
     **Note**: On FreeBSD/ports `build_options` can be applied fully only if
     the apache package is initially absent (or is going to be reinstalled 
     by puppet due to some other reasons). If apache is already installed
-    and only the `build_options` have changed in your manifest, the new options
-    will be saved to options' file (/var/db/ports/xxx/options), but the
+    and only the `build_options` have changed, the new options will be saved to
+    options' file (`/var/db/ports/www_apache22/options`, for example), but the
     package will not be reinstalled with new configuration (so, still old
-    configuration will be in use). This behavior may be changed in future.
-    Currently reinstallation is left to user to be done "manually". In
-    simplest case it may be done manually by manipulating puppet manifests
-    as follows: set `ensure=>absent` for apachex::package, apply your
-    manifest, then set new `options` and `ensure` and apply the manifest
-    again.
+    configuration will be in use). Currently reinstallation is left to user to
+    be done "manually". In most cases this may be done by manipulating puppet
+    manifests as follows: set `ensure=>absent` for apachex::package, apply your
+    manifest, then set new `options` and `ensure` and apply the manifest again.
+    Note that `auto_deinstall` doesn't help here.
+
+    We hope, we'll be able to enable some automatization here in future.
+    
 
   - `ensure`
 
@@ -319,4 +322,4 @@ Since your module is awesome, other users will want to play with it. Let them kn
 
 ##Release Notes/Contributors/Etc **Optional**
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
