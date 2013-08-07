@@ -151,25 +151,20 @@ by `apachex::package`
 
     Note, that on some systems, migrations between '2.X' and '2.Y' would
     fail. For example, packages providing apache modules may depend on
-    particular (installed) version of apache. Some package managers are not
-    smart enough to handle the changes in dependencies and reinstall
-    appropriate versions of modules automatically.
+    particular (installed) version of apache. Some package managers
+    (FreeBSD/ports for example) are not smart enough to handle the changes in
+    dependencies and reinstall appropriate versions of modules automatically.
 
 
   - `mpm`
 
-    MPM module to be used by apache. The list of all possible values is
-    `event`, `itk`, `peruser`, `prefork`, `worker`. The list of supported
-    values depends on agent's OS. This parameter is important only, when
-    the selected apache doesn't support loadable MPM modules (in which case
-    we must chose appropriate package with compiled-in MPM module).
-    Apache `2.4` and later support loadable MPMs.
-
-    **Note**: on FreeBSD the `mpm` parameter works in different ways for
-    apache 2.2 and for apache >= 2.4. In the later case (>=2.4) you may need to
-    uninstall apache manually in order to apply changes in `mpm`. If you don't,
-    the new MPM will probably not be set (as a default) for apache package and
-    there will be no warning about this.
+    MPM module to be used by apache. Possible values are, for example, `event`,
+    `itk`, `peruser`, `prefork`, `worker`. The exact list of supported values
+    depends on agent's OS, version of apache package being installed and so on
+    (you may define your own list with `mpms_available` parameter). This
+    parameter may be important, if the selected apache doesn't support loadable
+    MPM modules (in which case we must chose appropriate package with
+    compiled-in MPM module). Apache `2.4` and later support loadable MPMs.
 
     *Example*:
 
@@ -177,11 +172,18 @@ by `apachex::package`
           mpm => 'worker',
         }
 
+    **Note**: on FreeBSD the `mpm` parameter works differently for apache 2.2
+    and for apache >= 2.4. In the later case (>=2.4) you may need to uninstall
+    apache manually in order to apply changes in `mpm` (the issue is exactly
+    same as for `build_options`). If you don't, the new MPM will probably not
+    be set (as a default) for apache package and there will be no warning about
+    this. Note, that `auto_deinstall` does not help here.
+
   - `mpm_shared`
 
     Whether to enable MPM as loadable module (DSO). Defaults to true.
-    Relevant only for apache >= 2.4 on systems, where pre-compiled
-    packages are not used (FreeBSD ports, for example).
+    Relevant only for apache >= 2.4 on systems, where packages are configured
+    and built before installation (FreeBSD ports, for example).
 
     *Example*:
 
@@ -192,10 +194,10 @@ by `apachex::package`
   - `mpms_available`
 
     Normally the `apachex::package` uses pre-determined list of MPMs available
-    via apache package(s) on the target OS. The `$mpm` parameter is validated
-    against this list and error is raised if `$mpm` is not on this list. If you
-    see, that your value of `$mpm` is not accepted and you know that your MPM
-    is available, you may override this list with your own provided as
+    in package repositories for the target OS. The `$mpm` parameter is
+    validated against this list and error is raised if `$mpm` is not on this
+    list. If you see, that your value of `$mpm` is not accepted whereas it
+    should, you may override this list with your own provided as
     `$mpms_available`.
 
     *Example*:
@@ -207,12 +209,12 @@ by `apachex::package`
 
   - `mpms_installed`
     
-    When determining a package to be installed its version and other options,
-    the `apachex::package` also predicts the list of MPMs installed with the
-    given apache package. That information is later available to manifests as
-    `$apachex::package::actual_mpms`. If something goes wrong, you may
-    override the generated list with a fixed list of MPMs provided as
-    `mpms_installed`.
+    Normally the `apachex::package` uses pre-determined list of MPMs installed
+    with an apache package being installed. That information is later available
+    to manifests as `$apachex::package::actual_mpms` and is used to restrict
+    list of mpm modules that can be used at runtime by manifests. If you see
+    that the list used by `apachex::package` is wrong/outdated, you may
+    override it with your own via `mpms_installed` parameter.
 
     *Example*:
 
@@ -322,4 +324,4 @@ Since your module is awesome, other users will want to play with it. Let them kn
 
 ##Release Notes/Contributors/Etc **Optional**
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
