@@ -54,11 +54,18 @@ Put the classes, types, and resources for customizing, configuring, and doing th
 
 This class represents apache package to install on the target OS.
 
-**Note**: on FreeBSD we assume, that ports are used to manage apache package.
-Other providers are not supported. You should either set the default package
-provider to be `ports` or set `provider` parameter here to be `ports`.
-Otherwise your manifests may stop working (`$build_options` and `$mpm` will
-be ignored in best case, worse things can happen in other cases).
+**Note**: on Debian we assume, that `apt` or `aptitude` provider is used to
+manage apache package. Other providers are not well supported. You should
+either set the default package provider to be `apt` or `aptitude` or or set
+`provider` parameter here appropriately. Otherwise your manifests may stop
+working (the variables `$apachex::package::actual_name` and
+`$apachex::package::actual_version` may have incorrect values).
+
+**Note**: on FreeBSD we assume, that `ports` provider is used to manage apache
+package. Other providers are not supported. You should either set the default
+package provider to be `ports` or set `provider` parameter here to be `ports`.
+Otherwise your manifests may stop working (`$build_options` and `$mpm` will be
+ignored in best case, worse things can happen in other cases).
 
 #### Parameters
 
@@ -151,25 +158,99 @@ by `apachex::package`
     the new MPM will probably not be set (as a default) for apache package and
     there will be no warning about this.
 
+    *Example*:
+
+        class {'apachex::package', 
+          mpm => 'worker',
+        }
+
   - `mpm_shared`
 
     Whether to enable MPM as loadable module (DSO). Defaults to true.
     Relevant only for apache >= 2.4 on systems, where pre-compiled
     packages are not used (FreeBSD ports, for example).
 
+    *Example*:
+
+        class {'apachex::package', 
+          mpms_shared => true,
+        }
+
+  - `mpms_available`
+
+    Normally the `apachex::package` uses pre-determined list of MPMs available
+    via apache package(s) on the target OS. The `$mpm` parameter is validated
+    against this list and error is raised if `$mpm` is not on this list. If you
+    see, that your value of `$mpm` is not accepted and you know that your MPM
+    is available, you may override this list with your own provided as
+    `$mpms_available`.
+
+    *Example*:
+
+        class {'apachex::package', 
+          mpm => 'event',
+          mpms_available => ['event', 'prefork', 'worker'],
+        }
+
+  - `mpms_installed`
+    
+    When determining a package to be installed its version and other options,
+    the `apachex::package` also predicts the list of MPMs installed with the
+    given apache package. That information is later available to manifests as
+    `$apachex::package::actual_mpms`. If something goes wrong, you may
+    override the generated list with a fixed list of MPMs provided as
+    `mpms_installed`.
+
+    *Example*:
+
+        class {'apachex::package', 
+          mpms_installed => ['event', 'prefork', 'worker'],
+        }
+
+  - `package`
+
+    This is the same as `name` parameter to package resource, and will be used
+    as package name to be installed as the apache package. Normally
+    `apachex::package` tries to determine appropriate name automatically. The
+    `package` parameter may be used to set fixed package name.
+
 #### Variables
 
+These variables are required by apachex::package class:
+
   - `::osfamily`
-    Fact from facter
+    fact from facter
 
   - `::operatingsystem`
-    Fact from facter
+    fact from facter
 
-  - `::apachex_installed_version`
-    Fact added by ptomulik-apachex module
+  - `::apachex_installed_version` 
+    fact added by ptomulik-apachex module
 
   - `::apachex_repo_versions`
-    Fact added by ptomulik-apachex module
+    fact added by ptomulik-apachex module
+
+These variables are defined by apachex::package and can be used elsewhere:
+
+  - `apachex::package::actual_name`
+
+    Name of the apache package installed by `apachex::package`. This may be,
+    for example, `apache2` on Debian, `httpd` on RedHat and `www/apache22` on
+    FreeBSD. Once you have included the `apachex::package` class in your
+    manifest, you may read from `apachex::package::actual_name` what is actual
+    name of the installed package (note, that it depends on several factors
+    including agent's OS, MPMs chosen and version of the apache package being
+    installed).
+
+  - `apachex::package::actual_version`
+
+    The version of apache package that is installed or is going to be installed
+    by the `apachex::package` class.
+
+  - `apachex::package::actual_mpms`
+
+    Array of names of the installed mpm modules. This determines, after all,
+    what MPMs may be enabled at runtime.
 
 #### Examples
 
@@ -199,7 +280,7 @@ Install for use with `event` MPM, automatically reinstall when necessary
       auto_deinstall => true,
     } 
 
-Install FreeBSD port with additional options enabled:
+Install FreeBSD port of apache with additional options enabled:
 
     class { 'apachex::package':
       mpm => 'worker',
