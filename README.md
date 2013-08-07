@@ -104,6 +104,16 @@ by `apachex::package`
     ports packages are built on target machine and are customizable via build
     options). The format of this argument depends on the agent's system.
 
+    **FreeBSD (ports)**: `build_options` should be a hash of the form `{ 'OPT1'
+    => $flag1, ... }`, where `$flagN` is either `'on'` or `'off'`, for example:
+
+        class {'apachex::package':
+          build_options => {
+            'SUEXEC' => on,
+            'LDAP' => off,
+          }
+        }
+
     **Note**: On FreeBSD/ports `build_options` can be applied fully only if
     the apache package is initially absent (or is going to be reinstalled 
     by puppet due to some other reasons). If apache is already installed
