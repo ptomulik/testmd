@@ -214,6 +214,10 @@ Other methods within `Puppet::Util::RepoUtils` may be used to perform
 be used to retrieve lists of package candidates known to the suitable package
 repositories (hash of the form `{:apt => {...}, :aptitude => {...}, ...}`).
 
+##Reference
+
+**TODO**: write reference 
+
 ### Methods within `Puppet::Util` module
 
   * `newrepoutil(name, options = {}, &block)` - shorthand to
@@ -265,9 +269,6 @@ repositories (hash of the form `{:apt => {...}, :aptitude => {...}, ...}`).
   * `package_candidates_with_prefix(prefix)` - **TODO**: write documentation
   * `package_records_with_prefix(prefix)` - **TODO**: write documentation
 
-##Reference
-
-**TODO**: write reference 
 
 ##Limitations
 
@@ -315,8 +316,8 @@ When defining new utility, one should define following methods in the `block`:
   - `self.retrieve_candidates(pattern)`
   - `self.retrieve_records(pattern)`
 
-To configure suitability, defaults etc., use [same methods as in normal
-providers](http://docs.puppetlabs.com/guides/provider_development.html).
+To configure suitability, confines, defaults etc., use [same methods as in
+normal providers](http://docs.puppetlabs.com/guides/provider_development.html).
 
 Example template for a repoutil `foo` is presented below:
 
