@@ -232,16 +232,16 @@ to the suitable package repositories (this yields a hash of the form `{:apt =>
 
 Provider management:
 
-  * `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
+#### `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
     intended for developers/contributors and may be used to add new providers to
     `repoutil`. See [adding new utility](#adding-new-utility-provider).
-  * `unrepoutil(name)` - **TODO**: write documentation
-  * `repoutil(name)` - **TODO**: write documentation
-  * `repoutils()` - **TODO**: write documentation
-  * `suitablerepoutils()` - **TODO**: write documentation
-  * `defaultrepoutil()` - **TODO**: write documentation
-  * `loadall()` - **TODO**: write documentation
-  * `repoutilloader()` - **TODO**: write documentation
+#### `unrepoutil(name)` - **TODO**: write documentation
+#### `repoutil(name)` - **TODO**: write documentation
+#### `repoutils()` - **TODO**: write documentation
+#### `suitablerepoutils()` - **TODO**: write documentation
+#### `defaultrepoutil()` - **TODO**: write documentation
+#### `loadall()` - **TODO**: write documentation
+#### `repoutilloader()` - **TODO**: write documentation
 
 Collective operations on repositories:
 
