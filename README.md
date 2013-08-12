@@ -65,8 +65,7 @@ utilities, you should first include appropriate module file:
     require 'puppet/util/repoutil'
 
 One of the first steps you'll probably have to do is to retrieve an utility
-provider (call it `repo`). For example, `apt` repo utility may be obtained as
-follows:
+provider (call it `repo`). For example, apt `repo` may be obtained as follows:
 
     repo = Puppet::Util.repoutil(:apt)
  
