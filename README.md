@@ -194,11 +194,12 @@ repository caches/databases and is inherited by several classes implementing
 particular type of repositories (providers).
 
 The user actually operates on providers, that is on subclasses of
-`Puppet::Util::RepoUtil`. Each such provider corresponds to an appropriate
-[package provider](http://docs.puppetlabs.com/references/latest/type.html#package) 
-from puppet core (note, not all puppet providers are covered here). For
-example, there is `Puppet::Util::RepoUtils::Apt` which corresponds to `:apt`
-package provider.
+`Puppet::Util::RepoUtil`. Each *repoutil provider* shall correspond to an
+appropriate [package
+provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
+puppet core (note, not all puppet providers are covered here). For example,
+there is `Puppet::Util::RepoUtils::Apt` class (`:apt` repoutil) which
+corresponds to `:apt` package provider.
 
 Some methods within `Puppet::Util::RepoUtils` are provided for management of
 providers. These include `newrepoutil` (to implement new providers),
