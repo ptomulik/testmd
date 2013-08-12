@@ -318,7 +318,7 @@ When defining new utility, one should define following methods in the `block`:
 To configure suitability, defaults etc., use [same methods as in normal
 providers](http://docs.puppetlabs.com/guides/provider_development.html).
 
-Here is a complete template for a repoutil `foo` (based on `apt`):
+Example template for a repoutil `foo` (based on `apt`) is shown below:
 
     # lib/puppet/util/repoutil/foo.rb
     module Puppet::Util
