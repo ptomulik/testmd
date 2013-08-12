@@ -263,18 +263,46 @@ Unload/unregister a repoutil provider created with [`newrepoutil(name)`](#newrep
 Retrieve repoutil class identified by `name`. The provider must be first
 created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
 
+*Example:*
+
+    repo = Puppet::Util::RepoUtils.repoutil(:apt)
+    candidates = repo.package_candidates('apache2')
+
 #### repoutils()
 
 Retrieve all existing repoutil providers (includes also those not suitable for
 a given environment).
 
+*Example:*
+
+    repos = Puppet::Util::RepoUtils.repoutils
+    apache2_candidates = {}
+    repos.each do |repo|
+      if repo.suitable?
+        apache2_candidates[repo] = repo.package_candidates('apache2')
+      end
+    end
+
 #### suitablerepoutils()
 
 Retrieve all repoutil providers suitable for the current environment.
 
+*Example:*
+
+    repos = Puppet::Util::RepoUtils.suitablerepoutils
+    apache2_candidates = {}
+    repos.each do |repo|
+      apache2_candidates[repo] = repo.package_candidates('apache2')
+    end
+
 #### defaultrepoutil()
 
 Retrieve repoutil provider that is default to current environment.
+
+*Example:*
+
+    repo = Puppet::Util::RepoUtils.defaultrepoutil
+    candidates = repo.package_candidates('apache2')
 
 #### loadall()
 
