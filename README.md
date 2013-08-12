@@ -275,7 +275,8 @@ When defining new utility, one should provide following methods in the `block`:
 - `self.retrieve_candidates`
 - `self.retrieve_records`
 
-To configure suitability etc., use same methods as for normal provider.
+To configure suitability, defaults etc., use [same methods as in normal
+providers](http://docs.puppetlabs.com/guides/provider_development.html).
 Here is complete template for a repoutil `foo` (based on `apt`):
 
     # lib/puppet/util/repoutil/foo.rb
