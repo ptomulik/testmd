@@ -187,7 +187,7 @@ The module consists of two ruby classes:
   - `Puppet::Util::RepoUtil` - represents single utility,
   - `Puppet::Util::RepoUtils` - represents the "registry" of available utilities,
 
-and few short-hand methods.
+and few short-hand module-level methods (`Puppet::Util.foo()`).
 
 The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
 repository caches/databases and is inherited by several classes implementing
