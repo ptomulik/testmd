@@ -182,10 +182,12 @@ In case there is no such package in repository, `nil` is returned.
 
 The module consists of two ruby classes: 
 
-  - `Puppet::Util::RepoUtil` - represents single utility,
-  - `Puppet::Util::RepoUtils` - represents the "registry" of available utilities,
+  - [`Puppet::Util::RepoUtil`](#methods-within-puppetutilrepoutil-class) -
+    represents single utility,
+  - [`Puppet::Util::RepoUtils`](#methods-within-puppetutilrepoutils-class) -
+    represents the "registry" of available utilities,
 
-and few short-hand module-level methods (`Puppet::Util.foo()`).
+and few [shorthand module-level methods](#methods-within-puppetutil-module)
 
 The [`Puppet::Util::RepoUtil`](#methods-within-puppetutilrepoutil-class) class
 abstracts CLI commands used to access repository cache/database and is
