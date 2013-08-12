@@ -66,19 +66,20 @@ You may need to enable **pluginsync**.
 
 ###Beginning with repoutil
 
-Let's start with obtaining an apt utility:
+Let's start with creating an apt utility:
 
     require 'puppet/util/repoutil'
     repo = Puppet::Util.repoutil(:apt)
  
 Our `repo` provides basic methods that are going to be exemplified below. The
-`:apt` utility is suitble for use on Debian or Ubuntu. For other systems you
-should choose other facility, or (best) use default utility for the local
-system:
+`:apt` utility is **suitable** for use on Debian or Ubuntu. For other systems
+we should choose other facility. We may simply load default utility for the
+local system:
 
     repo = Puppet::Util.defaultrepoutil
 
-Now, we may list all packages with names starting with 'apache':
+Once we have the `repo`, we may list all packages with names starting with
+'apache':
 
     apaches = repo.packages_with_prefix('apache')
 
