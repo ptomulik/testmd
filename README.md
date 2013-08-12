@@ -110,7 +110,7 @@ arrays of available versions as values:
     }
 
 To retrieve full records from repo database (including version, description,
-and other information) you may use `package_records_with_prefix`
+and other information) you may use:
 
     repo.package_records_with_prefix('apache')
 
