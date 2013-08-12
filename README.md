@@ -17,9 +17,9 @@
 
 Puppet utilities to interact with package repositories. Simplifies tasks such
 as obtainning list of packages available for installation, their versions,
-installation candidates and so on.  This package may be good for you, if you
-need to implement some facts containing information about availablility of a
-certain packages in repositories available to an agent.
+installation candidates and so on.  This plugin may be handy, if you need to
+implement some facts containing information about availablility of certain
+packages in repositories available to an agent.
 
 ##Module Description
 
@@ -44,28 +44,28 @@ The supported operations currently include:
   * listing available package(s) versions,
   * retrieving full package records (containig descriptions, etc.),
   * guassing the installation candidate (version) for a given package,
-                                                                                                                                                                                                                                                                               
-The module currently supports the following providers:                                                                                                                                                                                                                         
-                                                                                                                                                                                                                                                                               
-  * apt, aptitude (Debian),                                                                                                                                                                                                                                                    
-  * ports (FreeBSD)                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                               
-##Setup                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                                               
-###What repoutil affects                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                               
-* Executes commands necessary to query information from package repositories.                                                                                                                                                                                                  
-  What command may actually be executed depends on agent's OS and module's                                                                                                                                                                                                     
-  usage. Generally the following tools may be executed by `repoutil`'s methods:                                                                                                                                                                                                
-  - on Debian: `apt-cache show|policy`, `aptitude show`,                                                                                                                                                                                                                       
-  - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,                                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                               
-###Setup Requirements                                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                                                               
-You may need to enable **pluginsync**.                                                                                                                                                                                                                                         
-                                                                                                                                                                                                                                                                               
-###Beginning with repoutil                                                                                                                                                                                                                                                     
-                                                                                                                                                                                                                                                                               
+
+The module currently supports the following providers:
+
+  * apt, aptitude (Debian),
+  * ports (FreeBSD)
+
+##Setup
+
+###What repoutil affects
+
+* Executes commands necessary to query information from package repositories.
+  What command may actually be executed depends on agent's OS and module's
+  usage. Generally the following tools may be executed by `repoutil`'s methods:
+  - on Debian: `apt-cache show|policy`, `aptitude show`, 
+  - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,
+
+###Setup Requirements 
+
+You may need to enable **pluginsync**.
+
+###Beginning with repoutil
+
 Let's start with creating an apt utility:
 
     require 'puppet/util/repoutil'
@@ -263,4 +263,3 @@ Feel free to submit bug reports, feature requests or to create pull requests.
 ##Release Notes/Contributors/Etc **Optional**
 
 If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
-ptomulik@tea:$ 
