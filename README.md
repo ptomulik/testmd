@@ -246,7 +246,7 @@ Shorthand to [`Puppet::Util::RepoUtils.defaultrepoutil`](#defaultrepoutil-1).
 
 ### Methods within `Puppet::Util::RepoUtils` class
 
-Provider management:
+**Provider management**:
 
 #### newrepoutil(name, options = {}, &block) 
 
@@ -256,33 +256,35 @@ repoutil module see [adding new utility](#adding-new-utility-provider).
 
 #### unrepoutil(name)
 
-**TODO**: write documentation
+Unload/unregister a repoutil provider created with [`newrepoutil(name)`](#newrepoutilname-1).
 
 #### repoutil(name)
 
-**TODO**: write documentation
+Retrieve repoutil class identified by `name`. The provider must be first
+created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
 
 #### repoutils()
 
-**TODO**: write documentation
+Retrieve all existing repoutil providers (includes also those not suitable for
+a given environment).
 
 #### suitablerepoutils()
 
-**TODO**: write documentation
+Retrieve all repoutil providers suitable for the current environment.
 
 #### defaultrepoutil()
 
-**TODO**: write documentation
+Retrieve repoutil provider that is default to current environment.
 
 #### loadall()
 
-**TODO**: write documentation
+For internal use.
 
 #### repoutilloader()
 
-**TODO**: write documentation
+For internal use.
 
-Collective operations on repositories:
+**Collective operations on repositories**:
 
 #### package\_records(packages)
 
