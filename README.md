@@ -106,7 +106,7 @@ and arrays of available versions as values:
 To retrieve full records from package database (including version, description,
 and other information) you may use:
 
-    repo.package_records_with_prefix('apache')
+    apache_records = repo.package_records_with_prefix('apache')
 
 This would return a hash such as the following:
 
@@ -142,15 +142,15 @@ Of course, we may operate on exact package names, that is request information
 for one particular package. For example, in order to obtain available package
 versions we call:
 
-    repo.package_versions('apache2')
+    apache2_versions = repo.package_versions('apache2')
 
 This method returns an array, such as `["2.4.6-2", "2.2.22-13"]` or `nil` (if
 there is no database entry for the package).
 
 To see the installation candidate for package (what version of the package
-would be installed if we requested package installation/update), we do:
+would be installed if we requested package installation/upgrade), we do:
 
-    repo.package_candidate('apache2')
+    apache2_candidates = repo.package_candidate('apache2')
 
 This returns a string (e.g. `"2.4.6-2"`) or `nil` (if there is no such package
 in repository).
@@ -158,7 +158,7 @@ in repository).
 
 To retrieve full records for available package versions we type:
 
-    repo.package_records('apache2')
+    apache2_records = repo.package_records('apache2')
 
 This should return a hash as follows:
 
