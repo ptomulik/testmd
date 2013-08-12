@@ -4,7 +4,7 @@
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
-3. [Setup](#setup)
+3. [Setup - The basics of getting started with repoutil](#setup)
     * [What repoutil affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with repoutil](#beginning-with-repoutil)
@@ -54,7 +54,7 @@ and few other functionalities.
 
 * Executes commands responsible for querying information about package
   repositories. What command may actually be executed depends on agent's OS and
-  module's usage. These tools may be in general executed by `repoutil`'s
+  module's usage. Generally the following tools may be executed by `repoutil`'s
   methods:
   - on Debian: `apt-cache show|policy`, `aptitude show`, 
   - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,
