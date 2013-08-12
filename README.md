@@ -319,15 +319,13 @@ For internal use.
 ##### package\_records(packages, utils = suitablerepoutils)
 
 Return package records obtained from multiple sources. This function performs
-query on multiple repositories at once. This approach may be used to gather
-package information from multiple repository types available to the local
-environment.
+query on multiple repositories at once. It may be used to gather package
+information from multiple repository types available to the local system.
 
 Arguments:
 
   * `packages` - package name (exact) or an array of (exact) package names,
-  * `utils` - list of repoutil providers to be queried, defaults to all
-     suitable providers.
+  * `utils` - array with repoutil providers that are to be queried (optional).
 
 *Example*:
 
@@ -335,33 +333,89 @@ Arguments:
 
 Would return a hash of the form:
 
-    { :apt  => { 
-        'apache2' => {  
+    {
+      :aptitude => 
+      { 
+        'apache2' => 
+        {
+          '2.2.13-2' => { 'Package' => 'apache2', 'Version' => '2.2.13-2', ... } 
+          '2.4.6-2'  => { ... } 
+        } 
+      },
+      :apt  => 
+      { 
+        'apache2' => 
+        {  
           '2.2.13-2' => { ... },
           '2.4.6-2'  => { ... } 
         }
-      },
-      :aptitude => { 
-        'apache2' => {
-          '2.2.13-2' => { ... } 
-          '2.4.6-2'  => { ... } 
-        } 
       },
        ...
      }
 
 where `:apt`, `:aptitude`, ..., are keys corresponding to repoutil providers
-listed in `utils`. Hashes obtained from expression `records[utils[n].name]`
-have same structure as the these returned by
-[`Puppet::Util::RepoUtil.package_recordspackage`](#package_recordsname).
+listed in `utils`.
 
 ##### package\_versions(packages, utils = suitablerepoutils)
 
-**TODO**: write documentation
+Return package versions available from multiple sources. This function performs
+query on multiple repositories at once. It may be used to gather package
+information from multiple repository types available to the local system.
+
+Arguments:
+
+  * `packages` - package name (exact) or an array of (exact) package names,
+  * `utils` - array with repoutil providers that are to be queried (optional).
+
+*Example*:
+
+    versions = Puppet::Util::RepoUtils.package_versions(['apache2', 'apache2-dev'])
+
+Would return a hash of the form:
+
+    {
+      :aptitude => 
+      {
+        "apache2"     =>  ["2.4.6-2"], 
+        "apache2-dev" =>  ["2.4.6-2"]
+      },
+      :apt => 
+      {
+        "apache2"     =>  ["2.4.6-2", "2.2.22-13"],
+        "apache2-dev" =>  ["2.4.6-2"]
+      }
+    }
+
+where `:apt`, `:aptitude`, ..., are keys corresponding to repoutil providers
+listed in `utils`.
+
 
 ##### package\_candidates(packages, utils = suitablerepoutils)
 
-**TODO**: write documentation
+Return package candidates available for installation from multiple sources.
+This function may perform query on multiple repositories at once. It may be
+used to gather package information from multiple repository types available to
+the local system.
+
+Arguments:
+
+  * `packages` - package name (exact) or an array of (exact) package names,
+  * `utils` - array with repoutil providers that are to be queried (optional).
+
+*Example*:
+
+    candidates = Puppet::Util::RepoUtils.package_candidates(['apache2', 'apache2-dev'])
+
+Would return a hash of the form:
+
+    {
+      :aptitude => { "apache2" => "2.4.6-2", "apache2-dev" => "2.4.6-2" },
+      :apt      => { "apache2" => "2.4.6-2", "apache2-dev" => "2.4.6-2" }
+    }
+
+where `:apt`, `:aptitude`, ..., are keys corresponding to repoutil providers
+listed in `utils`. 
+
 
 ### Methods within `Puppet::Util::RepoUtil` class
 
