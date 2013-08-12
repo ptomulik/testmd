@@ -42,8 +42,8 @@ The supported operations currently include:
 
   * listing available packages,
   * listing available package(s) versions,
-  * retrieving full package records (containig descriptions, etc.),
-  * guassing the installation candidate (version) for a given package,
+  * retrieving full package records (containing descriptions, etc.),
+  * determining installation candidate (version) for a given package,
 
 The module currently supports the following providers:
 
@@ -54,9 +54,10 @@ The module currently supports the following providers:
 
 ###What repoutil affects
 
-* Executes commands necessary to query information from package repositories.
-  What command may actually be executed depends on agent's OS and module's
-  usage. Generally the following tools may be executed by `repoutil`'s methods:
+* it executes CLI commands necessary to query information from package
+  repositories. The exact list of commands being executed depend on agent's OS
+  and module's usage. Generally the following tools are used by `repoutil`'s: 
+
   - on Debian: `apt-cache show|policy`, `aptitude show`, 
   - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,
 
