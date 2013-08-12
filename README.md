@@ -232,44 +232,131 @@ to the suitable package repositories (this yields a hash of the form `{:apt =>
 
 Provider management:
 
-#### `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
-    intended for developers/contributors and may be used to add new providers to
-    `repoutil`. See [adding new utility](#adding-new-utility-provider).
-#### `unrepoutil(name)` - **TODO**: write documentation
-#### `repoutil(name)` - **TODO**: write documentation
-#### `repoutils()` - **TODO**: write documentation
-#### `suitablerepoutils()` - **TODO**: write documentation
-#### `defaultrepoutil()` - **TODO**: write documentation
-#### `loadall()` - **TODO**: write documentation
-#### `repoutilloader()` - **TODO**: write documentation
+#### `newrepoutil(name, options = {}, &block)` 
+
+Define new repo utility. This is intended for developers/contributors and may
+be used to add new providers to `repoutil`. See [adding new
+utility](#adding-new-utility-provider).
+
+#### `unrepoutil(name)`
+
+**TODO**: write documentation
+
+#### `repoutil(name)`
+
+**TODO**: write documentation
+
+#### `repoutils()`
+
+**TODO**: write documentation
+
+#### `suitablerepoutils()`
+
+**TODO**: write documentation
+
+#### `defaultrepoutil()`
+
+**TODO**: write documentation
+
+#### `loadall()`
+
+**TODO**: write documentation
+
+#### `repoutilloader()`
+
+**TODO**: write documentation
 
 Collective operations on repositories:
 
-  * `package_records(packages)` - **TODO**: write documentation
-  * `package_versions(packages)` - **TODO**: write documentation
-  * `package_candidates(packages)` - **TODO**: write documentation
+#### `package_records(packages)`
+
+**TODO**: write documentation
+
+#### `package_versions(packages)`
+
+**TODO**: write documentation
+
+#### `package_candidates(packages)`
+
+**TODO**: write documentation
 
 ### Methods within `Puppet::Util::RepoUtil` class
 
-  * `package_name_regexp` - **TODO**: write documentation
-  * `package_prefix_regexp` - **TODO**: write documentation
-  * `validate_package_name(package)` - **TODO**: write documentation
-  * `validate_package_prefix(prefix)` - **TODO**: write documentation
-  * `package_name_to_pattern` - **TODO**: write documentation
-  * `package_prefix_to_pattern` - **TODO**: write documentation
-  * `candidates_cache` - **TODO**: write documentation
-  * `records_cache` - **TODO**: write documentation
-  * `clear_candidates_cache` - **TODO**: write documentation
-  * `clear_records_cache` - **TODO**: write documentation
-  * `retrieve_candidates(pattern)` - **TODO**: write documentation
-  * `retrieve_records(pattern)` - **TODO**: write documentation
-  * `package_records(package)` - **TODO**: write documentation
-  * `package_versions(package)` - **TODO**: write documentation
-  * `package_candidate(package)` - **TODO**: write documentation
-  * `packages_with_prefix(prefix)` - **TODO**: write documentation
-  * `package_versions_with_prefix(prefix)` - **TODO**: write documentation
-  * `package_candidates_with_prefix(prefix)` - **TODO**: write documentation
-  * `package_records_with_prefix(prefix)` - **TODO**: write documentation
+#### `package_name_regexp`
+
+**TODO**: write documentation
+
+#### `package_prefix_regexp`
+
+**TODO**: write documentation
+
+#### `validate_package_name(package)`
+
+**TODO**: write documentation
+
+#### `validate_package_prefix(prefix)`
+
+**TODO**: write documentation
+
+#### `package_name_to_pattern`
+
+**TODO**: write documentation
+
+#### `package_prefix_to_pattern`
+
+**TODO**: write documentation
+
+#### `candidates_cache`
+
+**TODO**: write documentation
+
+#### `records_cache`
+
+**TODO**: write documentation
+
+#### `clear_candidates_cache`
+
+**TODO**: write documentation
+
+#### `clear_records_cache`
+
+**TODO**: write documentation
+
+#### `retrieve_candidates(pattern)`
+
+**TODO**: write documentation
+
+#### `retrieve_records(pattern)`
+
+**TODO**: write documentation
+
+#### `package_records(package)`
+
+**TODO**: write documentation
+
+#### `package_versions(package)`
+
+**TODO**: write documentation
+
+#### `package_candidate(package)`
+
+**TODO**: write documentation
+
+#### `packages_with_prefix(prefix)`
+
+**TODO**: write documentation
+
+#### `package_versions_with_prefix(prefix)`
+
+**TODO**: write documentation
+
+#### `package_candidates_with_prefix(prefix)`
+
+**TODO**: write documentation
+
+#### `package_records_with_prefix(prefix)`
+
+**TODO**: write documentation
 
 
 ##Limitations
