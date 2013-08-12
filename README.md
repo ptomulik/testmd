@@ -45,7 +45,10 @@ The supported operations currently include:
   * retrieving full package records (containig descriptions, etc.),
   * guassing the installation candidate (version) for a given package,
 
-and few other functionalities.
+The module currently supports the following providers:
+
+  * apt, aptitude (Debian),
+  * ports (FreeBSD)
 
 ##Setup
 
@@ -63,12 +66,19 @@ You may need to enable **pluginsync**.
 
 ###Beginning with repoutil
 
-Let's start with obtaining a RepoUtil for the apt provider:
+Let's start with obtaining an apt utility:
 
     require 'puppet/util/repoutil'
     repo = Puppet::Util.repoutil(:apt)
+ 
+Our `repo` provides basic methods that are going to be exemplified below. The
+`:apt` utility is suitble for use on Debian or Ubuntu. For other systems you
+should choose other facility, or (best) use default utility for the local
+system:
 
-Now, we may, for example, list all packages with names starting with 'apache':
+    repo = Puppet::Util.defaultrepoutil
+
+Now, we may list all packages with names starting with 'apache':
 
     apaches = repo.packages_with_prefix('apache')
 
