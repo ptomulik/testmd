@@ -198,71 +198,49 @@ In case there is no such package in repository, `nil` is returned.
 
 ##Usage
 
-* Methods within `Puppet::Util`
+### Methods within `Puppet::Util`
 
-  - `newrepoutil(name, options = {}, &block)` - shorthand to
-    `Puppet::Util::RepoUtils.newrepoutil`
+* `newrepoutil(name, options = {}, &block)` - shorthand to
+  `Puppet::Util::RepoUtils.newrepoutil`
+
+* `repoutil(name)` - shorthand to `Puppet::Util::RepoUtils.repoutil`
+
+* `repoutils()` - shorthand to `Puppet::Util::RepoUtils.repoutils`
+
+* `suitablerepoutils()` - shorthand to
+  `Puppet::Util::RepoUtils.suitablerepoutils`
+
+* `defaultrepoutil()` - shorthand to
+  `Puppet::Util::RepoUtils.defaultrepoutil`
+
+
+
+### Methods within `Puppet::Util::RepoUtils`
+
+* `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
+  intended for developers/contributors and may be used to add new providers to
+  `repoutil`. See [adding new utility](#adding-new-utility-provider).
   
-  - `repoutil(name)` - shorthand to `Puppet::Util::RepoUtils.repoutil`
 
-  - `repoutils()` - shorthand to `Puppet::Util::RepoUtils.repoutils`
+* `unrepoutil(name)` - **TODO**: write documentation
 
-  - `suitablerepoutils()` - shorthand to
-    `Puppet::Util::RepoUtils.suitablerepoutils`
+* `repoutil(name)` - **TODO**: write documentation
 
-  - `defaultrepoutil()` - shorthand to
-    `Puppet::Util::RepoUtils.defaultrepoutil`
+* `repoutils()` - **TODO**: write documentation
+  
+* `suitablerepoutils()` - **TODO**: write documentation
 
+* `defaultrepoutil()` - **TODO**: write documentation
 
+* `loadall()` - **TODO**: write documentation
 
-* Methods within `Puppet::Util::RepoUtils`
+* `repoutilloader()` - **TODO**: write documentation
 
-  - `newrepoutil(name, options = {}, &block)`
+* `package_records(packages)` - **TODO**: write documentation
 
-    Define new repo utility. This is intended for developers/contributors and
-    may be used to add new providers to `repoutil`. See [adding new
-    utility](#adding-new-utility-provider).
-    
+* `package_versions(packages)` - **TODO**: write documentation
 
-  - `unrepoutil(name)`
-
-    **TODO**: write documentation
-
-  - `repoutil(name)`
-
-    **TODO**: write documentation
-
-  - `repoutils()`
-
-    **TODO**: write documentation
-    
-  - `suitablerepoutils()`
-
-    **TODO**: write documentation
-
-  - `defaultrepoutil()`
-
-    **TODO**: write documentation
-
-  - `loadall()`
-
-    **TODO**: write documentation
-
-  - `repoutilloader()`
-
-    **TODO**: write documentation
-
-  - `package_records(packages)`
-
-    **TODO**: write documentation
-
-  - `package_versions(packages)`
-    
-    **TODO**: write documentation
-
-  - `package_candidates(packages)`
-
-    **TODO**: write documentation
+* `package_candidates(packages)` - **TODO**: write documentation
 
 ##Reference
 
