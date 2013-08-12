@@ -15,7 +15,11 @@
 
 ##Overview
 
-Puppet utilities to interact with package repositories. Simplifies tasks such as obtainning list of packages available for installation, their versions, installation candidates and so on. This plugin may be handy, if you need to implement facts describing packages available to agents' via their package repositories.                                                                   
+Puppet utilities to interact with package repositories. Simplifies tasks such
+as obtainning list of packages available for installation, their versions,
+installation candidates and so on. This plugin may be handy, if you need to
+implement facts describing packages available to agents' via their package
+repositories.
 
 ##Module Description
 
@@ -31,6 +35,9 @@ The module currently supports the following providers:
 
   * apt, aptitude (Debian),
   * ports (FreeBSD)
+
+The utilities provided by `repoutil` are devoted to developers of other
+modules, and are not intended to be used directly from puppet manifests. 
 
 ##Setup
 
@@ -49,15 +56,20 @@ You may need to enable **pluginsync** in your *puppet.conf*.
 
 ###Beginning with repoutil
 
-Let's start with creating an apt utility:
+Let say, you're developing your custom fact or resource type and you need to
+retrieve some characteristics of packages existing in your package repository.
+To use repoutil utilities, you should include appropriate module file:
 
     require 'puppet/util/repoutil'
+
+Probably the first step you'll have to do will be to retrieve utility object,
+for example the `apt` repo utility:
+
     repo = Puppet::Util.repoutil(:apt)
  
-Our `repo` provides methods for interaction with `apt` repository. The `:apt`
-utility is **suitable** for use on Debian or Ubuntu. For other systems we
-should choose other facility. The most universal way is to load default utility
-for current system:
+The `:apt` utility is **suitable** for use on Debian or Ubuntu. For other
+systems we should choose other facility. The most universal way is to load
+default utility for current system:
 
     repo = Puppet::Util.defaultrepoutil
 
