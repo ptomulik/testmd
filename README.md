@@ -260,7 +260,7 @@ Unload/unregister a repoutil provider created with [`newrepoutil(name)`](#newrep
 
 #### repoutil(name)
 
-Retrieve repoutil class identified by `name`. The provider must be first
+Retrieve repoutil provider identified by `name`. The provider must be first
 created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
 
 *Example:*
