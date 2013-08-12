@@ -200,8 +200,8 @@ should use one of the methods from `Puppet::Util::RepoUtils` described below.
 Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
 operate on a single repository.
 
-Methods within `Puppet::Util::RepoUtils` are twofold. Some of them are provided
-to manage providers. These include
+[Methods within `Puppet::Util::RepoUtils`](#methods-within-puppetutilrepoutils-class)
+are twofold. Some of them are provided to manage providers. These include
 [`newrepoutil`](#newrepoutilname-options---block-1) (to implement new
 providers), [`unrepoutil`](#unrepoutilname) (to unregister particular
 provider), [`repoutils`](#repoutils-1) (to retrieve all available providers),
