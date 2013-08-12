@@ -15,7 +15,7 @@
 
 ##Overview
 
-Puppet utilities to interact with package repositories. Simplifies tasks such
+Puppet utilities to interact with package repositories. Simplify tasks such
 as obtainning list of packages available for installation, their versions,
 installation candidates and so on. This plugin may be handy, if you need to
 implement facts describing packages available to agents' via their package
@@ -36,8 +36,8 @@ The module currently supports the following providers:
   * apt, aptitude (Debian),
   * ports (FreeBSD)
 
-The utilities provided by `repoutil` are devoted to developers of other
-modules, and are not intended to be used directly from puppet manifests. 
+Utilities provided by `repoutil` are devoted to developers of other modules,
+and are not intended to be used directly from puppet manifests. 
 
 ##Setup
 
@@ -45,7 +45,9 @@ modules, and are not intended to be used directly from puppet manifests.
 
   * it executes CLI commands necessary to query information from package
     repositories. The exact list of commands being executed depend on agent's OS
-    and module's usage. Generally the following tools are used by `repoutil`'s: 
+    and module's usage, but generally they should be regarded as harmless. 
+    
+    The following CLI commands are currently used by `repoutil`'s: 
 
     - on Debian: `apt-cache show|policy`, `aptitude show`, 
     - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,
