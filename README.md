@@ -116,28 +116,28 @@ and other information) you may use `package_records_with_prefix`
 
 This would return a hash such as the following:
 
-  { 
-    "apache2" => {
-      "2.4.6-2" => 
-      {
-        "Package"=>"apache2",
-        "Version"=>"2.4.6-2",
-        "Installed-Size"=>"481",
-        .
-        .
-        .
-      },
-      "2.2.22-13" => 
-      {
-        "Package"=>"apache2",
-        "Version"=>"2.2.22-13",
-        "Installed-Size"=>"29",
-        .
-        .
-        .
+    { 
+      "apache2" => {
+        "2.4.6-2" => 
+        {
+          "Package"=>"apache2",
+          "Version"=>"2.4.6-2",
+          "Installed-Size"=>"481",
+          .
+          .
+          .
+        },
+        "2.2.22-13" => 
+        {
+          "Package"=>"apache2",
+          "Version"=>"2.2.22-13",
+          "Installed-Size"=>"29",
+          .
+          .
+          .
+         }
        }
      }
-   }
 
 There is one entry for each package, which in turn has one entry for each
 installable version of that package.
