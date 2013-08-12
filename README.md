@@ -318,7 +318,7 @@ When defining new utility, one should define following methods in the `block`:
 To configure suitability, defaults etc., use [same methods as in normal
 providers](http://docs.puppetlabs.com/guides/provider_development.html).
 
-Example template for a repoutil `foo` (based on `apt`) is shown below:
+Example template for a repoutil `foo` is presented below:
 
     # lib/puppet/util/repoutil/foo.rb
     module Puppet::Util
@@ -326,26 +326,32 @@ Example template for a repoutil `foo` (based on `apt`) is shown below:
         commands :foocmd => '/usr/bin/foo'
 
         def self.package_name_regexp
+          # this is tool-specific, check if this pattern fits your needs
           /[a-z0-9][a-z0-9\.+-]+/ 
         end
 
         def self.package_prefix_regexp
+          # this is tool-specific, check if this pattern fits your needs
           /(?:[a-z0-9][a-z0-9\.+-]*)?/ 
         end
 
         def self.escape_package_name(package)
+          # this is tool-specific, check if this pattern fits your needs
           package.gsub(/([\.\+])/) {|c| '\\' + c}
         end
 
         def self.escape_package_prefix(prefix)
+          # this is tool-specific, check if this pattern fits your needs
           prefix.gsub(/([\.\+])/) {|c| '\\' + c}
         end
 
         def self.package_name_to_pattern(package)
+          # this is tool-specific, check if this conversion fits your needs
           "^#{escape_package_name(package)}$"
         end
 
         def self.package_prefix_to_pattern(prefix)
+          # this is tool-specific, check if this conversion fits your needs
           "^#{escape_package_prefix(prefix)}"
         end
 
