@@ -23,22 +23,8 @@ agents via their package repositories.
 
 ##Module Description
 
-The module consists of two ruby classes: 
-
-  - `Puppet::Util::RepoUtil` - represents single utility,
-  - `Puppet::Util::RepoUtils` - represents the "registry" of available utilities,
-
-and few short-hand methods.
-
-The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
-repository caches/databases. The user is actually given subclasses of
-`Puppet::Util::RepoUtil`, each one corresponding to an appropriate [package
-provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
-puppet core (note, not all puppet providers are covered here). For example,
-there is `Puppet::Util::RepoUtils::Apt` which corresponds to `:apt` package
-provider.
-
-The supported operations currently include: 
+The module provides means to access meta-information from package repositories
+such as apt or yum.  The supported operations currently include: 
 
   * listing available packages,
   * listing available package(s) versions,
@@ -198,6 +184,21 @@ In case there is no such package in repository, `nil` is returned.
 
 ##Usage
 
+The module consists of two ruby classes: 
+
+  - `Puppet::Util::RepoUtil` - represents single utility,
+  - `Puppet::Util::RepoUtils` - represents the "registry" of available utilities,
+
+and few short-hand methods.
+
+The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
+repository caches/databases. The user is actually given subclasses of
+`Puppet::Util::RepoUtil`, each one corresponding to an appropriate [package
+provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
+puppet core (note, not all puppet providers are covered here). For example,
+there is `Puppet::Util::RepoUtils::Apt` which corresponds to `:apt` package
+provider.
+
 ### Methods within `Puppet::Util`
 
 * `newrepoutil(name, options = {}, &block)` - shorthand to
@@ -220,35 +221,49 @@ In case there is no such package in repository, `nil` is returned.
 * `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
   intended for developers/contributors and may be used to add new providers to
   `repoutil`. See [adding new utility](#adding-new-utility-provider).
-  
-
 * `unrepoutil(name)` - **TODO**: write documentation
-
 * `repoutil(name)` - **TODO**: write documentation
-
 * `repoutils()` - **TODO**: write documentation
-  
 * `suitablerepoutils()` - **TODO**: write documentation
-
 * `defaultrepoutil()` - **TODO**: write documentation
-
 * `loadall()` - **TODO**: write documentation
-
 * `repoutilloader()` - **TODO**: write documentation
-
 * `package_records(packages)` - **TODO**: write documentation
-
 * `package_versions(packages)` - **TODO**: write documentation
-
 * `package_candidates(packages)` - **TODO**: write documentation
+
+### Methods within `Puppet::Util::RepoUtil`
+
+* `package_name_regexp` - **TODO**: write documentation
+* `package_prefix_regexp` - **TODO**: write documentation
+* `validate_package_name(package)` - **TODO**: write documentation
+* `validate_package_prefix(prefix)` - **TODO**: write documentation
+* `package_name_to_pattern` - **TODO**: write documentation
+* `package_prefix_to_pattern` - **TODO**: write documentation
+* `candidates_cache` - **TODO**: write documentation
+* `records_cache` - **TODO**: write documentation
+* `clear_candidates_cache` - **TODO**: write documentation
+* `clear_records_cache` - **TODO**: write documentation
+* `retrieve_candidates(pattern)` - **TODO**: write documentation
+* `retrieve_records(pattern)` - **TODO**: write documentation
+* `package_records(package)` - **TODO**: write documentation
+* `package_versions(package)` - **TODO**: write documentation
+* `package_candidate(package)` - **TODO**: write documentation
+* `packages_with_prefix(prefix)` - **TODO**: write documentation
+* `package_versions_with_prefix(prefix)` - **TODO**: write documentation
+* `package_candidates_with_prefix(prefix)` - **TODO**: write documentation
+* `package_records_with_prefix(prefix)` - **TODO**: write documentation
 
 ##Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+**TODO**: write reference 
 
 ##Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+* Currently supports only Debian/Ubuntu *apt*, *aptitude* and FreeBSD *ports*
+* Some tests are missing.
+
+**TODO**: enumerate other limitations 
 
 ##Development
 
@@ -330,8 +345,3 @@ Here is complete template for a repoutil `foo` (based on `apt`):
         end
       end
     end
-
-
-##Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
