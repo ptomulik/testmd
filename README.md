@@ -4,10 +4,10 @@
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
-3. [Setup - The basics of getting started with [Modulename]](#setup)
-    * [What [Modulename] affects](#what-[modulename]-affects)
+3. [Setup](#setup)
+    * [What repoutil affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with [Modulename]](#beginning-with-[Modulename])
+    * [Beginning with repoutil](#beginning-with-repoutil)
 4. [Usage](#usage)
 5. [Reference](#reference)
 5. [Limitations](#limitations)
@@ -16,11 +16,11 @@
 ##Overview
 
 Puppet utility plugin to interact with systems' package repositories. This
-module simplifies such tasks as obtainning list of packages available for
+module simplifies tasks such as obtainning list of packages available for
 installation, their versions, installation candidates and so on.
-This package may be for you, if you need to implement some facts containing
-information about availablility of a given package in system repositories, or
-their versions.
+This package may be good for you, if you need to implement some facts
+containing information about availablility of a certain packages in
+repositories available to an agent.
 
 ##Module Description
 
@@ -33,7 +33,7 @@ and few short-hand methods.
 
 The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
 repository caches/databases. The user is actually given subclasses of
-`Puppet::Util::RepoUtil`, each one corresponding to an appropriate [`package`
+`Puppet::Util::RepoUtil`, each one corresponding to an appropriate [package
 provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
 puppet core (note, not all puppet providers are covered here). For example,
 there is `Puppet::Util::RepoUtils::Apt` which corresponds to `:apt` package
@@ -41,13 +41,16 @@ provider.
 
 The supported operations currently include: 
 
-  * retrieving list of package names (with given prefix e.g.),
+  * listing available packages,
   * listing available package(s) versions,
-  * guessing what's the installation candidate version for a given package,
+  * retrieving full package records (containig descriptions, etc.),
+  * guassing the installation candidate (version) for a given package,
+
+and few other functionalities.
 
 ##Setup
 
-###What [Modulename] affects
+###What repoutil affects
 
 * Executes commands responsible for querying information about package
   repositories. What command may actually be executed depends on agent's OS and
@@ -60,7 +63,7 @@ The supported operations currently include:
 
 You may need to enable **pluginsync**.
 
-###Beginning with [Modulename]
+###Beginning with repoutil
 
 Let's start with obtaining a RepoUtil for the apt provider:
 
