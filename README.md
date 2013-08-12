@@ -404,7 +404,7 @@ You may also consider adding `:foo` entry to `utils` array in
 
   - `spec/unit/puppet/util/repoutil_spec.rb`
 
-to enable some universal unit tests for your provider. Specific tests should be
+to enable common unit tests for your provider. Specific tests should be
 implemented in
 
   - `spec/unit/puppet/util/repoutil/foo_spec.rb`
