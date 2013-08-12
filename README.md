@@ -190,10 +190,10 @@ The module consists of two ruby classes:
 and few short-hand module-level methods (`Puppet::Util.foo()`).
 
 The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
-repository caches/databases and is inherited by several classes implementing
-particular types of repositories (providers). The user actually operates on
-providers, that is on subclasses of `Puppet::Util::RepoUtil`. Each *repoutil
-provider* shall correspond to an appropriate [package
+repository caches/databases and is inherited by several sub-classes
+implementing particular types of repositories (providers). The user actually
+operates on providers, that is on subclasses of `Puppet::Util::RepoUtil`. Each
+*repoutil provider* shall correspond to an appropriate [package
 provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
 puppet core (note, not all puppet providers are covered here). For example,
 there is `Puppet::Util::RepoUtils::Apt` class (`:apt` repoutil) which
@@ -203,16 +203,15 @@ Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
 operate on a single repository.
 
 Methods within `Puppet::Util::RepoUtils` are twofold. Some of them are provided
-for management of providers. These include `newrepoutil` (to implement new
-providers), `unrepoutil` (to unregister particular provider), `repoutils` (to
-retrieve all available providers), `suitablerepoutils` (to retrieve all the
-providers suitable for the current environment), and `repoutil` (to retrieve
-particular provider).
-
-Other methods within `Puppet::Util::RepoUtils` may be used to perform
-*collective operations* on repositories. For example, `package_candidates` may
-be used to retrieve lists of package candidates known to the suitable package
-repositories (hash of the form `{:apt => {...}, :aptitude => {...}, ...}`).
+to manage providers. These include `newrepoutil` (to implement new providers),
+`unrepoutil` (to unregister particular provider), `repoutils` (to retrieve all
+available providers), `suitablerepoutils` (to retrieve all the providers
+suitable for the current environment), and `repoutil` (to retrieve particular
+provider). Other methods within `Puppet::Util::RepoUtils` may be used to
+perform *collective operations* on repositories. For example,
+`package_candidates` may be used to retrieve lists of package candidates known
+to the suitable package repositories (hash of the form `{:apt => {...},
+:aptitude => {...}, ...}`).
 
 ##Reference
 
