@@ -72,10 +72,10 @@ Let's start with creating an apt utility:
     require 'puppet/util/repoutil'
     repo = Puppet::Util.repoutil(:apt)
  
-Our `repo` provides basic methods that are going to be exemplified below. The
-`:apt` utility is **suitable** for use on Debian or Ubuntu. For other systems
-we should choose other facility. We may simply load default utility for the
-local system:
+Our `repo` provides methods for interaction with apt repositories (to be
+exemplified below). The `:apt` utility is **suitable** for use on Debian or
+Ubuntu. For other systems we should choose other facility. We may simply load
+default utility for the local system:
 
     repo = Puppet::Util.defaultrepoutil
 
