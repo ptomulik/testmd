@@ -100,9 +100,14 @@ There are other, perhaps more useful methods. For example:
 would return a hash with keys being the package names from previous example and
 arrays of available versions as values:
 
-    { "apache2"             => ["2.4.6-2", "2.2.22-13"],
+    { 
+      "apache2"             => ["2.4.6-2", "2.2.22-13"],
       "apache2-mpm-prefork" => ["2.4.6-2", "2.2.22-13"], 
-      "apache2-mpm-itk"     => ["2.4.6-2", "2.2.22-13"], ... }
+      "apache2-mpm-itk"     => ["2.4.6-2", "2.2.22-13"],
+      .
+      .
+      .
+    }
 
 To retrieve full records from repo database (including version, description,
 and other information) you may use `package_records_with_prefix`
@@ -118,14 +123,18 @@ This would return a hash such as the following:
         "Package"=>"apache2",
         "Version"=>"2.4.6-2",
         "Installed-Size"=>"481",
-        ...
+        .
+        .
+        .
       },
       "2.2.22-13" => 
       {
         "Package"=>"apache2",
         "Version"=>"2.2.22-13",
         "Installed-Size"=>"29",
-        ...
+        .
+        .
+        .
        }
      }
    }
