@@ -293,7 +293,11 @@ The new utility may be defined by using `Puppet::Util.newrepoutil` method.
   - `Puppet::Util.newrepoutil(name, options = {}, &block)`
 
 If you're extendind `repoutil` module, the source code of the new provider (say
-`foo`) should go to file `lib/puppet/util/repoutil/foo.rb`.
+`foo`) should go to file `lib/puppet/util/repoutil/foo.rb`. You may also
+consider adding `:foo` entry to `utils` array in
+`spec/unit/puppet/util/repoutil_spec.rb` to enable some universal unit tests
+for your provider. Specific tests should be implemented in
+`spec/unit/puppet/util/repoutil/foo_spec.rb`.
 
 When defining new utility, one should define following methods in the `block`:
 
