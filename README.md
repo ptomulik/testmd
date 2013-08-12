@@ -44,28 +44,28 @@ The supported operations currently include:
   * listing available package(s) versions,
   * retrieving full package records (containig descriptions, etc.),
   * guassing the installation candidate (version) for a given package,
-
-The module currently supports the following providers:
-
-  * apt, aptitude (Debian),
-  * ports (FreeBSD)
-
-##Setup
-
-###What repoutil affects
-
-* Executes commands necessary to query information from package repositories.
-  What command may actually be executed depends on agent's OS and module's
-  usage. Generally the following tools may be executed by `repoutil`'s methods:
-  - on Debian: `apt-cache show|policy`, `aptitude show`, 
-  - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,
-
-###Setup Requirements 
-
-You may need to enable **pluginsync**.
-
-###Beginning with repoutil
-
+                                                                                                                                                                                                                                                                               
+The module currently supports the following providers:                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                                                               
+  * apt, aptitude (Debian),                                                                                                                                                                                                                                                    
+  * ports (FreeBSD)                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                               
+##Setup                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                               
+###What repoutil affects                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                               
+* Executes commands necessary to query information from package repositories.                                                                                                                                                                                                  
+  What command may actually be executed depends on agent's OS and module's                                                                                                                                                                                                     
+  usage. Generally the following tools may be executed by `repoutil`'s methods:                                                                                                                                                                                                
+  - on Debian: `apt-cache show|policy`, `aptitude show`,                                                                                                                                                                                                                       
+  - on FreeBSD, OpenBSD, NetBSD:  `make -C /path/to/ports search`,                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                               
+###Setup Requirements                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                               
+You may need to enable **pluginsync**.                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                                                               
+###Beginning with repoutil                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                               
 Let's start with creating an apt utility:
 
     require 'puppet/util/repoutil'
@@ -93,12 +93,12 @@ This would return an array of all available package names starting with
      "apache2-bin", "apache2-threaded-dev", "apache2-suexec-pristine",
      "apache2.2-common"]
 
-There are other, perhaps more useful methods. For example:
+There are also other methods. For example:
 
     apache_versions = repo.package_versions_with_prefix('apache')
 
-would return a hash with keys being the package names from previous example and
-arrays of available versions as values:
+would return a hash with keys being the package names (from previous example)
+and arrays of available versions as values:
 
     { 
       "apache2"             => ["2.4.6-2", "2.2.22-13"],
@@ -109,7 +109,7 @@ arrays of available versions as values:
       .
     }
 
-To retrieve full records from repo database (including version, description,
+To retrieve full records from package database (including version, description,
 and other information) you may use:
 
     repo.package_records_with_prefix('apache')
@@ -118,8 +118,7 @@ This would return a hash such as the following:
 
     { 
       "apache2" => {
-        "2.4.6-2" => 
-        {
+        "2.4.6-2" => {
           "Package"=>"apache2",
           "Version"=>"2.4.6-2",
           "Installed-Size"=>"481",
@@ -127,24 +126,122 @@ This would return a hash such as the following:
           .
           .
         },
-        "2.2.22-13" => 
-        {
+        "2.2.22-13" => {
           "Package"=>"apache2",
           "Version"=>"2.2.22-13",
           "Installed-Size"=>"29",
           .
           .
           .
-         }
-       }
-     }
+        }
+      },
+
+      "apache2-mpm-prefork => {
+        .
+        .
+        .
+      },
+
+      .
+      .
+      .
+    }
 
 There is one entry for each package, which in turn has one entry for each
 installable version of that package.
 
+We may also use exact package names. To obtain available package versions we
+call:
+
+    repo.package_versions('apache2')
+
+which returns an array, for example `["2.4.6-2", "2.2.22-13"]` (if there is no
+database entry for the package, `nil` is returned).
+
+To see the installation candidate for package, we do:
+
+    repo.package_candidate('apache2')
+
+which returns a string (e.g. `"2.4.6-2"`) or `nil` (if there is no such package
+in repo).
+
+
+To retrieve full records for available package versions we type:
+
+    repo.package_records('apache2')
+
+This should return a has as follows:
+
+    {
+      "2.4.6-2" => 
+      {
+        "Package"=>"apache2",
+        "Version"=>"2.4.6-2",
+        "Installed-Size"=>"481",
+        .
+        .
+        .
+      },
+      "2.2.22-13" => 
+      {
+        "Package"=>"apache2",
+        "Version"=>"2.2.22-13",
+        "Installed-Size"=>"29",
+        .
+        .
+        .
+      }
+    }
+
+In case there is no such package in repository, `nil` is returned.
+
 ##Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+* Methods of `Puppet::Util::RepoUtils`
+
+  - `newrepoutil(name, ...)`
+
+    **TODO**: write documentation
+
+  - `unrepoutil(name)`
+
+    **TODO**: write documentation
+
+  - `repoutil(name)`
+
+    **TODO**: write documentation
+
+  - `repoutils()`
+
+    **TODO**: write documentation
+    
+  - `suitablerepoutils()`
+
+    **TODO**: write documentation
+
+  - `defaultrepoutil()`
+
+    **TODO**: write documentation
+
+  - `loadall()`
+
+    **TODO**: write documentation
+
+  - `repoutilloader()`
+
+    **TODO**: write documentation
+
+  - `package_records(packages)`
+
+    **TODO**: write documentation
+
+  - `package_versions(packages)`
+    
+    **TODO**: write documentation
+
+  - `package_candidates(packages)`
+
+    **TODO**: write documentation
 
 ##Reference
 
@@ -166,3 +263,4 @@ Feel free to submit bug reports, feature requests or to create pull requests.
 ##Release Notes/Contributors/Etc **Optional**
 
 If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+ptomulik@tea:$ 
