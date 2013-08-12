@@ -16,7 +16,7 @@
 ##Overview
 
 Puppet utilities to interact with package repositories. Simplify tasks such
-as obtainning list of packages available for installation, their versions,
+as obtaining lists of packages available for installation, their versions,
 installation candidates and so on. This plugin may be handy, if you need to
 implement facts describing packages available to agents' via their package
 repositories.
@@ -59,13 +59,13 @@ You may need to enable **pluginsync** in your *puppet.conf*.
 ###Beginning with repoutil
 
 Let say, you're developing your custom fact or resource type and you need to
-retrieve some characteristics of packages existing in your package repository.
-To use repoutil utilities, you should include appropriate module file:
+characterize some packages existing in your package repository. To use repoutil
+utilities, you should first include appropriate module file:
 
     require 'puppet/util/repoutil'
 
-Probably the first step you'll have to do will be to retrieve utility object,
-for example the `apt` repo utility:
+One of the first steps you'll probably have to do will be to retrieve utility
+object, for example the `apt` repo utility:
 
     repo = Puppet::Util.repoutil(:apt)
  
