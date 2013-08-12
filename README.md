@@ -199,7 +199,10 @@ appropriate [package
 provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
 puppet core (note, not all puppet providers are covered here). For example,
 there is `Puppet::Util::RepoUtils::Apt` class (`:apt` repoutil) which
-corresponds to `:apt` package provider.
+corresponds to `:apt` package provider. To retrieve single instance of appro
+
+Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
+operate on a single repository.
 
 Methods within `Puppet::Util::RepoUtils` are twofold. Some of them are provided
 for management of providers. These include `newrepoutil` (to implement new
@@ -208,15 +211,12 @@ retrieve all available providers), `suitablerepoutils` (to retrieve all the
 providers suitable for the current environment), and `repoutil` (to retrieve
 particular provider).
 
-Other methods within `Puppet::Util::RepoUtil` may be used to perform
+Other methods within `Puppet::Util::RepoUtils` may be used to perform
 *collective operations* on repositories. For example, `package_candidates` may
 be used to retrieve lists of package candidates available from all package
 repositories, for which we have suitable providers.
 
-Methods within `Puppet::Util::RepoUtil` and descendants may be used to operate
-on a single repository.
-
-### Methods within `Puppet::Util`
+### Methods within `Puppet::Util` module
 
   * `newrepoutil(name, options = {}, &block)` - shorthand to
     `Puppet::Util::RepoUtils.newrepoutil`
@@ -229,7 +229,7 @@ on a single repository.
 
 
 
-### Methods within `Puppet::Util::RepoUtils`
+### Methods within `Puppet::Util::RepoUtils` class
 
   * `newrepoutil(name, options = {}, &block)` - define new repo utility. This is
     intended for developers/contributors and may be used to add new providers to
@@ -245,7 +245,7 @@ on a single repository.
   * `package_versions(packages)` - **TODO**: write documentation
   * `package_candidates(packages)` - **TODO**: write documentation
 
-### Methods within `Puppet::Util::RepoUtil`
+### Methods within `Puppet::Util::RepoUtil` class
 
   * `package_name_regexp` - **TODO**: write documentation
   * `package_prefix_regexp` - **TODO**: write documentation
