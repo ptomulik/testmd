@@ -217,15 +217,25 @@ to the suitable package repositories (this yields a hash of the form `{:apt =>
 
 ### Methods within `Puppet::Util` module
 
-  * `newrepoutil(name, options = {}, &block)` - shorthand to
-    `Puppet::Util::RepoUtils.newrepoutil`
-  * `repoutil(name)` - shorthand to `Puppet::Util::RepoUtils.repoutil`
-  * `repoutils()` - shorthand to `Puppet::Util::RepoUtils.repoutils`
-  * `suitablerepoutils()` - shorthand to
-    `Puppet::Util::RepoUtils.suitablerepoutils`
-  * `defaultrepoutil()` - shorthand to
-    `Puppet::Util::RepoUtils.defaultrepoutil`
+#### `newrepoutil(name, options = {}, &block)` 
 
+Shorthand to `Puppet::Util::RepoUtils.newrepoutil`.
+
+#### `repoutil(name)` 
+
+Shorthand to `Puppet::Util::RepoUtils.repoutil`.
+
+#### `repoutils()`
+
+Shorthand to `Puppet::Util::RepoUtils.repoutils`.
+
+#### `suitablerepoutils()`
+
+Shorthand to `Puppet::Util::RepoUtils.suitablerepoutils`
+
+#### `defaultrepoutil()`
+
+Shorthand to `Puppet::Util::RepoUtils.defaultrepoutil`. 
 
 
 ### Methods within `Puppet::Util::RepoUtils` class
@@ -234,9 +244,9 @@ Provider management:
 
 #### `newrepoutil(name, options = {}, &block)` 
 
-Define new repo utility. This is intended for developers/contributors and may
-be used to add new providers to `repoutil`. See [adding new
-utility](#adding-new-utility-provider).
+Define new repo provider. This is intended for developers/contributors and may
+be used to add support for new repository types. For details about extending 
+repoutil module see [adding new utility](#adding-new-utility-provider).
 
 #### `unrepoutil(name)`
 
