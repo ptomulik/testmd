@@ -395,7 +395,7 @@ The new utility may be defined by using `Puppet::Util.newrepoutil` method.
 
   - `Puppet::Util.newrepoutil(name, options = {}, &block)`
 
-If you're extendind `repoutil` module, the source code of the new provider (say
+If you're extending `repoutil` module, the source code of the new provider (say
 `foo`) should go to file 
 
   - `lib/puppet/util/repoutil/foo.rb`
@@ -409,7 +409,8 @@ implemented in
 
   - `spec/unit/puppet/util/repoutil/foo_spec.rb`
 
-When defining new utility, one should define following methods in the `block`:
+When defining new utility, one should define following methods in the block
+provided to [`newrepoutil`](#newrepoutilname-options--block-1):
 
   - `self.package_name_regexp`
   - `self.package_prefix_regexp`
