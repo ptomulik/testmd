@@ -223,11 +223,11 @@ package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
 
 ### Methods within `Puppet::Util` module
 
-#### `newrepoutil(name, options = {}, &block)` 
+#### newrepoutil(name, options = {}, &block) 
 
 Shorthand to [`Puppet::Util::RepoUtils.newrepoutil`](#newrepoutilname-options--block-1).
 
-#### `repoutil(name)` 
+#### repoutil(name) 
 
 Shorthand to [`Puppet::Util::RepoUtils.repoutil`](#repoutilname-1).
 
