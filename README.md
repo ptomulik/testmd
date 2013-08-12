@@ -210,8 +210,8 @@ suitable for the current environment), and `repoutil` (to retrieve particular
 provider). Other methods within `Puppet::Util::RepoUtils` may be used to
 perform *collective operations* on repositories. For example,
 `package_candidates` may be used to retrieve lists of package candidates known
-to the suitable package repositories (hash of the form `{:apt => {...},
-:aptitude => {...}, ...}`).
+to the suitable package repositories (this yields a hash of the form `{:apt =>
+{...}, :aptitude => {...}, ...}`).
 
 ##Reference
 
