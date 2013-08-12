@@ -225,23 +225,23 @@ package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
 
 #### `newrepoutil(name, options = {}, &block)` 
 
-Shorthand to `Puppet::Util::RepoUtils.newrepoutil`.
+Shorthand to [`Puppet::Util::RepoUtils.newrepoutil`](#newreoputilname-options--block-1).
 
 #### `repoutil(name)` 
 
-Shorthand to `Puppet::Util::RepoUtils.repoutil`.
+Shorthand to [`Puppet::Util::RepoUtils.repoutil`](#repoutilname-1).
 
 #### `repoutils()`
 
-Shorthand to `Puppet::Util::RepoUtils.repoutils`.
+Shorthand to [`Puppet::Util::RepoUtils.repoutils`](#repoutils-1).
 
 #### `suitablerepoutils()`
 
-Shorthand to `Puppet::Util::RepoUtils.suitablerepoutils`
+Shorthand to [`Puppet::Util::RepoUtils.suitablerepoutils`](#suitablerepoutils-1).
 
 #### `defaultrepoutil()`
 
-Shorthand to `Puppet::Util::RepoUtils.defaultrepoutil`. 
+Shorthand to [`Puppet::Util::RepoUtils.defaultrepoutil`](#defaultrepoutil-1). 
 
 
 ### Methods within `Puppet::Util::RepoUtils` class
