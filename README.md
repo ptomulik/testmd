@@ -203,7 +203,8 @@ Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
 operate on a single repository.
 
 [Methods within `Puppet::Util::RepoUtils`](#methods-within-puppetutilrepoutils-class)
-are twofold. Some of them are provided to manage providers. These include
+are twofold. Some of them are provided to 
+[manage providers](#provider-management). These include
 [`newrepoutil`](#newrepoutilname-options---block-1) (to implement new
 providers), [`unrepoutil`](#unrepoutilname) (to unregister particular
 provider), [`repoutils`](#repoutils-1) (to retrieve all available providers),
@@ -211,7 +212,8 @@ provider), [`repoutils`](#repoutils-1) (to retrieve all available providers),
 suitable for the current environment), [`defaultrepoutil`](#defaultrepoutil-1)
 to get provider default to current environment and
 [`repoutil`](#repoutilname-1) (to retrieve particular provider). Other methods
-within `Puppet::Util::RepoUtils` may be used to perform *collective operations*
+within `Puppet::Util::RepoUtils` may be used to perform 
+[collective operations](#collective-operations-on-repositories)
 on repositories. For example, [`package_candidates`](#package_candidatespackages)
 may be used to retrieve lists of package candidates known to the suitable
 package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
@@ -246,7 +248,7 @@ Shorthand to [`Puppet::Util::RepoUtils.defaultrepoutil`](#defaultrepoutil-1).
 
 ### Methods within `Puppet::Util::RepoUtils` class
 
-#### Provider management:
+#### Provider management
 
 ##### newrepoutil(name, options = {}, &block) 
 
@@ -312,17 +314,52 @@ For internal use.
 
 For internal use.
 
-####Collective operations on repositories:
+#### Collective operations on repositories
 
-##### package\_records(packages)
+##### package\_records(packages, utils = suitablerepoutils)
+
+Return package records obtained from multiple sources. This function performs
+query on multiple repositories at once. This approach may be used to gather
+package information from multiple repository types available to the local
+environment.
+
+Arguments:
+
+  * `packages` - package name (exact) or an array of (exact) package names,
+  * `utils` - list of repoutil providers to be queried, defaults to all
+     suitable providers.
+
+*Example*:
+
+    records = Puppet::Util::RepoUtils.package_records('apache2')
+
+Would return a hash of the form:
+
+    { :apt  => { 
+        'apache2' => {  
+          '2.2.13-2' => { ... },
+          '2.4.6-2'  => { ... } 
+        }
+      },
+      :aptitude => { 
+        'apache2' => {
+          '2.2.13-2' => { ... } 
+          '2.4.6-2'  => { ... } 
+        } 
+      },
+       ...
+     }
+
+where `:apt`, `:aptitude`, ..., are keys corresponding to repoutil providers
+listed in `utils`. Hashes obtained from expression `records[utils[n].name]`
+have same structure as the these returned by
+[`Puppet::Util::RepoUtil.package_recordspackage`](#package_recordsname).
+
+##### package\_versions(packages, utils = suitablerepoutils)
 
 **TODO**: write documentation
 
-##### package\_versions(packages)
-
-**TODO**: write documentation
-
-##### package\_candidates(packages)
+##### package\_candidates(packages, utils = suitablerepoutils)
 
 **TODO**: write documentation
 
