@@ -221,7 +221,7 @@ In case there is no such package in repository, `nil` is returned.
 
     Define new repo utility. This is intended for developers/contributors and
     may be used to add new providers to `repoutil`. See [adding new
-    utility](#adding-new-utility--provider-).
+    utility](#adding-new-utility-provider).
     
 
   - `unrepoutil(name)`
