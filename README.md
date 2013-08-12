@@ -18,8 +18,8 @@
 Puppet utilities to interact with package repositories. Simplifies tasks such
 as obtainning list of packages available for installation, their versions,
 installation candidates and so on.  This plugin may be handy, if you need to
-implement some facts with information about certain packages available to
-agents via their package repositories.
+implement facts containing information about packages available via package
+repositories.
 
 ##Module Description
 
