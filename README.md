@@ -201,15 +201,18 @@ Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
 operate on a single repository.
 
 Methods within `Puppet::Util::RepoUtils` are twofold. Some of them are provided
-to manage providers. These include `newrepoutil` (to implement new providers),
-`unrepoutil` (to unregister particular provider), `repoutils` (to retrieve all
-available providers), `suitablerepoutils` (to retrieve all the providers
-suitable for the current environment), and `repoutil` (to retrieve particular
-provider). Other methods within `Puppet::Util::RepoUtils` may be used to
-perform *collective operations* on repositories. For example,
-`package_candidates` may be used to retrieve lists of package candidates known
-to the suitable package repositories (this yields a hash of the form `{:apt =>
-{...}, :aptitude => {...}, ...}`).
+to manage providers. These include
+[`newrepoutil`](#newrepoutilname-options---block-1) (to implement new
+providers), [`unrepoutil`](#unrepoutilname) (to unregister particular
+provider), [`repoutils`](#repoutils-1) (to retrieve all available providers),
+[`suitablerepoutils`](#suitablerepoutils-1) (to retrieve all the providers
+suitable for the current environment), [`defaultrepoutil`](#defaultrepoutil-1)
+to get provider default to current environment and
+[`repoutil`](#repoutilname-1) (to retrieve particular provider). Other methods
+within `Puppet::Util::RepoUtils` may be used to perform *collective operations*
+on repositories. For example, `package_candidates` may be used to retrieve
+lists of package candidates known to the suitable package repositories (this
+yields a hash of the form `{:apt => {...}, :aptitude => {...}, ...}`).
 
 ##Reference
 
