@@ -220,70 +220,9 @@ In case there is no such package in repository, `nil` is returned.
   - `newrepoutil(name, options = {}, &block)`
 
     Define new repo utility. This is intended for developers/contributors and
-    may be used to add new providers to `repoutil`. When defining new utility,
-    one should provide following methods in the `block`:
-
-    - `self.package_name_regexp`
-    - `self.package_prefix_regexp`
-    - `self.package_name_to_pattern`
-    - `self.package_prefix_to_pattern`
-    - `self.retrieve_candidates`
-    - `self.retrieve_records`
-
-    To configure suitability etc., use same methods as for normal provider.
-    Here is complete template for a repoutil `foo` (based on `apt`):
-
-        # lib/puppet/util/repoutil/foo.rb
-        module Puppet::Util
-          newrepoutil(:foo) do
-            commands :foocmd => '/usr/bin/foo'
-
-            def self.package_name_regexp
-              /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
-            end
-
-            def self.package_prefix_regexp
-              /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
-            end
-
-            def self.escape_package_name(package)
-              package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
-            end
-
-            def self.escape_package_prefix(prefix)
-              prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
-            end
-
-            def self.package_name_to_pattern(package)
-              "^#{escape_package_name(package)}$"
-            end
-
-            def self.package_prefix_to_pattern(prefix)
-              "^#{escape_package_prefix(prefix)}"
-            end
-
-            
-            def self.show_policies(pattern)
-              foocmd '-q=2', '-a', 'policy', pattern
-            end
-
-            def self.show_records(pattern)
-              foocmd '-q=2', '-a', 'show', pattern
-            end
-
-            def self.retrieve_candidates(pattern)
-              output = show_policies(pattern)
-              # now, extract candidates from output, update candidates_cache and
-              # return the extracted candidates
-            end
-
-            def self.retrieve_records(pattern)
-              output = show_records(pattern).chomp
-              # now, extract records from output, update records_cache and
-              # return the extracted records
-            end
-          end
-        end
+    may be used to add new providers to `repoutil`. See [adding new
+    utility](#adding-new-utility--provider-).
+    
 
   - `unrepoutil(name)`
 
@@ -340,6 +279,78 @@ The project is held on github:
   https://github.com/ptomulik/puppet-repoutil
 
 Feel free to submit bug reports, feature requests or to create pull requests.
+
+### Extending repoutil
+
+#### Adding new utility (provider)
+
+The new utility may be defined with `Puppet::Util.newrepoutil` method. 
+
+- `Puppet::Util.newrepoutil(name, options = {}, &block)`
+
+When defining new utility, one should provide following methods in the `block`:
+
+- `self.package_name_regexp`
+- `self.package_prefix_regexp`
+- `self.package_name_to_pattern`
+- `self.package_prefix_to_pattern`
+- `self.retrieve_candidates`
+- `self.retrieve_records`
+
+To configure suitability etc., use same methods as for normal provider.
+Here is complete template for a repoutil `foo` (based on `apt`):
+
+    # lib/puppet/util/repoutil/foo.rb
+    module Puppet::Util
+      newrepoutil(:foo) do
+        commands :foocmd => '/usr/bin/foo'
+
+        def self.package_name_regexp
+          /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
+        end
+
+        def self.package_prefix_regexp
+          /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
+        end
+
+        def self.escape_package_name(package)
+          package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
+        end
+
+        def self.escape_package_prefix(prefix)
+          prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
+        end
+
+        def self.package_name_to_pattern(package)
+          "^#{escape_package_name(package)}$"
+        end
+
+        def self.package_prefix_to_pattern(prefix)
+          "^#{escape_package_prefix(prefix)}"
+        end
+
+        
+        def self.show_policies(pattern)
+          foocmd '-q=2', '-a', 'policy', pattern
+        end
+
+        def self.show_records(pattern)
+          foocmd '-q=2', '-a', 'show', pattern
+        end
+
+        def self.retrieve_candidates(pattern)
+          output = show_policies(pattern)
+          # now, extract candidates from output, update candidates_cache and
+          # return the extracted candidates
+        end
+
+        def self.retrieve_records(pattern)
+          output = show_records(pattern).chomp
+          # now, extract records from output, update records_cache and
+          # return the extracted records
+        end
+      end
+    end
 
 
 ##Release Notes/Contributors/Etc **Optional**
