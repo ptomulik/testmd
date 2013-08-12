@@ -97,9 +97,7 @@ and arrays of available versions as values:
       "apache2"             => ["2.4.6-2", "2.2.22-13"],
       "apache2-mpm-prefork" => ["2.4.6-2", "2.2.22-13"], 
       "apache2-mpm-itk"     => ["2.4.6-2", "2.2.22-13"],
-      .
-      .
-      .
+      . . .
     }
 
 To retrieve full records from package database (including version, description,
