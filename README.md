@@ -200,25 +200,18 @@ In case there is no such package in repository, `nil` is returned.
 
 * Methods within `Puppet::Util`
 
-  - `newrepoutil(name, options = {}, &block)`
-
-    Shorthand to `Puppet::Util::RepoUtils.newrepoutil`
+  - `newrepoutil(name, options = {}, &block)` - shorthand to
+    `Puppet::Util::RepoUtils.newrepoutil`
   
-  - `repoutil(name)`
+  - `repoutil(name)` - shorthand to `Puppet::Util::RepoUtils.repoutil`
 
-    Shorthand to `Puppet::Util::RepoUtils.repoutil`
+  - `repoutils()` - shorthand to `Puppet::Util::RepoUtils.repoutils`
 
-  - `repoutils()`
+  - `suitablerepoutils()` - shorthand to
+    `Puppet::Util::RepoUtils.suitablerepoutils`
 
-    Shorthand to `Puppet::Util::RepoUtils.repoutils`
-
-  - `suitablerepoutils()`
-
-    Shorthand to `Puppet::Util::RepoUtils.suitablerepoutils`
-
-  - `defaultrepoutil()`
-
-    Shorthand to `Puppet::Util::RepoUtils.defaultrepoutil`
+  - `defaultrepoutil()` - shorthand to
+    `Puppet::Util::RepoUtils.defaultrepoutil`
 
 
 
@@ -237,60 +230,60 @@ In case there is no such package in repository, `nil` is returned.
     - `self.retrieve_candidates`
     - `self.retrieve_records`
 
-    To configure suitability, same methods as for typical providers may be
-    used. Here is short template:
+    To configure suitability etc., use same methods as for normal provider.
+    Here is complete template for a repoutil `foo` (based on `apt`):
 
-    # lib/puppet/util/repoutil/foo.rb
-    module Puppet::Util
-      newrepoutil(:foo) do
-        commands :foocmd => '/usr/bin/foo'
+        # lib/puppet/util/repoutil/foo.rb
+        module Puppet::Util
+          newrepoutil(:foo) do
+            commands :foocmd => '/usr/bin/foo'
 
-        def self.package_name_regexp
-          /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
+            def self.package_name_regexp
+              /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
+            end
+
+            def self.package_prefix_regexp
+              /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
+            end
+
+            def self.escape_package_name(package)
+              package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
+            end
+
+            def self.escape_package_prefix(prefix)
+              prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
+            end
+
+            def self.package_name_to_pattern(package)
+              "^#{escape_package_name(package)}$"
+            end
+
+            def self.package_prefix_to_pattern(prefix)
+              "^#{escape_package_prefix(prefix)}"
+            end
+
+            
+            def self.show_policies(pattern)
+              foocmd '-q=2', '-a', 'policy', pattern
+            end
+
+            def self.show_records(pattern)
+              foocmd '-q=2', '-a', 'show', pattern
+            end
+
+            def self.retrieve_candidates(pattern)
+              output = show_policies(pattern)
+              # now, extract candidates from output, update candidates_cache and
+              # return the extracted candidates
+            end
+
+            def self.retrieve_records(pattern)
+              output = show_records(pattern).chomp
+              # now, extract records from output, update records_cache and
+              # return the extracted records
+            end
+          end
         end
-
-        def self.package_prefix_regexp
-          /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
-        end
-
-        def self.escape_package_name(package)
-          package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
-        end
-
-        def self.escape_package_prefix(prefix)
-          prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
-        end
-
-        def self.package_name_to_pattern(package)
-          "^#{escape_package_name(package)}$"
-        end
-
-        def self.package_prefix_to_pattern(prefix)
-          "^#{escape_package_prefix(prefix)}"
-        end
-
-        
-        def self.show_policies(pattern)
-          aptcache '-q=2', '-a', 'policy', pattern
-        end
-
-        def self.show_records(pattern)
-          aptcache '-q=2', '-a', 'show', pattern
-        end
-
-        def self.retrieve_candidates(pattern)
-          output = show_policies(pattern)
-          # now, extract candidates from output, update candidates_cache and
-          # return the extracted candidates
-        end
-
-        def self.retrieve_records(pattern)
-          output = show_records(pattern).chomp
-          # now, extract records from output, update records_cache and
-          # return the extracted records
-        end
-      end
-    end
 
   - `unrepoutil(name)`
 
