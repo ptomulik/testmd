@@ -187,7 +187,7 @@ The module consists of two ruby classes:
   - [`Puppet::Util::RepoUtils`](#methods-within-puppetutilrepoutils-class) -
     represents the "registry" of available utilities,
 
-and few [shorthand module-level methods](#methods-within-puppetutil-module)
+and few [shorthand module-level methods](#methods-within-puppetutil-module).
 
 The [`Puppet::Util::RepoUtil`](#methods-within-puppetutilrepoutil-class) class
 abstracts CLI commands used to access repository cache/database and is
@@ -212,9 +212,10 @@ suitable for the current environment), [`defaultrepoutil`](#defaultrepoutil-1)
 to get provider default to current environment and
 [`repoutil`](#repoutilname-1) (to retrieve particular provider). Other methods
 within `Puppet::Util::RepoUtils` may be used to perform *collective operations*
-on repositories. For example, `package_candidates` may be used to retrieve
-lists of package candidates known to the suitable package repositories (this
-yields a hash of the form `{:apt => {...}, :aptitude => {...}, ...}`).
+on repositories. For example, [`package_candidates`](#package_candidatespackages)
+may be used to retrieve lists of package candidates known to the suitable
+package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
+=> {...}, ...}`).
 
 ##Reference
 
