@@ -191,17 +191,15 @@ and few short-hand module-level methods (`Puppet::Util.foo()`).
 
 The `Puppet::Util::RepoUtil` class abstracts CLI commands used to access
 repository caches/databases and is inherited by several classes implementing
-particular type of repositories (providers).
-
-The user actually operates on providers, that is on subclasses of
-`Puppet::Util::RepoUtil`. Each *repoutil provider* shall correspond to an
-appropriate [package
+particular types of repositories (providers). The user actually operates on
+providers, that is on subclasses of `Puppet::Util::RepoUtil`. Each *repoutil
+provider* shall correspond to an appropriate [package
 provider](http://docs.puppetlabs.com/references/latest/type.html#package) from
 puppet core (note, not all puppet providers are covered here). For example,
 there is `Puppet::Util::RepoUtils::Apt` class (`:apt` repoutil) which
-corresponds to `:apt` package provider. To retrieve appropriate repoutil,
-you should use one of the methods from `Puppet::Util::RepoUtils` described
-below. Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
+corresponds to `:apt` package provider. To retrieve appropriate repoutil, you
+should use one of the methods from `Puppet::Util::RepoUtils` described below.
+Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
 operate on a single repository.
 
 Methods within `Puppet::Util::RepoUtils` are twofold. Some of them are provided
