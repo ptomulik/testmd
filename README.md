@@ -15,8 +15,7 @@
 
 ##Overview
 
-Puppet utilities to interact with package repositories. Simplifies tasks such as obtainning list of packages available for installation, their versions,      
-installation candidates and so on. This plugin may be handy, if you need to implement facts describing packages available to agents' via their package repositories.                                                                   
+Puppet utilities to interact with package repositories. Simplifies tasks such as obtainning list of packages available for installation, their versions, installation candidates and so on. This plugin may be handy, if you need to implement facts describing packages available to agents' via their package repositories.                                                                   
 
 ##Module Description
 
