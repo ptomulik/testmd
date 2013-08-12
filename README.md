@@ -246,19 +246,19 @@ Shorthand to [`Puppet::Util::RepoUtils.defaultrepoutil`](#defaultrepoutil-1).
 
 ### Methods within `Puppet::Util::RepoUtils` class
 
-**Provider management**:
+#### Provider management:
 
-#### newrepoutil(name, options = {}, &block) 
+##### newrepoutil(name, options = {}, &block) 
 
 Define new repo provider. This is intended for developers/contributors and may
 be used to add support for new repository types. For details about extending 
 repoutil module see [adding new utility](#adding-new-utility-provider).
 
-#### unrepoutil(name)
+##### unrepoutil(name)
 
 Unload/unregister a repoutil provider created with [`newrepoutil(name)`](#newrepoutilname-1).
 
-#### repoutil(name)
+##### repoutil(name)
 
 Retrieve repoutil provider identified by `name`. The provider must be first
 created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
@@ -268,7 +268,7 @@ created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
     repo = Puppet::Util::RepoUtils.repoutil(:apt)
     candidates = repo.package_candidates('apache2')
 
-#### repoutils()
+##### repoutils()
 
 Retrieve all existing repoutil providers (includes also those not suitable for
 a given environment).
@@ -283,7 +283,7 @@ a given environment).
       end
     end
 
-#### suitablerepoutils()
+##### suitablerepoutils()
 
 Retrieve all repoutil providers suitable for the current environment.
 
@@ -295,7 +295,7 @@ Retrieve all repoutil providers suitable for the current environment.
       apache2_candidates[repo] = repo.package_candidates('apache2')
     end
 
-#### defaultrepoutil()
+##### defaultrepoutil()
 
 Retrieve repoutil provider that is default to current environment.
 
@@ -304,103 +304,103 @@ Retrieve repoutil provider that is default to current environment.
     repo = Puppet::Util::RepoUtils.defaultrepoutil
     candidates = repo.package_candidates('apache2')
 
-#### loadall()
+##### loadall()
 
 For internal use.
 
-#### repoutilloader()
+##### repoutilloader()
 
 For internal use.
 
-**Collective operations on repositories**:
+####Collective operations on repositories:
 
-#### package\_records(packages)
-
-**TODO**: write documentation
-
-#### package\_versions(packages)
+##### package\_records(packages)
 
 **TODO**: write documentation
 
-#### package\_candidates(packages)
+##### package\_versions(packages)
+
+**TODO**: write documentation
+
+##### package\_candidates(packages)
 
 **TODO**: write documentation
 
 ### Methods within `Puppet::Util::RepoUtil` class
 
-#### package\_name\_regexp
+##### package\_name\_regexp
 
 **TODO**: write documentation
 
-#### package\_prefix\_regexp
+##### package\_prefix\_regexp
 
 **TODO**: write documentation
 
-#### validate\_package\_name(package)
+##### validate\_package\_name(package)
 
 **TODO**: write documentation
 
-#### validate\_package\_prefix(prefix)
+##### validate\_package\_prefix(prefix)
 
 **TODO**: write documentation
 
-#### package\_name\_to\_pattern
+##### package\_name\_to\_pattern
 
 **TODO**: write documentation
 
-#### package\_prefix\_to\_pattern
+##### package\_prefix\_to\_pattern
 
 **TODO**: write documentation
 
-#### candidates\_cache
+##### candidates\_cache
 
 **TODO**: write documentation
 
-#### records\_cache
+##### records\_cache
 
 **TODO**: write documentation
 
-#### clear\_candidates\_cache
+##### clear\_candidates\_cache
 
 **TODO**: write documentation
 
-#### clear\_records\_cache
+##### clear\_records\_cache
 
 **TODO**: write documentation
 
-#### retrieve\_candidates(pattern)
+##### retrieve\_candidates(pattern)
 
 **TODO**: write documentation
 
-#### retrieve\_records(pattern)
+##### retrieve\_records(pattern)
 
 **TODO**: write documentation
 
-#### package\_records(package)
+##### package\_records(package)
 
 **TODO**: write documentation
 
-#### package\_versions(package)
+##### package\_versions(package)
 
 **TODO**: write documentation
 
-#### package\_candidate(package)
+##### package\_candidate(package)
 
 **TODO**: write documentation
 
-#### packages\_with\_prefix(prefix)
+##### packages\_with\_prefix(prefix)
 
 **TODO**: write documentation
 
-#### package\_versions\_with\_prefix(prefix)
+##### package\_versions\_with\_prefix(prefix)
 
 **TODO**: write documentation
 
-#### package\_candidates\_with\_prefix(prefix)
+##### package\_candidates\_with\_prefix(prefix)
 
 **TODO**: write documentation
 
-#### package\_records\_with\_prefix(prefix)
+##### package\_records\_with\_prefix(prefix)
 
 **TODO**: write documentation
 
