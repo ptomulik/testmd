@@ -72,11 +72,12 @@ follows:
  
 The `:apt` utility is **suitable** for use on Debian or Ubuntu. For other
 systems we should choose other facility. The most universal way is to load
-default utility for current system:
+default utility for current environment: 
 
     repo = Puppet::Util.defaultrepoutil
 
-Once we have obtained `repo`, we may list all packages with names starting with
+Once we have obtained `repo`, we may request information from that repository.
+For example, we may wish to list all packages with names starting with
 'apache':
 
     apaches = repo.packages_with_prefix('apache')
