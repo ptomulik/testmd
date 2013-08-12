@@ -171,7 +171,7 @@ To retrieve full records for available package versions we type:
 
     repo.package_records('apache2')
 
-This should return a has as follows:
+This should return a hash as follows:
 
     {
       "2.4.6-2" => 
@@ -198,11 +198,99 @@ In case there is no such package in repository, `nil` is returned.
 
 ##Usage
 
-* Methods of `Puppet::Util::RepoUtils`
+* Methods within `Puppet::Util`
 
-  - `newrepoutil(name, ...)`
+  - `newrepoutil(name, options = {}, &block)`
 
-    **TODO**: write documentation
+    Shorthand to `Puppet::Util::RepoUtils.newrepoutil`
+  
+  - `repoutil(name)`
+
+    Shorthand to `Puppet::Util::RepoUtils.repoutil`
+
+  - `repoutils()`
+
+    Shorthand to `Puppet::Util::RepoUtils.repoutils`
+
+  - `suitablerepoutils()`
+
+    Shorthand to `Puppet::Util::RepoUtils.suitablerepoutils`
+
+  - `defaultrepoutil()`
+
+    Shorthand to `Puppet::Util::RepoUtils.defaultrepoutil`
+
+
+
+* Methods within `Puppet::Util::RepoUtils`
+
+  - `newrepoutil(name, options = {}, &block)`
+
+    Define new repo utility. This is intended for developers/contributors and
+    may be used to add new providers to `repoutil`. When defining new utility,
+    one should provide following methods in the `block`:
+
+    - `self.package_name_regexp`
+    - `self.package_prefix_regexp`
+    - `self.package_name_to_pattern`
+    - `self.package_prefix_to_pattern`
+    - `self.retrieve_candidates`
+    - `self.retrieve_records`
+
+    To configure suitability, same methods as for typical providers may be
+    used. Here is short template:
+
+    # lib/puppet/util/repoutil/foo.rb
+    module Puppet::Util
+      newrepoutil(:foo) do
+        commands :foocmd => '/usr/bin/foo'
+
+        def self.package_name_regexp
+          /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
+        end
+
+        def self.package_prefix_regexp
+          /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
+        end
+
+        def self.escape_package_name(package)
+          package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
+        end
+
+        def self.escape_package_prefix(prefix)
+          prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
+        end
+
+        def self.package_name_to_pattern(package)
+          "^#{escape_package_name(package)}$"
+        end
+
+        def self.package_prefix_to_pattern(prefix)
+          "^#{escape_package_prefix(prefix)}"
+        end
+
+        
+        def self.show_policies(pattern)
+          aptcache '-q=2', '-a', 'policy', pattern
+        end
+
+        def self.show_records(pattern)
+          aptcache '-q=2', '-a', 'show', pattern
+        end
+
+        def self.retrieve_candidates(pattern)
+          output = show_policies(pattern)
+          # now, extract candidates from output, update candidates_cache and
+          # return the extracted candidates
+        end
+
+        def self.retrieve_records(pattern)
+          output = show_records(pattern).chomp
+          # now, extract records from output, update records_cache and
+          # return the extracted records
+        end
+      end
+    end
 
   - `unrepoutil(name)`
 
