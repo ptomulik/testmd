@@ -15,12 +15,11 @@
 
 ##Overview
 
-Puppet utility plugin to interact with systems' package repositories. This
-module simplifies tasks such as obtainning list of packages available for
-installation, their versions, installation candidates and so on.
-This package may be good for you, if you need to implement some facts
-containing information about availablility of a certain packages in
-repositories available to an agent.
+Puppet utilities to interact with package repositories. Simplifies tasks such
+as obtainning list of packages available for installation, their versions,
+installation candidates and so on.  This package may be good for you, if you
+need to implement some facts containing information about availablility of a
+certain packages in repositories available to an agent.
 
 ##Module Description
 
