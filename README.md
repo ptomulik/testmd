@@ -292,18 +292,19 @@ The new utility may be defined with `Puppet::Util.newrepoutil` method.
 
   - `Puppet::Util.newrepoutil(name, options = {}, &block)`
 
-When defining new utility, one should provide following methods in the `block`:
+When defining new utility, one should define following methods in the `block`:
 
   - `self.package_name_regexp`
   - `self.package_prefix_regexp`
-  - `self.package_name_to_pattern`
-  - `self.package_prefix_to_pattern`
-  - `self.retrieve_candidates`
-  - `self.retrieve_records`
+  - `self.package_name_to_pattern(package)`
+  - `self.package_prefix_to_pattern(prefix)`
+  - `self.retrieve_candidates(pattern)`
+  - `self.retrieve_records(pattern)`
 
 To configure suitability, defaults etc., use [same methods as in normal
 providers](http://docs.puppetlabs.com/guides/provider_development.html).
-Here is complete template for a repoutil `foo` (based on `apt`):
+
+Here is a complete template for a repoutil `foo` (based on `apt`):
 
     # lib/puppet/util/repoutil/foo.rb
     module Puppet::Util
@@ -311,19 +312,19 @@ Here is complete template for a repoutil `foo` (based on `apt`):
         commands :foocmd => '/usr/bin/foo'
 
         def self.package_name_regexp
-          /[a-z0-9][a-z0-9\.+-]+/ # adjust to CLI tools used
+          /[a-z0-9][a-z0-9\.+-]+/ 
         end
 
         def self.package_prefix_regexp
-          /(?:[a-z0-9][a-z0-9\.+-]*)?/ # adjust to CLI tools used
+          /(?:[a-z0-9][a-z0-9\.+-]*)?/ 
         end
 
         def self.escape_package_name(package)
-          package.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tools used
+          package.gsub(/([\.\+])/) {|c| '\\' + c}
         end
 
         def self.escape_package_prefix(prefix)
-          prefix.gsub(/([\.\+])/) {|c| '\\' + c} # adjust to CLI tool used
+          prefix.gsub(/([\.\+])/) {|c| '\\' + c}
         end
 
         def self.package_name_to_pattern(package)
@@ -334,17 +335,18 @@ Here is complete template for a repoutil `foo` (based on `apt`):
           "^#{escape_package_prefix(prefix)}"
         end
 
-        
-        def self.show_policies(pattern)
-          foocmd '-q=2', '-a', 'policy', pattern
+        def self.show_candidates(pattern)
+          # adjust to the actual syntax of your CLI command
+          foocmd 'candidates',  pattern 
         end
 
         def self.show_records(pattern)
-          foocmd '-q=2', '-a', 'show', pattern
+          # adjust to the actual syntax of your CLI command
+          foocmd 'records', pattern
         end
 
         def self.retrieve_candidates(pattern)
-          output = show_policies(pattern)
+          output = show_candidates(pattern).chomp
           # now, extract candidates from output, update candidates_cache and
           # return the extracted candidates
         end
