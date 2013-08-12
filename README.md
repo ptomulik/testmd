@@ -288,9 +288,12 @@ Feel free to submit bug reports, feature requests or to create pull requests.
 
 #### Adding new utility (provider)
 
-The new utility may be defined with `Puppet::Util.newrepoutil` method. 
+The new utility may be defined by using `Puppet::Util.newrepoutil` method. 
 
   - `Puppet::Util.newrepoutil(name, options = {}, &block)`
+
+If you're extendind `repoutil` module, the source code of the new provider (say
+`foo`) should go to file `lib/puppet/util/repoutil/foo.rb`.
 
 When defining new utility, one should define following methods in the `block`:
 
