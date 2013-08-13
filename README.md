@@ -231,15 +231,15 @@ Shorthand to [`Puppet::Util::RepoUtils.newrepoutil`](#newrepoutilname-options---
 
 Shorthand to [`Puppet::Util::RepoUtils.repoutil`](#repoutilname-1).
 
-##### repoutils()
+##### repoutils
 
 Shorthand to [`Puppet::Util::RepoUtils.repoutils`](#repoutils-1).
 
-##### suitablerepoutils()
+##### suitablerepoutils
 
 Shorthand to [`Puppet::Util::RepoUtils.suitablerepoutils`](#suitablerepoutils-1).
 
-##### defaultrepoutil()
+##### defaultrepoutil
 
 Shorthand to [`Puppet::Util::RepoUtils.defaultrepoutil`](#defaultrepoutil-1). 
 
@@ -268,7 +268,7 @@ created with [`newrepoutil(name, ...)`](#newrepoutilname-options--block-1).
     repo = Puppet::Util::RepoUtils.repoutil(:apt)
     candidate = repo.package_candidate('apache2')
 
-##### repoutils()
+##### repoutils
 
 Retrieve all existing repoutil providers (includes also those not suitable for
 a given environment).
@@ -283,7 +283,7 @@ a given environment).
       end
     end
 
-##### suitablerepoutils()
+##### suitablerepoutils
 
 Retrieve all repoutil providers suitable for the current environment.
 
@@ -295,7 +295,7 @@ Retrieve all repoutil providers suitable for the current environment.
       apache2_candidates[repo] = repo.package_candidate('apache2')
     end
 
-##### defaultrepoutil()
+##### defaultrepoutil
 
 Retrieve repoutil provider that is default to current environment.
 
@@ -304,11 +304,11 @@ Retrieve repoutil provider that is default to current environment.
     repo = Puppet::Util::RepoUtils.defaultrepoutil
     candidates = repo.package_candidate('apache2')
 
-##### loadall()
+##### loadall
 
 For internal use.
 
-##### repoutilloader()
+##### repoutilloader
 
 For internal use.
 
