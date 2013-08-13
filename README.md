@@ -325,7 +325,7 @@ information from multiple repository types available to the local system.
 Arguments:
 
   * `packages` - package name (exact) or an array of (exact) package names,
-  * `utils` - array with repoutil providers that are to be queried (optional).
+  * `utils` - array with repoutil providers to be queried (optional).
 
 *Example*:
 
@@ -365,7 +365,7 @@ information from multiple repository types available to the local system.
 Arguments:
 
   * `packages` - package name (exact) or an array of (exact) package names,
-  * `utils` - array with repoutil providers that are to be queried (optional).
+  * `utils` - array with repoutil providers to be queried (optional).
 
 *Example*:
 
@@ -400,7 +400,7 @@ the local system.
 Arguments:
 
   * `packages` - package name (exact) or an array of (exact) package names,
-  * `utils` - array with repoutil providers that are to be queried (optional).
+  * `utils` - array with repoutil providers to be queried (optional).
 
 *Example*:
 
@@ -421,87 +421,184 @@ listed in `utils`.
 
 ##### package\_name\_regexp
 
-**TODO**: write documentation
+Regular expression matching package names. Used for validation of input
+arguments ([`validate_package_name`](#validate_package_namepackage)) by functions
+having `package` argument.
 
 ##### package\_prefix\_regexp
 
-**TODO**: write documentation
+Regular expression matching package prefix. Used for validation of input
+arguments ([`validate_package_prefix`](#validate_package_prefixprefix)) by
+functions having `prefix` argument.
 
 ##### validate\_package\_name(package)
 
-**TODO**: write documentation
+Throw an `ArgumentError` exception if `package` doesn't match the
+`package_name_regexep`.
 
 ##### validate\_package\_prefix(prefix)
 
-**TODO**: write documentation
+Throw an `ArgumentError` exception if `prefix` doesn't match the
+`package_prefix_regexep`.
 
-##### package\_name\_to\_pattern
+##### package\_name\_to\_pattern(package)
 
-**TODO**: write documentation
+Convert `package` name to a pattern for use by `retrieve_records` or
+`retrieve_candidates`.
 
-##### package\_prefix\_to\_pattern
+##### package\_prefix\_to\_pattern(package)
 
-**TODO**: write documentation
+Convert package `prefix` to a pattern for use by `retrieve_records` or
+`retrieve_candidates`.
 
 ##### candidates\_cache
 
-**TODO**: write documentation
+Hash containing package candidates already seen by provider. The format is 
+
+    {
+      'package1' => 'ver1',
+      'package2' => 'ver1',
+      ...
+    }
+
+Certain methods operating on exact package names, such as
+[`package_candidate`](#pacakge_candidatepackage), are searching this cache
+first and launchning external CLI tools only if the record is not found in this
+cache.
 
 ##### records\_cache
 
-**TODO**: write documentation
+Hash containing package records already seen by provider. The format is 
+
+    {
+      'package1' =>
+      {
+        'ver1' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        'ver2' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        ...
+      },
+      'package2' =>
+      {
+        'ver1' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        'ver2' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        ...
+      },
+      ...
+    }
+
+Certain methods operating on exact package names, such as
+[`package_record`](#pacakge_recordpackage) are searching this cache first and
+launching external CLI tools only if the record is not found in the cache.
 
 ##### clear\_candidates\_cache
 
-**TODO**: write documentation
+Clear [`candidates_cache`](#candidates_cache).
 
 ##### clear\_records\_cache
 
-**TODO**: write documentation
+Clear [`records_cache`](#records_cache).
 
 ##### retrieve\_candidates(pattern)
 
-**TODO**: write documentation
+Retrieve information about package candidates from external source (CLI
+command). This method shall also update [`candidates_cache`](#candidates_cache)
+and may also update the [`records_cache`](#records_cache). The `pattern`
+argument is a string containig tool-specific pattern used to search repository
+database - for example in `:apt` provider this is a pattern for
+`apt-cache policy` command.
 
 ##### retrieve\_records(pattern)
 
-**TODO**: write documentation
+Retrieve package records from external source (CLI command). This method shall
+also update [`records_cache`](#records_cache) and may also update the
+[`candidates_cache`](#candidates_cache). The `pattern` argument is a string
+containing tool-specific pattern used to search repository database - for
+example in `:apt` provider this is a pattern for `apt-cache show` command.
 
 ##### package\_records(package)
 
-**TODO**: write documentation
+Return package records describing given package. The `package` argument shall
+be an exact package name. The returned hash has the following form
+
+    {
+      'ver1' => { 'Field1' => 'Text1', 'Field2' => 'Text2' },
+      'ver2' => { 'Field1' => 'Text1', 'Field2' => 'Text2' },
+      ...
+    }
+
+If `package` is not found in repository, `nil` is returned.
 
 ##### package\_versions(package)
 
-**TODO**: write documentation
+Return package versions available for installation. The `package` argument shall
+be an exact package name. The method returns an array containing available
+versions.
+
+    [ 'ver1', 'ver2', ... ]
+
+If `package` is not found in repository, `nil` is returned.
 
 ##### package\_candidate(package)
 
-**TODO**: write documentation
+Return `package`'s installation candidate. The `package` argument shall be an
+exact package name. The method returns a string containing version number of
+the installation candidate. If `package` is not found in repository, `nil` is
+returned.
 
 ##### packages\_with\_prefix(prefix)
 
-**TODO**: write documentation
+List package names for all available packages having name starting with `prefix`.
 
 ##### package\_versions\_with\_prefix(prefix)
 
-**TODO**: write documentation
+Return package versions for all available packages having name starting with
+`prefix`. The function returns a hash in the form
+
+    {
+      'packageA' => ['verA1', 'verA2', ...], 
+      'packageB' => ['verB1', 'verB2', ...], 
+    }
+
+If there is no package matching the prefix, an empty hash is returned.
 
 ##### package\_candidates\_with\_prefix(prefix)
 
-**TODO**: write documentation
+Return package candidates for all available packages having name starting with
+`prefix`. The function returns a hash in the form
+
+    {
+      'package1' => 'ver1', 
+      'package2' => 'ver2', 
+    }
 
 ##### package\_records\_with\_prefix(prefix)
 
-**TODO**: write documentation
+Return full records for all available packages having name starting with
+`prefix`. The function returns a hash in the form
+
+    {
+      'packageA' => 
+      {
+        'verA1' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        'verA2' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        ...
+      }, 
+      'packageB' => 
+      {
+        'verB1' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        'verB2' => { 'Field1' => 'Text1', 'Field2' => 'Text2', ... },
+        ...
+      }, 
+      ...
+    }
+
+If there is no package matching the prefix, an empty hash is returned.
 
 
 ##Limitations
 
   * Currently supports only Debian/Ubuntu *apt*, *aptitude* and FreeBSD *ports*
   * Some tests are missing.
-
-**TODO**: enumerate other limitations 
 
 ##Development
 
