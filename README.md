@@ -58,9 +58,10 @@ You may need to enable **pluginsync** in your *puppet.conf*.
 
 ###Beginning with repoutil
 
-Let say, you're developing your custom fact or resource type and you need to
-characterize some packages existing in your package repository. To use repoutil
-utilities, you should first include appropriate module file:
+Let's say, you're developing your custom fact or resource type and you need to
+characterize some packages existing in your package repository. The repoutil
+plugin may be used to obtain meta-data describing these packages. To use
+repoutil utilities, you should first include appropriate module file:
 
     require 'puppet/util/repoutil'
 
