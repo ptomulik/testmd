@@ -135,9 +135,9 @@ This would return a hash such as the following:
       .
     }
 
-Of course, we may operate on exact package names, that is request information
-for one particular package. For example, in order to obtain available package
-versions we call:
+Of course, we may operate on exact package names, that is we may request
+information for one particular package. For example, in order to obtain
+available package versions we call:
 
     apache2_versions = repo.package_versions('apache2')
 
