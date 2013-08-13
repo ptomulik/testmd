@@ -157,7 +157,7 @@ To retrieve full records for available package versions we type:
 
     apache2_records = repo.package_records('apache2')
 
-This should return a hash as follows:
+This should return a hash such as:
 
     {
       "2.4.6-2" => 
@@ -198,9 +198,10 @@ appropriate [package provider](http://docs.puppetlabs.com/references/latest/type
 from puppet core (note, not all puppet providers are covered here). For
 example, there is `Puppet::Util::RepoUtils::Apt` class (`:apt` repoutil) which
 corresponds to `:apt` package provider. To retrieve appropriate repoutil, you
-should use one of the methods from `Puppet::Util::RepoUtils` described below.
-Methods within `Puppet::Util::RepoUtil` (and descendants) may be used to
-operate on a single repository.
+should use one of the methods from `Puppet::Util::RepoUtils` [described in
+reference](#provider-management). [Methods within
+`Puppet::Util::RepoUtil`](#methods-within-puppetutilrepoutil-class) (and
+descendants) may be used to operate on a single repository.
 
 [Methods within `Puppet::Util::RepoUtils`](#methods-within-puppetutilrepoutils-class)
 are twofold. Some of them are provided to 
