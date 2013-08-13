@@ -455,7 +455,7 @@ Arguments:
     records = Puppet::Util::RepoUtils.packages_with_prefixes(['apt', 'apache2'])
 
 Returns a hash with the form same as in
-[`Puppet::Util::RepoUtils.package_versions`](#package_recordspackages-utils--suitablerepoutils)
+[`Puppet::Util::RepoUtils.package_records`](#package_recordspackages-utils--suitablerepoutils)
 
 ##### package\_versions\_with\_prefixes(prefixes, utils = suitablerepoutils)
 
@@ -486,7 +486,7 @@ Arguments:
   * `utils` - array with repoutil providers to be queried (optional).
 
 Returns a hash with the form same as in
-[`Puppet::Util::RepoUtils.package_versions`](#package_candidatespackages-utils--suitablerepoutils)
+[`Puppet::Util::RepoUtils.package_candidates`](#package_candidatespackages-utils--suitablerepoutils)
 
 ### Methods within `Puppet::Util::RepoUtil` class
 
