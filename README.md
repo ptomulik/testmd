@@ -405,7 +405,7 @@ Arguments:
 
     candidates = Puppet::Util::RepoUtils.package_candidates(['apache2', 'apache2-dev'])
 
-Would return a hash of the form:
+would return a hash of the form:
 
     {
       :aptitude => { "apache2" => "2.4.6-2", "apache2-dev" => "2.4.6-2" },
@@ -415,6 +415,78 @@ Would return a hash of the form:
 where `:apt`, `:aptitude`, ..., are keys corresponding to repoutil providers
 listed in `utils`. 
 
+##### packages\_with\_prefixes(prefixes, utils = suitablerepoutils)
+
+Search multiple repositories for packages having names starting with (one of
+the) prefixes. This function may perform search on multiple repositories at
+once. It may be used to gather package information from multiple repository
+types available to the local system.
+
+Arguments:
+
+  * `prefixes` - prefix or an array of prefixes to be matched against package names,
+  * `utils` - array with repoutil providers to be queried (optional).
+
+*Example*:
+
+    names = Puppet::Util::RepoUtils.packages_with_prefixes(['apt', 'apache2'])
+
+would return a hash of the form:
+
+    {
+      :apt      => ["apticron", "apt-dater", ..., "apache2", "apache2-data", ... ], 
+      :aptitude => ["apticron", "apt-dater", ..., "apache2", "apache2-data", ... ]
+    }
+
+##### package\_records\_with\_prefixes(prefixes, utils = suitablerepoutils)
+
+Search multiple repositories for packages having names starting with (one of
+the) prefixes and return their full records. This function may perform search
+on multiple repositories at once. It may be used to gather package information
+from multiple repository types available to the local system.
+
+Arguments:
+
+  * `prefixes` - prefix or an array of prefixes to be matched against package names,
+  * `utils` - array with repoutil providers to be queried (optional).
+
+*Example*:
+
+    records = Puppet::Util::RepoUtils.packages_with_prefixes(['apt', 'apache2'])
+
+Returns a hash with the form same as in
+[`Puppet::Util::RepoUtils.package_versions`](#package_recordspackages-utils--suitablerepoutils)
+
+##### package\_versions\_with\_prefixes(prefixes, utils = suitablerepoutils)
+
+Search multiple repositories for packages having names starting with (one of
+the) prefixes and return their available versions. This function may perform
+search on multiple repositories at once. It may be used to gather package
+information from multiple repository types available to the local system.
+
+Arguments:
+
+  * `prefixes` - prefix or an array of prefixes to be matched against package names,
+  * `utils` - array with repoutil providers to be queried (optional).
+
+Returns a hash with the form same as in
+[`Puppet::Util::RepoUtils.package_versions`](#package_versionspackages-utils--suitablerepoutils)
+
+##### package\_candidates\_with\_prefixes(prefixes, utils = suitablerepoutils)
+
+Search multiple repositories for packages having names starting with (one of
+the) prefixes and return their installation candidates. This function may
+perform search on multiple repositories at once. It may be used to gather
+package information from multiple repository types available to the local
+system.
+
+Arguments:
+
+  * `prefixes` - prefix or an array of prefixes to be matched against package names,
+  * `utils` - array with repoutil providers to be queried (optional).
+
+Returns a hash with the form same as in
+[`Puppet::Util::RepoUtils.package_versions`](#package_candidatespackages-utils--suitablerepoutils)
 
 ### Methods within `Puppet::Util::RepoUtil` class
 
