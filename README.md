@@ -221,13 +221,11 @@ package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
 
 ##Reference
 
-**TODO**: write reference 
-
 ### Methods within `Puppet::Util` module
 
 ##### newrepoutil(name, options = {}, &block)
 
-Shorthand to [`Puppet::Util::RepoUtils.newrepoutil`](#newrepoutilname-options--block-1).
+Shorthand to [`Puppet::Util::RepoUtils.newrepoutil`](#newrepoutilname-options---block-1).
 
 ##### repoutil(name) 
 
