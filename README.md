@@ -429,13 +429,13 @@ Arguments:
 
 *Example*:
 
-    names = Puppet::Util::RepoUtils.packages_with_prefixes(['apt', 'apache2'])
+    names = Puppet::Util::RepoUtils.packages_with_prefixes(['postfix', 'apache2'])
 
 would return a hash of the form:
 
     {
-      :apt      => ["apticron", "apt-dater", ..., "apache2", "apache2-data", ... ], 
-      :aptitude => ["apticron", "apt-dater", ..., "apache2", "apache2-data", ... ]
+      :apt      => ["postfix-policyd-spf-python", "postfix-cdb", ..., "apache2", "apache2-data", ... ], 
+      :aptitude => ["postfix-policyd-spf-python", "postfix-cdb", ..., "apache2", "apache2-data", ... ]
     }
 
 ##### package\_records\_with\_prefixes(prefixes, utils = suitablerepoutils)
