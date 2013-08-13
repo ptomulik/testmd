@@ -135,9 +135,6 @@ This would return a hash such as the following:
       .
     }
 
-Note, that the returned hash has one item per package, and each such item
-consists of several sub-items - one for each installable version of a package.
-
 Of course, we may operate on exact package names, that is request information
 for one particular package. For example, in order to obtain available package
 versions we call:
