@@ -216,7 +216,7 @@ to get provider default to current environment and
 within `Puppet::Util::RepoUtils` may be used to perform 
 [collective operations](#collective-operations-on-repositories)
 on repositories. For example, [`package_candidates`](#package_candidatespackages)
-may be used to retrieve lists of package candidates known to the suitable
+may be used to retrieve lists of package candidates known to all the suitable
 package repositories (this yields a hash of the form `{:apt => {...}, :aptitude
 => {...}, ...}`).
 
@@ -420,13 +420,13 @@ listed in `utils`.
 
 ##### package\_name\_regexp
 
-Regular expression matching package names. Used for validation of input
-arguments ([`validate_package_name`](#validate_package_namepackage)) by functions
-having `package` argument.
+Regular expression to match package names. Used for validation of input
+arguments ([`validate_package_name`](#validate_package_namepackage)) by 
+functions having `package` argument and to parse output from CLI commands.
 
 ##### package\_prefix\_regexp
 
-Regular expression matching package prefix. Used for validation of input
+Regular expression to match package prefixes. Used for validation of input
 arguments ([`validate_package_prefix`](#validate_package_prefixprefix)) by
 functions having `prefix` argument.
 
@@ -659,11 +659,15 @@ Example template for a repoutil `foo` is presented below:
           /(?:[a-z0-9][a-z0-9\.+-]*)?/ 
         end
 
+        # escape characters that could be interpreted as meta-characters
+        # by CLI commands used for repository lookups
         def self.escape_package_name(package)
           # this is tool-specific, check if this pattern fits your needs
           package.gsub(/([\.\+])/) {|c| '\\' + c}
         end
 
+        # escape characters that could be interpreted as meta-characters
+        # by CLI commands used for repository lookups
         def self.escape_package_prefix(prefix)
           # this is tool-specific, check if this pattern fits your needs
           prefix.gsub(/([\.\+])/) {|c| '\\' + c}
