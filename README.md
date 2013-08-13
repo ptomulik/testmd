@@ -60,13 +60,15 @@ You may need to enable **pluginsync** in your *puppet.conf*.
 
 Let's say, you're developing your custom fact or resource type and you need to
 characterize some packages existing in your package repository. The repoutil
-plugin may be used to obtain meta-data describing these packages. To use
-repoutil utilities, you should first include appropriate module file:
+plugin may be used to obtain meta-data describing these packages.
+
+The preliminary step to use repoutil utilities, is to include its module file:
 
     require 'puppet/util/repoutil'
 
-One of the first steps you'll probably have to do is to retrieve an utility
-provider (call it `repo`). For example, apt `repo` may be obtained as follows:
+Once the module file is included you may retrieve an utility provider (call it
+`repo`), which implements access to a particular repository type. For example,
+apt `repo` may be obtained as follows:
 
     repo = Puppet::Util.repoutil(:apt)
  
