@@ -16,7 +16,7 @@ Deletes all instances of the undef value from an array or hash.
     
     $hash = pt_delete_undef_values({a=>'A', b=>'', c=>undef, d => false})
 
-Would return: {a => 'A', b => '', d => false}
+Would return: `{a => 'A', b => '', d => false}`
 
     $array = pt_delete_undef_values(['A','',undef,false])
 
