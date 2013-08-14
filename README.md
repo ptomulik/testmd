@@ -20,7 +20,7 @@ Would return: {a => 'A', b => '', d => false}
 
     $array = pt_delete_undef_values(['A','',undef,false])
 
-Would return: ['A','',false]
+Would return: `['A','',false]`
 
 - *Type*: rvalue
 
@@ -32,7 +32,7 @@ Deletes all instances of a given value from a hash.
 
     pt_delete_values({'a'=>'A','b'=>'B','c'=>'C','B'=>'D'}, 'B')
 
-Would return: {'a'=>'A','c'=>'C','B'=>'D'}
+Would return: `{'a'=>'A','c'=>'C','B'=>'D'}`
 
 - *Type*: rvalue
 
@@ -47,7 +47,7 @@ of resource's parameter (or empty string if default is not set).
     package { 'apache2': provider => apt }
     $prov = pt_getparamdefault(Package['apache2'], provider)
 
-Would result with $prov == '' (default provider was not defined).
+Would result with `$prov == ''` (default provider was not defined).
 
     Package { provider => aptitude }
 
@@ -56,7 +56,7 @@ Would result with $prov == '' (default provider was not defined).
       $prov = pt_getparamdefault(Package['apache2'], provider)
     }
 
-Would result with $prov == 'aptitude'.
+Would result with `$prov == 'aptitude'`.
 
     Package { provider => aptitude }
 
@@ -66,10 +66,10 @@ Would result with $prov == 'aptitude'.
       $prov = pt_getparamdefault(Package['apache2'], provider)
     }
 
-Would result with $prov == 'apt'.
+Would result with `$prov == 'apt'`. 
 
     pt_getparamdefault(Foo['bar'], geez)
 
-Would not compile (resource Foo[bar] does not exist)
+Would not compile (resource `Foo[bar]` does not exist)
 
 - *Type*: rvalue
