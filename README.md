@@ -107,9 +107,9 @@ installation, the most recent version is selected.
 The obvious question is what to put into the `name`, `versions`, `candidates`
 and `installed` parameters (it would be quite stupid to hard-code it each and
 every time). The proposed approach is to generate their values automatically at
-agent side and to send them to the master as facts. We may use a
-[ptomulik-repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin to
-fill-up some facts with data for `versions`  and `candidates`. For this
+agent side and to send them to the master as facts. The
+[repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin may be used 
+to fill-up some facts with data for `versions`  and `candidates`. For this
 example, we'll assume that the relevant package names are `apache2` (Debian),
 `apache22` and `apache24` (FreeBSD). We then implement three facts: an
 `apache_repo_versions` fact, an `apache_repo_candidates` fact, and an
