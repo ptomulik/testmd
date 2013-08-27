@@ -73,8 +73,8 @@ Now imagine, you have a puppet module which configures the apache http server.
 It works well with older versions but it's not ready for the apache 2.4 yet. 
 Your **apt** repositories provide versions `2.2.22-13` and `2.4.6-3` for
 installation. By default, the latest version (`2.4.6-3`) gets installed. 
-To install version < 2.4 of a package we may use version expression feature of
-the `packagex` defined type:
+To install version < 2.4 of the package we may use version expression feature
+of the `packagex` defined type:
 
     packagex {'apache2':
       ensure     => '< 2.4.0',
@@ -84,9 +84,9 @@ the `packagex` defined type:
     }
 
 Consider similar case on FreeBSD, where **ports** are used to install packages. 
-Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
-`apache24` (ver. `2.4.6`). In this case, we may use `packagex` to install 
-apache < 2.4, as follows
+Assume, following ports are available for installation: `apache22` (ver.
+`2.2.25`) and `apache24` (ver. `2.4.6`). In this case, we may use `packagex` to
+install apache < 2.4, as follows
 
     packagex {'apache2':
       name       => ['apache24', 'apache22'],
