@@ -96,7 +96,6 @@ parameters. To circumvent this, we may use the
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin
 and fill-up some facts with information about available apache packages and
 their versions. For this example, we'll implement two facts.
-
 An `apache_repo_versions` fact (using repoutil)
 
     # lib/facter/apache_repo_versions.rb
@@ -112,10 +111,9 @@ An `apache_repo_versions` fact (using repoutil)
       end
     end
 
-and `apache_installed` fact:
+and an `apache_installed` fact:
 
     # lib/facter/apache_installed.rb
-    require 'puppet/util/repoutil'
     Facter.add(:apache_installed, :timeout => 600) do
       setcode do
         installed = {}
