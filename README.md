@@ -28,8 +28,8 @@ It adds some features to the core `package`, including:
 
 * expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this enables
   an extended versioning, 
-* passing an array of package names to let the `packagex` pickup first
-  available candidate for installation,
+* passing arrays of package names and letting the `packagex` to install first
+  available candidate,
 * passing build options to package managers which compile/build their packages
   before installation (FreeBSD ports, for example)
 
