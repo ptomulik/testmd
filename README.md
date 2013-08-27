@@ -18,7 +18,8 @@
 This module implements a `packagex` defined type which adds some features to
 the standard `package` resource. For example, a simple versioning may be
 enabled for providers which are not versionable by their own (FreeBSD ports
-e.g). Other features are available and are described in subsequent sections.
+for example). Other features are available as well, and are described in
+subsequent sections.
 
 ## Module Description
 
