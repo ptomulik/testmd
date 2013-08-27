@@ -70,11 +70,11 @@ Let's start with a trivial example. To install `apache2` package, we simply do
 It has exactly same effect as `package{'apache2':}`, nothing special yet.
 
 Now imagine, you have a puppet module which configures the apache http server.
-It works well with apache 2.2 but it's not ready for the apache 2.4 yet. Your
-OS is up to date and its repositories provide versions `2.2.22-13` and
-`2.4.6-3` for installation. By default, the latest (2.4.6-3) version gets
-installed. One way, to install our preferred version of a package is to use
-version expression feature of `packagex` defined type:
+It works well with apache 2.2 but it's not ready for the apache 2.4 yet. 
+Your **apt** repositories provide versions `2.2.22-13` and `2.4.6-3` for
+installation. By default, the latest (2.4.6-3) version gets installed. One way,
+to install our preferred version of a package is to use version expression
+feature of `packagex` defined type:
 
     packagex {'apache2':
       ensure   => '< 2.4.0'
