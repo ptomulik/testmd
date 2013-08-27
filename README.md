@@ -79,10 +79,10 @@ the time of this writing) the following packages:
 * `apache24` - version `2.4.6`, MPM as DSO or selected as compile option.
 
 You develop a puppet classes to install and configure the apache http server.
-One of them, let say `apachex::package` is responsible for installation of the
-apache package. You want to give the user possibility to choose a version of
-apache package, as configuration options change from version to version (for
-example, there are some important differences between 2.2 and 2.4 versions).
+One of them, let say `apachex::package` is responsible for the installation.
+Some configuration options differ between versions `2.2` and `2.4` and you wish
+to give user an option to choose `2.2`, `2.4` or `2.X` for any `X` to install
+without bothering about the package name.
 
 
 
