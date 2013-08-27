@@ -52,7 +52,7 @@ following subjects may be altered on your system:
 
 * a debug file(s) may be generated, if requested (see the `$debugfile`
   parameter)
-* option files for FreeBSD ports may be cerated/changed, see the
+* option files for FreeBSD ports may be created/changed, see the
   `$build_options` parameter and documentation of
   [ptomulik-bsdportconfig](https://forge.puppetlabs.com/ptomulik/bsdportconfig)
   module,
@@ -105,11 +105,11 @@ precedence). If there is still a package having  multiple versions suitable for
 installation, the most recent version is selected.
 
 The obvious question is what to put into the `name`, `versions`, `candidates`
-and `installed` parameters (it would be quite stupid to hard-code it each and
+and `installed` parameters (it would be quite stupid to hard-code them each and
 every time). The proposed approach is to generate their values automatically at
 agent side and to send them to the master as facts. The
 [repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin may be used 
-to fill-up some facts with data for `versions`  and `candidates`.
+to generate data for `versions` and `candidates`.
 
 For this example we assume that the relevant package names for the http server
 we're going to install are: `apache2` (Debian), `apache22` and `apache24`
