@@ -106,7 +106,7 @@ considered to be preferred).
 The main question is what to put into the `name`, `versions`, `candidates` and
 `installed` parameters. Their values may be generated automatically at agent
 side and passed to the master as facts. We may use a
-[ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
+[ptomulik-repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin to
 fill-up some facts with data for `versions`  and `candidates`. For this
 example, we'll implement three facts: an `apache_repo_versions` fact,
 an `apache_repo_candidates` fact, and an `apache_installed` fact.
