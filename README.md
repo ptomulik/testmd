@@ -63,10 +63,6 @@ You may need to enable **pluginsync** in your `puppet.conf`.
 
 ### Beginning with packagex
 
-The module should be used together with the `ptomulik-repoutil`. It's included
-in the list of dependencies, and shall install automatically when the
-`ptomulik-packagex` gets installed.
-
 Consider the following situation. Your repository contains several packages
 that provide *apache2* http server. For example, the FreeBSD ports include (at
 the time of this writing) the following packages:
@@ -94,26 +90,31 @@ advance which version is going to be installed in order to select appropriate
 templates for configuration files. In addition, the following aspects must be
 considered before installing the package
 
-* most of the apache modules are part of the apache project, on Debian most of
-  them are available as separate installable packages, on FreeBSD (ports),
-  however, you must set appropriate options (`make config`) for an `apache2X`
-  port to have your modules installed,
 * for apache < 2.4 MPM must be selected by selecting appropriate package, 
   for >= 2.4 MPMs are available as dynamic modules, and default MPM is choosen
   at compile time (via build options) - again: some compile-time options must 
   be set on FreeBSD ports,
+* most of the apache modules are part of the apache project; on Debian most of
+  them are available as separate installable packages; on FreeBSD (ports),
+  however, you must set appropriate options (`make config`) for an appropriate
+  apache port to have your modules installed,
 
-You give the user an option to choose
+So, You give the user an option to choose
 between `2.2`, `2.4` (or, more generally, to use `2.X`). In addition, the
 `apachex::package` needs information about the (default) MPM to be used and few
 other parameters. Let say, you arrive at the following class interface:
 
     class apachex::package(
       $version,
-      $mpm
+      $mpm,
+      $modules,
     ) {
     # ...
     }
+
+The module should be used together with the `ptomulik-repoutil`. It's included
+in the list of dependencies, and shall install automatically when the
+`ptomulik-packagex` gets installed.
 
 
 
