@@ -53,7 +53,9 @@ subjects may be altered on your system:
 * a debug file(s) may be generated, if requested (see the `$debugfile`
   parameter)
 * option files for FreeBSD ports may be altered, see the `$build_options`
-  parameter and documentation of `ptomulik/bsdportconfig` module,
+  parameter and documentation of
+  [ptomulik-bsdportconfig](https://forge.puppetlabs.com/ptomulik/bsdportconfig)
+  module,
 
 ### Setup Requirements
 
