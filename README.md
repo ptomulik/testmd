@@ -17,8 +17,8 @@
 
 ## Overview
 
-This module implements a `packagex` defined type which adds some features to
-the standard `package` resource. 
+This module defines `packagex` type which adds some features to the standard
+`package` resource. 
 
 ## Module Description
 
@@ -27,16 +27,17 @@ resource. It adds some features to the core `package`, including:
 
 * version expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this
   enables an extended versioning, 
-* passing arrays of package names and letting the `packagex` to install first
-  available candidate,
+* passing arrays of package names and letting the `packagex` to install one
+  of available candidates,
 * passing build options to package managers which compile/build their packages
   (FreeBSD ports, for example)
 
-The `packagex` defined type works mostly as the core `package` resource. It
-accepts all the parameters known to the core `package` resource plus parameters
-that extend its functionality. Defaults for the `package` resource are honored.
+The `packagex` defined type possesses all the functionalities of the core
+`package` resource.  It accepts all the parameters known to the core `package`
+resource plus parameters that extend its functionality. Default parameters for
+the `package` resource are also fully honored.
 
-In addition, the `packagex` module provides the following facts:
+Additionally, the `packagex` module provides the following facts:
 
 * `packagex_defaultprovider` - tells what is the default package provider for
   the target (agent) OS.
