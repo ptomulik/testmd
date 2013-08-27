@@ -26,7 +26,7 @@ subsequent sections.
 The module implements a `packagex` defined type, which wraps the core `package`
 resource. It adds some features to the core `package`, including:
 
-* simple expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this
+* version expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this
   enables an extended versioning, 
 * passing arrays of package names and letting the `packagex` to install first
   available candidate,
@@ -35,13 +35,13 @@ resource. It adds some features to the core `package`, including:
 
 The `packagex` defined type works mostly as the core `package` resource. It
 accepts all the parameters known to the core `package` resource plus parameters
-that extend its functionality. Defaults for the `package` resource are honored.       
-                                                                                      
-In addition, the `packagex` module provides the following facts:                      
-                                                                                      
-* `packagex_defaultprovider` - tells what is the default package provider for         
-  the target (agent) OS.                                                              
-                                                                                      
+that extend its functionality. Defaults for the `package` resource are honored.
+
+In addition, the `packagex` module provides the following facts:
+
+* `packagex_defaultprovider` - tells what is the default package provider for
+  the target (agent) OS.
+
 ## Setup
 
 ### What packagex affects
@@ -84,4 +84,3 @@ Since your module is awesome, other users will want to play with it. Let them kn
 ## Release Notes/Contributors/Etc **Optional**
 
 If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
-
