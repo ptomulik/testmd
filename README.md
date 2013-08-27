@@ -26,12 +26,12 @@ subsequent sections.
 The module implements a `packagex` defined type, which wraps the core `package`
 resource. It adds some features to the core `package`, including:
 
-* expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this enables
-  an extended versioning, 
+* simple expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this
+  enables an extended versioning, 
 * passing arrays of package names and letting the `packagex` to install first
   available candidate,
 * passing build options to package managers which compile/build their packages
-  before installation (FreeBSD ports, for example)
+  (FreeBSD ports, for example)
 
 The `packagex` defined type works mostly as the core `package` resource. It
 accepts all the parameters known to the core `package` resource plus parameters
