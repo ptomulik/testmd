@@ -66,7 +66,7 @@ in the list of dependencies, and shall install automatically when the
 `ptomulik-packagex` gets installed.
 
 Consider the following situation. Your repository contains several packages
-that provide apache2 http server. For example, the FreeBSD ports include (at
+that provide *apache2* http server. For example, the FreeBSD ports include (at
 the time of this writing) the following packages:
 
 * `apache22` - version `2.2.25`, prefork MPM,
@@ -76,6 +76,11 @@ the time of this writing) the following packages:
 * `apache22-worker-mpm` - version `2.2.25`, worker MPM,
 * `apache24` - version `2.4.6`, MPM as DSO or selected as compile option.
 
+You develop a puppet classes to install and configure the apache http server.
+One of them, let say `apachex::package` is responsible for installation of the
+apache package. You want to give the user possibility to choose a version of
+apache package, as configuration options change from version to version (for
+example, there are some important differences between 2.2 and 2.4 versions).
 
 
 
