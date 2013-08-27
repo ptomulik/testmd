@@ -109,8 +109,10 @@ The main question is what to put into the `name`, `versions`, `candidates` and
 side and passed to the master as facts. We may use a
 [ptomulik-repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin to
 fill-up some facts with data for `versions`  and `candidates`. For this
-example, we'll implement three facts: an `apache_repo_versions` fact,
-an `apache_repo_candidates` fact, and an `apache_installed` fact.
+example, we'll assume that the relevant package names are `apache2` (Debian),
+`apache22` and `apache24` (FreeBSD). We then implement three facts: an
+`apache_repo_versions` fact, an `apache_repo_candidates` fact, and an
+`apache_installed` fact.
 
 First fact, the `apache_repo_versions`, tells us what versions of apache
 packages are available for installation:
