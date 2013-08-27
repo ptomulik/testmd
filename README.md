@@ -73,8 +73,8 @@ Now imagine, you have a puppet module which configures the apache http server.
 It works well with older versions but it's not ready for the apache 2.4 yet. 
 Your **apt** repositories provide versions `2.2.22-13` and `2.4.6-3` for
 installation. By default, the latest version (`2.4.6-3`) gets installed. 
-To install version < 2.4 of a package is to use version expression
-feature of the `packagex` defined type:
+To install version < 2.4 of a package we may use version expression feature of
+the `packagex` defined type:
 
     packagex {'apache2':
       ensure   => '< 2.4.0'
