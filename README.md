@@ -77,9 +77,10 @@ To install version < 2.4 of a package we may use version expression feature of
 the `packagex` defined type:
 
     packagex {'apache2':
-      ensure    => '< 2.4.0',
-      versions  => { apt => {'apache2' => ['2.2.22-13','2.4.6-3']} },
-      installed => { },  # see later ...
+      ensure     => '< 2.4.0',
+      versions   => { apt => {apache2 => ['2.2.22-13','2.4.6-3']} },
+      candidates => { apt => {apache2 => '2.4.6-3'} },
+      installed  => { },  # see later ...
     }
 
 Consider similar case on FreeBSD, where **ports** are used to install packages. 
@@ -88,10 +89,11 @@ Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
 apache < 2.4, as follows
 
     packagex {'apache2':
-      name     => ['apache24', 'apache22'],
-      ensure   => '< 2.4.0',
-      versions => { ports => { apache22 => ['2.2.25'], apache24 => ['2.4.6']} },
-      installed => { },  # see later ...
+      name       => ['apache24', 'apache22'],
+      ensure     => '< 2.4.0',
+      versions   => { ports => {apache22=>['2.2.25'], apache24=>['2.4.6']} },
+      candidates => { ports => {apache22=>'2.2.25', apache24=>'2.4.6'} },
+      installed  => { },  # see later ...
     }
 
 With the above syntax, `packagex` selects for installation one of the packages
