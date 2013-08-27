@@ -163,8 +163,8 @@ Now, things become a little bit easier. To install apache < 2.4, we do:
       installed => $::apache_installed,
     }
 
-Later on, when your module will become ready for apache 2.4, you may simply
-change the `ensure => '< 2.4.0'` to `ensure >= 2.4.0`.
+Once, your module becomes ready for apache 2.4, you may change the 
+`ensure => '< 2.4.0'` to `ensure => '~= 2.4'`, to ensure install apache 2.4.
 
 
 Obviously, we may pass all the parameters `package` supports and they will have 
