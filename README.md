@@ -16,9 +16,9 @@
 ## Overview
 
 This module implements a `packagex` defined type which adds some features to
-standard `package` resource. For example, a simple versioning may be enabled
-for providers which are normally not versionable (FreeBSD ports e.g). Other
-features are available and are described in subsequent sections.
+the standard `package` resource. For example, a simple versioning may be
+enabled for providers which are not versionable by their own (FreeBSD ports
+e.g). Other features are available and are described in subsequent sections.
 
 ## Module Description
 
@@ -35,12 +35,12 @@ It adds some features to the core `package`, including:
 
 The `packagex` defined type works mostly as the core `package` resource. It has
 all the parameters defined by the `package` resource plus parameters that
-extend the functionality. Defaults for the `package` resource are honored.            
-                                                                                      
-## Setup                                                                              
-                                                                                      
-### What [Modulename] affects                                                         
-                                                                                      
+extend the functionality. Defaults for the `package` resource are honored.
+
+## Setup
+
+### What [Modulename] affects
+
 * A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
 * This is a great place to stick any warnings.
 * Can be in list or paragraph form. 
