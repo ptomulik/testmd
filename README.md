@@ -3,15 +3,15 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with packagex](#setup)
+2. [Module Description](#module-description)
+3. [Setup](#setup)
     * [What packagex affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with packagex](#beginning-with-packagex)
-4. [Usage - Configuration options and additional functionality](#usage)
+4. [Usage](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+5. [Limitations](#limitations)
+6. [Development](#development)
 
 ## Overview
 
@@ -46,11 +46,16 @@ In addition, the `packagex` module provides the following facts:
 
 ### What packagex affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
+Since the `packagex` is merely a wrapper around the `package` resource, it
+affects all the things the core `package` affects. In addition, the following
+subjects may be altered on your system:
 
-### Setup Requirements **OPTIONAL**
+* a debug file(s) may be generated, if requested (see the `debugfile`
+  parameter)
+* option files for FreeBSD ports may be altered, see the `$build_options`
+  parameter,
+
+### Setup Requirements
 
 You may need to enable **pluginsync** in your `puppet.conf`.
 
@@ -92,6 +97,4 @@ The project is held at github:
 
 * [https://github.com/ptomulik/puppet-packagex](https://github.com/ptomulik/puppet-packagex)
 
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+Issue reports, patches, pull requests are welcome!
