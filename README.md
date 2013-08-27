@@ -70,7 +70,7 @@ Here, list the classes, types, providers, facts, etc contained in your module. T
 
 ## Limitations
 
-The `packagex` module has the following limitations:
+The `packagex` module has certain limitations, for example:
 
 * the `$build_options` are currently supported only by the `ports` provider,
 * packages are not rebuilt/reinstalled automatically when only `$build_options`
