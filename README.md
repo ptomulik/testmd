@@ -33,9 +33,13 @@ It adds some features to the core `package`, including:
 * passing build options to package managers which compile/build their packages
   before installation (FreeBSD ports, for example)
 
-The `packagex` defined type works mostly as the core `package` resource. It has
-all the parameters defined by the `package` resource plus parameters that
-extend the functionality. Defaults for the `package` resource are honored.
+The `packagex` defined type works mostly as the core `package` resource. It
+accepts all the parameters known to the core `package` resource plus parameters
+that extend its functionality. Defaults for the `package` resource are honored.
+
+In addition, the `packagex` module provides a `packagex_defaultprovider` fact, 
+which tells to the master, what is the default package provider for the target
+(agent) OS.
 
 ## Setup
 
