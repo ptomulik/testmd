@@ -1,5 +1,7 @@
 # ptomulik-packagex
 
+[![Build Status](https://travis-ci.org/ptomulik/puppet-packagex.png?branch=master)](https://travis-ci.org/ptomulik/puppet-packagex)
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -16,10 +18,7 @@
 ## Overview
 
 This module implements a `packagex` defined type which adds some features to
-the standard `package` resource. For example, a simple versioning may be
-enabled for providers which are not versionable by their own (FreeBSD ports
-for example). Other features are available as well, and are described in
-subsequent sections.
+the standard `package` resource. 
 
 ## Module Description
 
