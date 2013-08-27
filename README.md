@@ -167,7 +167,8 @@ Now, things become a little bit easier. To install apache < 2.4, we do:
     }
 
 Once, your module becomes ready for apache 2.4, you may change the 
-`ensure => '< 2.4.0'` to `ensure => '~= 2.4'`, to ensure install apache 2.4.
+`ensure => '< 2.4.0'` to `ensure => '~= 2.4'`, to install apache 2.4 and keep
+the version 2.4 installed.
 
 
 Obviously, we may pass all the parameters `package` supports and they will have 
