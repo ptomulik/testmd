@@ -89,7 +89,43 @@ or
 
     packagex {'apache2': ensure   => '2.2.22-13' }
 
-but note, that this form work only with versionable package providers. 
+but note, that the later forms work only with versionable package providers. 
+
+The main inconvenience, as for now, is related to the `name` and `versions`
+parameters. To circumvent this, we may use the
+[ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin
+and fill-up some facts with information about available apache packages and
+their versions. For this example, we'll implement two facts
+`apache_repo_versions` (using repoutil) and `apache_installed`:
+
+    # lib/facter/apache_repo_versions.rb
+    require 'puppet/util/repoutil'
+    Facter.add(:apache_repo_versions, :timeout => 600) do
+      setcode do
+        Puppet::Util::RepoUtils.package_versions([
+          'apache2', 
+          'apache22',
+          'apache24',
+          'httpd'
+        ]).to_pson
+      end
+    end
+
+    # lib/facter/apache_installed.rb
+    require 'puppet/util/repoutil'
+    Facter.add(:apache_installed, :timeout => 600) do
+      setcode do
+        installed = {}
+        ['apache2', 'apache22', 'apache24', 'httpd'].each do |name|
+          package = Puppet::Resource::indirection.find("package/#{name}")
+          if package.is_a?(Puppet::Resource) and package[:ensure] =~ /^[0-9]+\./
+            installed[name] = package[:ensure]
+          end
+        end
+        installed.to_pson
+      end
+    end
+
 
 Consider similar case on FreeBSD, where **ports** are used to install packages. 
 Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
