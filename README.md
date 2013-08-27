@@ -82,13 +82,17 @@ the `packagex` defined type:
       installed => { }  # see later ...
     }
 
-The main inconvenience, as it may be seen, is related to the `name` and `versions`
-parameters. Their values may be generated automatically at agent side and
-passed to the master as facts. We may use a
+The main question is what to put into the `name`, `versions` and `installed`
+parameters (there is also a `candidates` parameter, that we'll skip for a
+while). Their values may be generated automatically at agent side and passed to
+the master as facts. We may use a
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
-fill-up some facts with information about available apache packages, their
-versions and installation candidates. For this example, we'll implement two
-facts: an `apache_repo_versions` fact (using repoutil)
+fill-up some facts with data for `versions`  and `candidates`. For this
+example, we'll implement three facts: an `apache_repo_versions` fact,
+an `apache_repo_candidates` fact, and an `apache_installed` fact.
+
+The first one, `apache_repo_versions` tells us what versions of apache packages
+are available for installation:
 
     # lib/facter/apache_repo_versions.rb
     require 'puppet/util/repoutil'
@@ -99,7 +103,20 @@ facts: an `apache_repo_versions` fact (using repoutil)
       end
     end
 
-and an `apache_installed` fact:
+Second fact, the `apache_repo_candidates`, tells what versions of apache
+packages are installation candidates:
+
+    # lib/facter/apache_repo_candidates.rb
+    require 'puppet/util/repoutil'
+    Facter.add(:apache_repo_candidates, :timeout => 600) do
+      setcode do
+        names = ['apache2', 'apache22', 'apache24', 'httpd' ]
+        Puppet::Util::RepoUtils.package_candidates(names).to_pson
+      end
+    end
+
+Third fact, the `apache_installed`, tells us what apache packages are currently
+installed 
 
     # lib/facter/apache_installed.rb
     Facter.add(:apache_installed, :timeout => 600) do
