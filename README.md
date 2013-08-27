@@ -63,6 +63,17 @@ You may need to enable **pluginsync** in your `puppet.conf`.
 
 ### Beginning with packagex
 
+Let's start with a trivial example. To install `apache2` package, we simply do
+
+    packagex {'apache2': }
+
+It has exactly same effect as `package{'apache2':}`, nothing special.
+
+Obviously, we may pass all the parameters `package` supports and they will have 
+same effect as for the core `package` resource. For the full list of
+`package`'s parameters see the [package
+reference](https://docs.puppetlabs.com/references/latest/type.html#package).
+
 Consider the following situation. Your repository contains several packages
 that provide *apache2* http server. For example, the FreeBSD ports include (at
 the time of this writing) the following packages:
