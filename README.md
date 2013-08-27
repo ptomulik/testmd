@@ -98,8 +98,10 @@ apache < 2.4, as follows
 
 With the above syntax, `packagex` selects for installation one of the packages
 listed in `name` array. What is selected for installation depends on the
-available package versions (the `versions` parameter) and on the user
-requirements prescribed with version expression (the `ensure` parameter).
+available package versions (the `versions` parameter), the user requirements
+prescribed with version expression (the `ensure` parameter) and on the order in
+which the package names appear in `name` parameter (packages from the left are
+considered to be preferred).
 
 The main question is what to put into the `name`, `versions`, `candidates` and
 `installed` parameters. Their values may be generated automatically at agent
