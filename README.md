@@ -67,7 +67,11 @@ Let's start with a trivial example. To install `apache2` package, we simply do
 
     packagex {'apache2': }
 
-It has exactly same effect as `package{'apache2':}`, nothing special yet.
+It has exactly same effect as 
+
+    package{'apache2': }
+
+Nothing special yet.
 
 Now imagine, you have a puppet module which configures the apache http server.
 It works well with apache 2.2 but it's not ready for the apache 2.4 yet. 
@@ -80,6 +84,13 @@ feature of `packagex` defined type:
       ensure   => '< 2.4.0'
       versions => { apt => {'apache2' => ['2.2.22-13','2.4.6-3']} }
     }
+
+Well, in this form it's more complicated than simply putting:
+
+    packagex {'apache2':
+      ensure   => '2.2.22-13'
+    }
+
 
 
 Obviously, we may pass all the parameters `package` supports and they will have 
