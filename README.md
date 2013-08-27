@@ -26,9 +26,9 @@ subsequent sections.
 The `packagex` is a defined type which wraps the core `package` resource. 
 It adds some features to the core `package`, including:
 
-* expressions in `ensure` parameter (e.g. `ensure => '>=2.2.4'`) - this enables
-  an extended versioning (also on package providers that are not versionable by
-  their own),
+* expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this enables
+  an extended versioning, also for package providers that are not versionable
+  by their own,
 * passing an array of (equivalent) package names to let the `packagex` pickup
   first available candidate for installation,
 * passing build options to package managers which compile/build their packages
@@ -38,9 +38,10 @@ The `packagex` defined type works mostly as the core `package` resource. It
 accepts all the parameters known to the core `package` resource plus parameters
 that extend its functionality. Defaults for the `package` resource are honored.
 
-In addition, the `packagex` module provides a `packagex_defaultprovider` fact, 
-which tells to the master, what is the default package provider for the target
-(agent) OS.
+In addition, the `packagex` module provides the following facts:
+
+* `packagex_defaultprovider` - tells what is the default package provider for
+  the target (agent) OS.
 
 ## Setup
 
