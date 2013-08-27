@@ -101,10 +101,9 @@ listed in `name` array. What is selected for installation depends on the
 available package versions (the `versions` parameter) and on the user
 requirements prescribed with version expression (the `ensure` parameter).
 
-The main question is what to put into the `name`, `versions` and `installed`
-parameters (there is also a `candidates` parameter, that we'll skip for a
-while). Their values may be generated automatically at agent side and passed to
-the master as facts. We may use a
+The main question is what to put into the `name`, `versions`, `candidates` and
+`installed` parameters. Their values may be generated automatically at agent
+side and passed to the master as facts. We may use a
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
 fill-up some facts with data for `versions`  and `candidates`. For this
 example, we'll implement three facts: an `apache_repo_versions` fact,
