@@ -76,6 +76,15 @@ The `packagex` module has the following limitations:
 * packages are not rebuilt/reinstalled automatically when only `$build_options`
   get changed; if you need to change build options for a package, you should
   deinstall it before compiling the modified puppet catalog,
+* version expressions and the resulting extended versioning is not a perfect
+  solution (and will never be probably). It's possible, for example, that the
+  package lists and their versions passed from agents to `packagex` (via facts)
+  are outdated. This may cause failures when puppet start to install requested
+  packages (when the catalog is already compiled). The problem may persist even
+  if an appropriate cache refresh command (`apt-get update`, for example) is
+  invoked systematically by puppet. The facts are always generated before the
+  cache is refreshed.
+
 
 ## Development
 
