@@ -77,21 +77,12 @@ To install version < 2.4 of a package we may use version expression feature of
 the `packagex` defined type:
 
     packagex {'apache2':
-      ensure   => '< 2.4.0'
-      versions => { apt => {'apache2' => ['2.2.22-13','2.4.6-3']} }
+      ensure    => '< 2.4.0',
+      versions  => { apt => {'apache2' => ['2.2.22-13','2.4.6-3']} },
+      installed => { }  # see later ...
     }
 
-Well, in this form it's more complicated than simply putting:
-
-    package {'apache2': ensure   => '2.2.22-13' }
-
-or
-
-    packagex {'apache2': ensure   => '2.2.22-13' }
-
-but note, that the later forms work only with versionable package providers. 
-
-The main inconvenience, as for now, is related to the `name` and `versions`
+The main inconvenience, as it may be seen, is related to the `name` and `versions`
 parameters. Their values may be generated automatically at agent side and
 passed to the master as facts. We may use a
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
