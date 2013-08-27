@@ -116,7 +116,7 @@ packages are available for installation:
     require 'puppet/util/repoutil'
     Facter.add(:apache_repo_versions, :timeout => 600) do
       setcode do
-        names = ['apache2', 'apache22', 'apache24', 'httpd' ]
+        names = ['apache2', 'apache22', 'apache24' ]
         Puppet::Util::RepoUtils.package_versions(names).to_pson
       end
     end
@@ -128,7 +128,7 @@ packages are installation candidates:
     require 'puppet/util/repoutil'
     Facter.add(:apache_repo_candidates, :timeout => 600) do
       setcode do
-        names = ['apache2', 'apache22', 'apache24', 'httpd' ]
+        names = ['apache2', 'apache22', 'apache24' ]
         Puppet::Util::RepoUtils.package_candidates(names).to_pson
       end
     end
@@ -140,7 +140,7 @@ installed on the agent
     Facter.add(:apache_installed, :timeout => 600) do
       setcode do
         installed = {}
-        names = ['apache2', 'apache22', 'apache24', 'httpd'].
+        names = ['apache2', 'apache22', 'apache24']
         names.each do |name|
           package = Puppet::Resource::indirection.find("package/#{name}")
           if package.is_a?(Puppet::Resource) and package[:ensure] =~ /^[0-9]+\./
@@ -151,16 +151,18 @@ installed on the agent
       end
     end
 
-Now, things become easy. To install apache < 2.4, we simply do:
+Now, things become a little bit easier. To install apache < 2.4, we do:
 
     packagex {'apache2':
-      names     => hash_keys($::apache_repo_versions),
+      names     => ['apache2', 'apache22', 'apache24'],
       ensure    => '< 2.4.0',
       versions  => $::apache_repo_versions,
       candidates  => $::apache_repo_candidates,
       installed => $::apache_installed,
     }
 
+Later on, when your module will become ready for apache 2.4, you may simply
+change the `ensure => '< 2.4.0'` to `ensure >= 2.4.0`.
 
 
 Obviously, we may pass all the parameters `package` supports and they will have 
