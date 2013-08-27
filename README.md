@@ -78,6 +78,14 @@ the time of this writing) the following packages:
 * `apache22-worker-mpm` - version `2.2.25`, worker MPM,
 * `apache24` - version `2.4.6`, MPM as DSO or selected as compile option.
 
+At the same time, Debian repositories provide the following packages:
+
+* `apache2` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-event` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-itk` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-prefork` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-worker` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+
 You develop a puppet classes to install and configure the apache http server.
 One of them, let say `apachex::package` is responsible for the installation.
 Some configuration options differ between versions `2.2` and `2.4` and you wish
