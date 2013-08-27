@@ -96,8 +96,8 @@ considered before installing the package
 
 * most of the apache modules are part of the apache project, on Debian most of
   them are available as separate installable packages, on FreeBSD (ports),
-  however, you must set appropriate options (`make config`) to have your
-  modules installed,
+  however, you must set appropriate options (`make config`) for an `apache2X`
+  port to have your modules installed,
 * for apache < 2.4 MPM must be selected by selecting appropriate package, 
   for >= 2.4 MPMs are available as dynamic modules, and default MPM is choosen
   at compile time (via build options) - again: some compile-time options must 
