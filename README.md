@@ -105,9 +105,9 @@ precedence). If there is still a package having  multiple versions suitable for
 installation, the most recent version is selected.
 
 The obvious question is what to put into the `name`, `versions`, `candidates`
-and `installed` parameters (it would be quite stupid to always define them by
-hand). Their values may be generated automatically at agent side and passed to
-the master as facts. We may use a
+and `installed` parameters (it would be quite stupid to always have to define
+them manually). Their values may be generated automatically at agent side and
+passed to the master as facts. We may use a
 [ptomulik-repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin to
 fill-up some facts with data for `versions`  and `candidates`. For this
 example, we'll assume that the relevant package names are `apache2` (Debian),
