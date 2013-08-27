@@ -170,17 +170,17 @@ Once, your module becomes ready for apache 2.4, you may change the
 `ensure => '< 2.4.0'` to `ensure => '~= 2.4'`, to install apache 2.4 and keep
 the version 2.4 installed.
 
-The installation and configuration of the apache package is more tricky, than
-shown above. Apache configuration options change from version to version and
-some of them differ significantly between versions `2.2` and `2.4`. It should
-be known in advance which version is going to be installed in order to select
-appropriate templates for configuration files. In addition, the following
-aspects must be considered before installing the package
+In real world, the installation and configuration of the apache package is more
+tricky than shown above. Apache configuration options change from version to
+version and some of them differ significantly between versions `2.2` and `2.4`.
+It should be known in advance which version is going to be installed in order
+to select appropriate templates for configuration files. In addition, the
+following aspects must be considered before installing the package
 
 * for apache < 2.4 MPM must be selected by selecting appropriate package, 
-  for >= 2.4 MPMs are available as dynamic modules, and default MPM is choosen
-  at compile time (via build options) - again: some compile-time options must 
-  be set on FreeBSD ports,
+  for >= 2.4 MPMs are available as dynamic modules, and default MPM is chosen
+  at compile time (via build options) - some build options must be set on
+  FreeBSD ports to select default MPM,
 * most of the apache modules are part of the apache project; on Debian most of
   them are available as separate installable packages; on FreeBSD (ports),
   however, you must set appropriate options (`make config`) for an appropriate
