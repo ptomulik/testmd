@@ -86,12 +86,13 @@ At the same time, Debian repositories provide the following packages:
 * `apache2-mpm-prefork` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
 * `apache2-mpm-worker` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
 
-You develop a puppet classes which install and configure apache http server.
+You develop puppet classes which install and configure apache http server.
 One of them, let say `apachex::package`, is responsible for the installation.
-The configuration options differ between versions `2.2` and `2.4` so it should
-be known in advance which version is installed in order to select appropriate
-templates for configuration files. In addition, the following aspects must be
-considered before installing the package
+Apache configuration options change from version to version and differ between
+versions `2.2` and `2.4`. It should be known in advance which version is going
+to be installed in order to select appropriate templates for configuration
+files. In addition, the following aspects must be considered before installing
+the package
 
 * most of the apache modules are part of the apache project and must be enabled
   at compile time (in FreeBSD ports, for example),
