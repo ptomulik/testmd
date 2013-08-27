@@ -4,10 +4,10 @@
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with [Modulename]](#setup)
-    * [What [Modulename] affects](#what-[modulename]-affects)
+3. [Setup - The basics of getting started with packagex](#setup)
+    * [What packagex affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with [Modulename]](#beginning-with-[Modulename])
+    * [Beginning with packagex](#beginning-with-packagex)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -35,16 +35,16 @@ resource. It adds some features to the core `package`, including:
 
 The `packagex` defined type works mostly as the core `package` resource. It
 accepts all the parameters known to the core `package` resource plus parameters
-that extend its functionality. Defaults for the `package` resource are honored.
-
-In addition, the `packagex` module provides the following facts:
-
-* `packagex_defaultprovider` - tells what is the default package provider for
-  the target (agent) OS.
-
+that extend its functionality. Defaults for the `package` resource are honored.       
+                                                                                      
+In addition, the `packagex` module provides the following facts:                      
+                                                                                      
+* `packagex_defaultprovider` - tells what is the default package provider for         
+  the target (agent) OS.                                                              
+                                                                                      
 ## Setup
 
-### What [Modulename] affects
+### What packagex affects
 
 * A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
 * This is a great place to stick any warnings.
@@ -54,7 +54,7 @@ In addition, the `packagex` module provides the following facts:
 
 You may need to enable **pluginsync** in your `puppet.conf`.
 
-### Beginning with [Modulename]
+### Beginning with packagex
 
 The very basic steps needed for a user to get the module up and running. 
 
@@ -84,3 +84,4 @@ Since your module is awesome, other users will want to play with it. Let them kn
 ## Release Notes/Contributors/Etc **Optional**
 
 If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+
