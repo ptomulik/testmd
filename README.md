@@ -83,9 +83,13 @@ feature of the `packagex` defined type:
 
 Well, in this form it's more complicated than simply putting:
 
+    package {'apache2': ensure   => '2.2.22-13' }
+
+or
+
     packagex {'apache2': ensure   => '2.2.22-13' }
 
-but note, that the second form work only with versionable package providers. 
+but note, that this form work only with versionable package providers. 
 
 Consider similar case on FreeBSD, where **ports** are used to install packages. 
 Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
