@@ -97,18 +97,14 @@ passed to the master as facts. We may use a
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
 fill-up some facts with information about available apache packages, their
 versions and installation candidates. For this example, we'll implement two
-facts. An `apache_repo_versions` fact (using repoutil)
+facts: an `apache_repo_versions` fact (using repoutil)
 
     # lib/facter/apache_repo_versions.rb
     require 'puppet/util/repoutil'
     Facter.add(:apache_repo_versions, :timeout => 600) do
       setcode do
-        Puppet::Util::RepoUtils.package_versions([
-          'apache2', 
-          'apache22',
-          'apache24',
-          'httpd'
-        ]).to_pson
+        names = ['apache2', 'apache22', 'apache24', 'httpd' ]
+        Puppet::Util::RepoUtils.package_versions(names).to_pson
       end
     end
 
@@ -118,7 +114,8 @@ and an `apache_installed` fact:
     Facter.add(:apache_installed, :timeout => 600) do
       setcode do
         installed = {}
-        ['apache2', 'apache22', 'apache24', 'httpd'].each do |name|
+        names = ['apache2', 'apache22', 'apache24', 'httpd'].
+        names.each do |name|
           package = Puppet::Resource::indirection.find("package/#{name}")
           if package.is_a?(Puppet::Resource) and package[:ensure] =~ /^[0-9]+\./
             installed[name] = package[:ensure]
