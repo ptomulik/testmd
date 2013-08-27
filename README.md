@@ -86,11 +86,30 @@ At the same time, Debian repositories provide the following packages:
 * `apache2-mpm-prefork` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
 * `apache2-mpm-worker` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
 
-You develop a puppet classes to install and configure the apache http server.
-One of them, let say `apachex::package` is responsible for the installation.
-Some configuration options differ between versions `2.2` and `2.4` and you wish
-to give user an option to choose `2.2`, `2.4` or `2.X` for any `X` to install
-without bothering about the package name.
+You develop a puppet classes which install and configure apache http server.
+One of them, let say `apachex::package`, is responsible for the installation.
+The configuration options differ between versions `2.2` and `2.4` so it should
+be known in advance which version is installed in order to select appropriate
+templates for configuration files. In addition, the following aspects must be
+considered before installing the package
+
+* most of the apache modules are part of the apache project and must be enabled
+  at compile time (in FreeBSD ports, for example),
+* for versions < 2.4 MPM must be selected by selecting appropriate package, 
+  for >= 2.4 MPMs are available as dynamic modules, and default MPM is choosen
+  at compile time via build options,
+
+You give the user an option to choose
+between `2.2`, `2.4` (or, more generally, to use `2.X`). In addition, the
+`apachex::package` needs information about the (default) MPM to be used and few
+other parameters. Let say, you arrive at the following class interface:
+
+    class apachex::package(
+      $version,
+      $mpm
+    ) {
+    # ...
+    }
 
 
 
