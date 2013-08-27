@@ -88,7 +88,9 @@ The `packagex` module has certain limitations, for example:
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+The project is held at github:
+
+* [https://github.com/ptomulik/puppet-packagex](https://github.com/ptomulik/puppet-packagex)
 
 ## Release Notes/Contributors/Etc **Optional**
 
