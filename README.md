@@ -50,10 +50,10 @@ Since the `packagex` is merely a wrapper around the `package` resource, it
 affects all the things the core `package` affects. In addition, the following
 subjects may be altered on your system:
 
-* a debug file(s) may be generated, if requested (see the `debugfile`
+* a debug file(s) may be generated, if requested (see the `$debugfile`
   parameter)
 * option files for FreeBSD ports may be altered, see the `$build_options`
-  parameter,
+  parameter and documentation of `ptomulik/bsdportconfig` module,
 
 ### Setup Requirements
 
@@ -61,9 +61,23 @@ You may need to enable **pluginsync** in your `puppet.conf`.
 
 ### Beginning with packagex
 
-The very basic steps needed for a user to get the module up and running. 
+The module should be used together with the `ptomulik-repoutil`. It's included
+in the list of dependencies, and shall install automatically when the
+`ptomulik-packagex` gets installed.
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+Consider the following situation. Your repository contains several packages
+that provide apache2 http server. For example, the FreeBSD ports include (at
+the time of this writing) the following packages:
+
+* `apache22` - version `2.2.25`, prefork MPM,
+* `apache22-event-mpm` - version `2.2.25`, event MPM,
+* `apache22-itk-mpm` - version `2.2.25`, itk MPM,
+* `apache22-peruser-mpm` - version `2.2.25`, peruser MPM,
+* `apache22-worker-mpm` - version `2.2.25`, worker MPM,
+* `apache24` - version `2.4.6`, MPM as DSO or selected as compile option.
+
+
+
 
 ## Usage
 
