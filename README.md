@@ -1,75 +1,81 @@
-# ptomulik-ptlib #
+# ptomulik-packagex
 
-[![Build Status](https://travis-ci.org/ptomulik/ptomulik-ptlib.png?branch=master)](https://travis-ci.org/ptomulik/ptomulik-ptlib)
+#### Table of Contents
 
-This module provides a utility library of functions for developing Puppet
-Modules. 
+1. [Overview](#overview)
+2. [Module Description - What the module does and why it is useful](#module-description)
+3. [Setup - The basics of getting started with [Modulename]](#setup)
+    * [What [Modulename] affects](#what-[modulename]-affects)
+    * [Setup requirements](#setup-requirements)
+    * [Beginning with [Modulename]](#beginning-with-[Modulename])
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
-# Functions #
+## Overview
 
+This module implements a `packagex` defined type which adds some features to
+standard `package` resource. For example, a simple versioning may be enabled
+for providers which are normally not versionable (FreeBSD ports e.g). Other
+features are available and are described in subsequent sections.
 
-pt\_delete\_undef\_values
--------------------------
-Deletes all instances of the undef value from an array or hash.
+## Module Description
 
-*Examples:*
-    
-    $hash = pt_delete_undef_values({a=>'A', b=>'', c=>undef, d => false})
+The `packagex` is a defined type which wraps the core `package` resource. 
+It adds some features to the core `package`, including:
 
-Would return: `{a => 'A', b => '', d => false}`
+* expressions in `ensure` parameter (e.g. `ensure => '>=2.2.4'`) - this enables
+  an extended versioning (also on package providers that are not versionable by
+  their own),
+* passing an array of (equivalent) package names to let the `packagex` pickup
+  first available candidate for installation,
+* passing build options to package managers which compile/build their packages
+  before installation (FreeBSD ports, for example)
 
-    $array = pt_delete_undef_values(['A','',undef,false])
+The `packagex` defined type works mostly as the core `package` resource. It has
+all the parameters defined by the `package` resource plus parameters that
+extend the functionality. Defaults for the `package` resource are honored.            
+                                                                                      
+## Setup                                                                              
+                                                                                      
+### What [Modulename] affects                                                         
+                                                                                      
+* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
+* This is a great place to stick any warnings.
+* Can be in list or paragraph form. 
 
-Would return: `['A','',false]`
+### Setup Requirements **OPTIONAL**
 
-- *Type*: rvalue
+You may need to enable **pluginsync** in your `puppet.conf`.
 
-pt\_delete\_values
-------------------
-Deletes all instances of a given value from a hash.
+### Beginning with [Modulename]
 
-*Examples:*
+The very basic steps needed for a user to get the module up and running. 
 
-    pt_delete_values({'a'=>'A','b'=>'B','c'=>'C','B'=>'D'}, 'B')
+If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
 
-Would return: `{'a'=>'A','c'=>'C','B'=>'D'}`
+## Usage
 
-- *Type*: rvalue
+Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
 
-pt\_getparamdefault
--------------------
+## Reference
 
-Takes a resource reference and name of the parameter and returns default value
-of resource's parameter (or empty string if default is not set).
+Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
 
-*Examples:*
+## Limitations
 
-    package { 'apache2': provider => apt }
-    $prov = pt_getparamdefault(Package['apache2'], provider)
+The `packagex` module has the following limitations:
 
-Would result with `$prov == ''` (default provider was not defined).
+* the `$build_options` are currently supported only by the `ports` provider,
+* packages are not rebuilt/reinstalled automatically when only `$build_options`
+  get changed; if you need to change build options for a package, you should
+  deinstall it before compiling the modified puppet catalog,
 
-    Package { provider => aptitude }
+## Development
 
-    node example.com {
-      package { 'apache2': provider => apt }
-      $prov = pt_getparamdefault(Package['apache2'], provider)
-    }
+Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
 
-Would result with `$prov == 'aptitude'`.
+## Release Notes/Contributors/Etc **Optional**
 
-    Package { provider => aptitude }
-
-    node example.com {
-      Package { provider => apt }
-      package { 'apache2': }
-      $prov = pt_getparamdefault(Package['apache2'], provider)
-    }
-
-Would result with `$prov == 'apt'`. 
-
-    pt_getparamdefault(Foo['bar'], geez)
-
-Would not compile (resource `Foo[bar]` does not exist)
-
-- *Type*: rvalue
+If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
