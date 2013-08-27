@@ -95,8 +95,9 @@ The main inconvenience, as for now, is related to the `name` and `versions`
 parameters. To circumvent this, we may use the
 [ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin
 and fill-up some facts with information about available apache packages and
-their versions. For this example, we'll implement two facts
-`apache_repo_versions` (using repoutil) and `apache_installed`:
+their versions. For this example, we'll implement two facts.
+
+An `apache_repo_versions` fact (using repoutil)
 
     # lib/facter/apache_repo_versions.rb
     require 'puppet/util/repoutil'
@@ -110,6 +111,8 @@ their versions. For this example, we'll implement two facts
         ]).to_pson
       end
     end
+
+and `apache_installed` fact:
 
     # lib/facter/apache_installed.rb
     require 'puppet/util/repoutil'
