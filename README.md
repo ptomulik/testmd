@@ -79,8 +79,25 @@ the `packagex` defined type:
     packagex {'apache2':
       ensure    => '< 2.4.0',
       versions  => { apt => {'apache2' => ['2.2.22-13','2.4.6-3']} },
-      installed => { }  # see later ...
+      installed => { },  # see later ...
     }
+
+Consider similar case on FreeBSD, where **ports** are used to install packages. 
+Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
+`apache24` (ver. `2.4.6`). In this case, we may use `packagex` to install 
+apache < 2.4, as follows
+
+    packagex {'apache2':
+      name     => ['apache24', 'apache22'],
+      ensure   => '< 2.4.0',
+      versions => { ports => { apache22 => ['2.2.25'], apache24 => ['2.4.6']} },
+      installed => { },  # see later ...
+    }
+
+With the above syntax, `packagex` selects for installation one of the packages
+listed in `name` array. What is selected for installation depends on the
+available package versions (the `versions` parameter) and on the user
+requirements prescribed with version expression (the `ensure` parameter).
 
 The main question is what to put into the `name`, `versions` and `installed`
 parameters (there is also a `candidates` parameter, that we'll skip for a
@@ -91,8 +108,8 @@ fill-up some facts with data for `versions`  and `candidates`. For this
 example, we'll implement three facts: an `apache_repo_versions` fact,
 an `apache_repo_candidates` fact, and an `apache_installed` fact.
 
-The first one, `apache_repo_versions` tells us what versions of apache packages
-are available for installation:
+First fact, the `apache_repo_versions`, tells us what versions of apache
+packages are available for installation:
 
     # lib/facter/apache_repo_versions.rb
     require 'puppet/util/repoutil'
@@ -116,7 +133,7 @@ packages are installation candidates:
     end
 
 Third fact, the `apache_installed`, tells us what apache packages are currently
-installed 
+installed on the agent
 
     # lib/facter/apache_installed.rb
     Facter.add(:apache_installed, :timeout => 600) do
@@ -133,22 +150,17 @@ installed
       end
     end
 
-
-Consider similar case on FreeBSD, where **ports** are used to install packages. 
-Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
-`apache24` (ver. `2.4.6`). In this case, we may use `packagex` to install 
-apache < 2.4, as follows
+Now, things become easy. To install apache < 2.4, we simply do:
 
     packagex {'apache2':
-      name     => ['apache24', 'apache22']
-      ensure   => '< 2.4.0'
-      versions => { ports => { apache22 => ['2.2.25'], apache24 => ['2.4.6']} }
+      names     => hash_keys($::apache_repo_versions),
+      ensure    => '< 2.4.0',
+      versions  => $::apache_repo_versions,
+      candidates  => $::apache_repo_candidates,
+      installed => $::apache_installed,
     }
 
-With the above syntax, `packagex` selects for installation one of the packages
-listed in `name` array. What is selected for installation depends on the
-available package versions (the `versions` parameter) and on the user
-requirements prescribed with version expression (the `ensure` parameter).
+
 
 Obviously, we may pass all the parameters `package` supports and they will have 
 same effect as for the core `package` resource. For the full list of
