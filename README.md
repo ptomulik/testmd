@@ -92,11 +92,12 @@ or
 but note, that the later forms work only with versionable package providers. 
 
 The main inconvenience, as for now, is related to the `name` and `versions`
-parameters. To circumvent this, we may use the
-[ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin
-and fill-up some facts with information about available apache packages and
-their versions. For this example, we'll implement two facts.
-An `apache_repo_versions` fact (using repoutil)
+parameters. Their values may be generated automatically at agent side and
+passed to the master as facts. We may use a
+[ptomulik-repoutil](https://forge.pupetlabs.com/ptomulik/repoutil) plugin to
+fill-up some facts with information about available apache packages, their
+versions and installation candidates. For this example, we'll implement two
+facts. An `apache_repo_versions` fact (using repoutil)
 
     # lib/facter/apache_repo_versions.rb
     require 'puppet/util/repoutil'
