@@ -109,10 +109,11 @@ and `installed` parameters (it would be quite stupid to hard-code it each and
 every time). The proposed approach is to generate their values automatically at
 agent side and to send them to the master as facts. The
 [repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin may be used 
-to fill-up some facts with data for `versions`  and `candidates`. For this
-example, we'll assume that the relevant package names are `apache2` (Debian),
-`apache22` and `apache24` (FreeBSD). We then implement three facts: an
-`apache_repo_versions` fact, an `apache_repo_candidates` fact, and an
+to fill-up some facts with data for `versions`  and `candidates`.
+
+For this example we assume that the relevant package names are `apache2`
+(Debian), `apache22` and `apache24` (FreeBSD). We then implement three facts:
+an `apache_repo_versions` fact, an `apache_repo_candidates` fact, and an
 `apache_installed` fact.
 
 First fact, the `apache_repo_versions`, tells us what versions of apache
