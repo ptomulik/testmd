@@ -94,11 +94,14 @@ advance which version is going to be installed in order to select appropriate
 templates for configuration files. In addition, the following aspects must be
 considered before installing the package
 
-* most of the apache modules are part of the apache project and must be enabled
-  at compile time (in FreeBSD ports, for example),
-* for versions < 2.4 MPM must be selected by selecting appropriate package, 
+* most of the apache modules are part of the apache project, on Debian most of
+  them are available as separate installable packages, on FreeBSD (ports),
+  however, you must set appropriate options (`make config`) to have your
+  modules installed,
+* for apache < 2.4 MPM must be selected by selecting appropriate package, 
   for >= 2.4 MPMs are available as dynamic modules, and default MPM is choosen
-  at compile time via build options,
+  at compile time (via build options) - again: some compile-time options must 
+  be set on FreeBSD ports,
 
 You give the user an option to choose
 between `2.2`, `2.4` (or, more generally, to use `2.X`). In addition, the
