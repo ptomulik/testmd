@@ -67,18 +67,14 @@ Let's start with a trivial example. To install `apache2` package, we simply do
 
     packagex {'apache2': }
 
-It has exactly same effect as 
-
-    package{'apache2': }
-
-Nothing special yet.
+It has exactly same effect as `package{'apache2': }`, nothing special yet.
 
 Now imagine, you have a puppet module which configures the apache http server.
 It works well with apache 2.2 but it's not ready for the apache 2.4 yet. 
 Your **apt** repositories provide versions `2.2.22-13` and `2.4.6-3` for
 installation. By default, the latest (2.4.6-3) version gets installed. One way,
 to install our preferred version of a package is to use version expression
-feature of `packagex` defined type:
+feature of the `packagex` defined type:
 
     packagex {'apache2':
       ensure   => '< 2.4.0'
@@ -87,11 +83,25 @@ feature of `packagex` defined type:
 
 Well, in this form it's more complicated than simply putting:
 
+    packagex {'apache2': ensure   => '2.2.22-13' }
+
+but note, that the second form work only with versionable package providers. 
+
+Consider similar case on FreeBSD, where **ports** are used to install packages. 
+Assume, there are the following packages: `apache22` (ver. `2.2.25`) and
+`apache24` (ver. `2.4.6`). In this case, we may use `packagex` to install 
+apache < 2.4, as follows
+
     packagex {'apache2':
-      ensure   => '2.2.22-13'
+      name     => ['apache24', 'apache22']
+      ensure   => '< 2.4.0'
+      versions => { ports => { apache22 => ['2.2.25'], apache24 => ['2.4.6']} }
     }
 
-
+With the above syntax, `packagex` selects for installation one of the packages
+listed in `name` array. What is selected for installation depends on the
+available package versions (the `versions` parameter) and on the user
+requirements prescribed with version expression (the `ensure` parameter).
 
 Obviously, we may pass all the parameters `package` supports and they will have 
 same effect as for the core `package` resource. For the full list of
