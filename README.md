@@ -23,8 +23,8 @@ subsequent sections.
 
 ## Module Description
 
-The `packagex` is a defined type which wraps the core `package` resource. 
-It adds some features to the core `package`, including:
+The module implements a `packagex` defined type, which wraps the core `package`
+resource. It adds some features to the core `package`, including:
 
 * expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this enables
   an extended versioning, 
