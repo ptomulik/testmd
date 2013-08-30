@@ -112,7 +112,7 @@ at the time of this writing: `ruby-1.8.7.371,1`, `ruby-1.9.3.448,1`, and
 `lang/ruby20` respectively. If you pass a package name which is ambiguous,
 transaction will fail with message such as:
 
-    Error: Could not prefetch bsdportconfig provider 'ports': Found 3 ports with name 'ruby': ruby-1.8.7.371,1, ruby-1.9.3.448,1, ruby-2.0.0.195_1,1
+    Error: Could not prefetch bsdportconfig provider 'ports': Found 3 ports with name 'ruby': 'ruby-1.8.7.371,1', 'ruby-1.9.3.448,1', 'ruby-2.0.0.195_1,1'
 
 #### Parameters within `bsdportconfig`:
 
@@ -147,6 +147,9 @@ These are current known limitation:
     algorithm used to read files resembles what was seen in ports' Makefiles,
     but it was also seen, that the algorithm used by ports is going to be
     changed (so we may desync at some point)
+  * it still has quite poor performance when enumerating instances with `puppet
+    resoruce bsdconfig`; it takes a while to scan options for all ports that
+    arleady have defined them (about 6s for 30 packages for example),
 
 ## Development
 
