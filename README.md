@@ -4,7 +4,7 @@
 
 Configure build options for FreeBSD ports.
 
-**Note**: some significant changes vere introduced in 0.2.0 (the module has
+**Note**: some significant changes were introduced in 0.2.0 (the module has
 actually been reimplemented, see CHANGELOG). I believe the introduced changes
 are for better quality and should not break existing manifests.
 
@@ -48,8 +48,12 @@ The module supports only the **on/off** options.
 
 This module affects:
 
-* config options for given ports, it's done by modifying options files
-  `$PORT_DBDIR/*/options.local`, where `$PORT_DBDIR='/var/db/ports'` by default.
+* options for given ports, it's done by modifying options files
+  `$PORT_DBDIR/*/options.local`, where `$PORT_DBDIR='/var/db/ports'` by
+  default,
+* make command is used to search ports and retrieve port characteristics,
+  these invocations of `make`  are read-only and should not affect your system
+  by their own,
 
 ### Setup Requirements
 
