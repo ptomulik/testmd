@@ -4,8 +4,8 @@
 
 Configure build options for FreeBSD ports.
 
-**Note**: significant changes were introduced in 0.2.0 (the module has was
-actually reimplemented, see CHANGELOG).
+**Note**: significant changes were introduced in 0.2.0 (the module was actually
+reimplemented, see CHANGELOG).
 
 #### Table of Contents
 
@@ -81,6 +81,10 @@ modules:
 
     bsdportconfig { 'apache22': options => {'SUEXEC'=>on} }
 
+**Example**: since version 0.2.0 full port names are also supported:
+
+    bsdportconfig { 'apache22-2.2.25': options => {'SUEXEC'=>on} }
+
 In this case the *bsdportconfig* will try to determinr port's path automatically.
 
 ## Usage
@@ -101,6 +105,7 @@ We use the following terminology when referring ports/packages:
     port origin (or origin in short)
 
 Package origins are used as primary identifiers for bsdportconfig instances.
+It's recommended to use package origins or port names to identify ports.
 
 #### AMBIGUITY OF PACKAGE NAMES
 
@@ -112,7 +117,7 @@ at the time of this writing: `ruby-1.8.7.371,1`, `ruby-1.9.3.448,1`, and
 `lang/ruby20` respectively. If you pass a package name which is ambiguous,
 transaction will fail with message such as:
 
-    Error: Could not prefetch bsdportconfig provider 'ports': Found 3 ports with name 'ruby': 'ruby-1.8.7.371,1', 'ruby-1.9.3.448,1', 'ruby-2.0.0.195_1,1'
+    Error: Could not prefetch bsdportconfig provider 'ports': found 3 ports with name 'ruby': 'ruby-1.8.7.371,1', 'ruby-1.9.3.448,1', 'ruby-2.0.0.195_1,1'
 
 #### Parameters within `bsdportconfig`:
 
