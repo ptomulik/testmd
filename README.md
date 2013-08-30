@@ -96,12 +96,12 @@ Set build options for BSD ports.
 
 We use the following terminology when referring ports/packages:
 
-  * a string in form `'apache22'` or `'ruby'` is referred to as package name
+  * a string in form `'apache22'` or `'ruby'` is referred to as *package* name
     (or package in short)
   * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
-    as a port name (or port in short)
+    as a *port* name (or port in short)
   * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
-    port origin (or origin in short)
+    port *origin* (or origin in short)
 
 Package origins are used as primary identifiers for bsdportconfig instances.
 It's recommended to use package origins or port names to identify ports.
@@ -110,7 +110,7 @@ It's recommended to use package origins or port names to identify ports.
 
 Accepting package names (e.g. `apache22`) as the [name](#name-required)
 parameter was introduced for convenience in 0.2.0. However, package names in
-this form are ambiguous, meaning that port search may find multiple ports with
+this form are ambiguous, meaning that port search may find multiple ports 
 matching the given package name. For example `'ruby'` package has three ports
 at the time of this writing  (2013-08-30): `ruby-1.8.7.371,1`,
 `ruby-1.9.3.448,1`, and `ruby-2.0.0.195_1,1` with origins `lang/ruby18`,
@@ -123,11 +123,11 @@ is ambiguous, transaction will fail with message such as:
 
 ##### name (required)
 
-Reference to a port. A package name, port name or origin may be passed as the
-`name` parameter (see [TERMINOLOGY](#terminology) in resource description). If
-the name has form 'category/subdir' it is treated as an origin. Otherwise, the
-provider tries to find matching port by port name and if it fails, by package
-name. Note, that package names are ambiguous, see [AMBIGUITY OF PACKAGE
+Reference to a port. A *package* name, *port* name or *origin* may be passed as
+the `name` parameter (see [TERMINOLOGY](#terminology) in resource description).
+If the name has form 'category/subdir' it is treated as an origin. Otherwise,
+the provider tries to find matching port by port name and if it fails, by
+package name. Note, that package names are ambiguous, see [AMBIGUITY OF PACKAGE
 NAMES](#ambiguity-of-package-names) in the resource description.
 
 
