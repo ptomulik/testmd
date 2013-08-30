@@ -124,7 +124,7 @@ is ambiguous, transaction will fail with message such as:
 ##### name (required)
 
 Reference to a port. A package name, port name or origin may be passed as the
-`name` parameter (see [TERMINOLOGY](#TERMINOLOGY) in resource description). If
+`name` parameter (see [TERMINOLOGY](#terminology) in resource description). If
 the name has form 'category/subdir' it is treated as an origin. Otherwise, the
 provider tries to find matching port by port name and if it fails, by package
 name. Note, that package names are ambiguous, see [AMBIGUITY OF PACKAGE
