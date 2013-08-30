@@ -1,3 +1,13 @@
+# bsdportconfig
+
+[![Build Status](https://travis-ci.org/ptomulik/puppet-bsdportconfig.png?branch=master)](https://travis-ci.org/ptomulik/puppet-bsdportconfig)
+
+Configure build options for FreeBSD ports.
+
+**Note**: some significant changes vere introduced in 0.2.0 (the module has
+actually been reimplemented, see CHANGELOG). I believe the introduced changes
+are for better quality and should not break existing manifests.
+
 #### Table of Contents
 
 1. [Overview](#overview)
