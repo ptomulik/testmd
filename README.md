@@ -85,7 +85,6 @@ modules:
 
     bsdportconfig { 'apache22-2.2.25': options => {'SUEXEC'=>on} }
 
-In this case the *bsdportconfig* will try to determinr port's path automatically.
 
 ## Usage
 
@@ -109,19 +108,20 @@ It's recommended to use package origins or port names to identify ports.
 
 #### AMBIGUITY OF PACKAGE NAMES
 
-Accepting package names as name was introduced for convenience. Note, that
-package names in this form are ambiguous, meaning that search may find multiple
-ports with a given package name. For example `'ruby'` package has three ports
-at the time of this writing: `ruby-1.8.7.371,1`, `ruby-1.9.3.448,1`, and
-`ruby-2.0.0.195_1,1` with origins `lang/ruby18`, `lang/ruby19` and
-`lang/ruby20` respectively. If you pass a package name which is ambiguous,
-transaction will fail with message such as:
+Accepting package names (e.g. `apache22`) as the [name](#name-required)
+parameter was introduced for convenience in 0.2.0. However, package names in
+this form are ambiguous, meaning that port search may find multiple ports with
+matching the given package name. For example `'ruby'` package has three ports
+at the time of this writing  (2013-08-30): `ruby-1.8.7.371,1`,
+`ruby-1.9.3.448,1`, and `ruby-2.0.0.195_1,1` with origins `lang/ruby18`,
+`lang/ruby19` and `lang/ruby20` respectively. If you pass a package name which
+is ambiguous, transaction will fail with message such as:
 
     Error: Could not prefetch bsdportconfig provider 'ports': found 3 ports with name 'ruby': 'ruby-1.8.7.371,1', 'ruby-1.9.3.448,1', 'ruby-2.0.0.195_1,1'
 
 #### Parameters within `bsdportconfig`:
 
-##### `name` (required)
+##### name (required)
 
 Reference to a port. A package name, port name or origin may be passed as the
 `name` parameter (see [TERMINOLOGY](#TERMINOLOGY) in resource description). If
@@ -131,7 +131,7 @@ name. Note, that package names are ambiguous, see [AMBIGUITY OF PACKAGE
 NAMES](#ambiguity-of-package-names) in the resource description.
 
 
-##### `options` (optional)
+##### options (optional)
 
 Options for the package. This is a hash with keys being option names and values
 being `'on'/'off'` strings.
