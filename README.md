@@ -134,10 +134,16 @@ These are current known limitation:
 
   * tested manually on FreeBSD only - any feedback welcome from other OSes,
   * unit tests for provider are still missing,
-  * only on/off options are currently supperted, more knowledge about BSD ports
+  * only on/off options are currently supported, more knowledge about BSD ports
     is necessary (are there other possibilities?)
   * only options from option files (`/var/db/ports/*/options{,.local}`) are
-    taken into account when retrieving current state, 
+    taken into account when retrieving current resource state, 
+  * we no longer use public `make showconfig` interface to read option values
+    (it was too slow); the options are retrieved from options files only; this
+    may have some limitations now, and may cause some bugs in future - the
+    algorithm used to read files resembles what was seen in ports' Makefiles,
+    but it was also seen, that the algorithm used by ports is going to be
+    changed (so we may desync at some point)
 
 ## Development
 
