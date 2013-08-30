@@ -4,9 +4,9 @@
 
 Configure build options for FreeBSD ports.
 
-**Note**: some significant changes were introduced in 0.2.0 (the module has
-actually been reimplemented, see CHANGELOG). I believe the introduced changes
-are for better quality and should not break existing manifests.
+**Note**: some significant changes were introduced in 0.2.0 (the module has was
+actually reimplemented, see CHANGELOG). I believe the introduced changes are
+for better quality and should not break existing manifests.
 
 #### Table of Contents
 
