@@ -1,165 +1,264 @@
-# bsdportconfig
+# ptomulik-packagex
 
-[![Build Status](https://travis-ci.org/ptomulik/puppet-bsdportconfig.png?branch=master)](https://travis-ci.org/ptomulik/puppet-bsdportconfig)
-
-Configure build options for FreeBSD ports.
-
-**Note**: significant changes were introduced in 0.2.0 (the module was actually
-reimplemented, see CHANGELOG).
+[![Build Status](https://travis-ci.org/ptomulik/puppet-packagex.png?branch=master)](https://travis-ci.org/ptomulik/puppet-packagex)
 
 #### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Setup](#setup)
-    * [What Bsdportconfig affects](#what-bsdportconfig-affects)
+    * [What packagex affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with Bsdportconfig](#beginning-with-bsdportconfig)
+    * [Beginning with packagex](#beginning-with-packagex)
 4. [Usage](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations](#limitations)
 6. [Development](#development)
 
 ## Overview
 
-This module implements a **bsdportconfig** resource which maintains build
-options for packages installed with BSD ports.
+This module defines `packagex` type which adds some features to the standard
+`package` resource. 
 
 ## Module Description
 
-The **bsdportconfig** module helps to configure BSD ports.
+The module implements a `packagex` defined type, which wraps the core `package`
+resource. It adds some features to the core `package`, including:
 
-Installation and de-installation of FreeBSD ports is handled quite well by
-`package` resource from **puppet**'s core. However, it has no way to
-set configuration options for ports (no `make config` stage), and always
-installs packages with their default options (or with manually pre-set
-options).
+* version expressions in `ensure` parameter (e.g. `ensure => '<2.4.0'`) - this
+  enables an extended versioning, 
+* passing arrays of package names and letting the `packagex` to install one
+  of available candidates,
+* passing build options to package managers which compile/build their packages
+  (FreeBSD ports, for example)
 
-This module tries to fill this gap. It helps to ensure, that certain
-configuration options are set (or unset) for certain ports. You may chain the
-**bsdportconfig** resource with **package** to achieve automatic configuration
-of ports before they get installed.
+The `packagex` defined type possesses all the functionalities of the core
+`package` resource.  It accepts all the parameters known to the core `package`
+resource plus parameters that extend its functionality. Default parameters for
+the `package` resource are also fully honored.
 
-The module supports only the **on/off** options.
+Additionally, the `packagex` module provides the following facts:
+
+* `packagex_defaultprovider` - tells what is the default package provider for
+  the target (agent) OS.
 
 ## Setup
 
-### What Bsdportconfig affects
+### What packagex affects
 
-This module affects:
+Since the `packagex` is merely a wrapper around the `package` resource, it
+affects all the things the core `package` would affect. In addition, the
+following subjects may be altered on your system:
 
-* options for given ports, it's done by modifying options files
-  `$PORT_DBDIR/*/options.local`, where `$PORT_DBDIR='/var/db/ports'` by
-  default,
-* make command is used to search ports and retrieve port characteristics,
-  these invocations of `make`  are read-only and should not affect your system
-  by their own,
+* a debug file(s) may be generated, if requested (see the `$debugfile`
+  parameter)
+* option files for FreeBSD ports may be created/changed, see the
+  `$build_options` parameter and documentation of
+  [ptomulik-bsdportconfig](https://forge.puppetlabs.com/ptomulik/bsdportconfig)
+  module,
 
 ### Setup Requirements
 
-You may need to enable **pluginsync** in your *puppet.conf*.
+You may need to enable **pluginsync** in your `puppet.conf`.
 
-### Beginning with Bsdportconfig
+### Beginning with packagex
 
-**Note**: the resource writes to file only the options listed in `options`
-parameter. Other options are left unaltered.
+Let's start with a trivial example. To install `apache2` package, we simply do
 
-**Example**: ensure that `www/apache22` is configured with `SUEXEC` and `CGID`
-modules:
+    packagex {'apache2': }
 
-    bsdportconfig { 'www/apache22': options => { 'SUEXEC'=>on, 'CGID'=>on } }
+It has exactly same effect as `package{'apache2': }`, nothing special yet.
 
-**Example**: ensure that `www/apache22` is configured without `CGID` module:
+Now imagine, you have a puppet module which configures the apache http server.
+It works well with older versions but it's not ready for the apache 2.4 yet. 
+Your **apt** repositories provide versions `2.2.22-13` and `2.4.6-3` for
+installation. By default, the latest version (`2.4.6-3`) gets installed. 
+To install version < 2.4 of the package we may use version expression feature
+of the `packagex` defined type:
 
-    bsdportconfig { 'www/apache22': options => { 'CGID'=>off } }
+    packagex {'apache2':
+      ensure     => '< 2.4.0',
+      versions   => { apt => {apache2 => ['2.2.22-13','2.4.6-3']} },
+      candidates => { apt => {apache2 => '2.4.6-3'} },
+      installed  => { },  # see later ...
+    }
 
-**Example**: install `www/apache22` package with `SUEXEC` module enabled:
+Consider similar case on FreeBSD, where **ports** are used to install packages. 
+Assume, following ports are available for installation: `apache22` (ver.
+`2.2.25`) and `apache24` (ver. `2.4.6`). In this case, we may use `packagex` to
+install apache < 2.4, as follows
 
-    bsdportconfig { 'www/apache22': options => { 'SUEXEC'=>on } }
-    package { 'www/apache22': require => Bsdportconfig['www/apache22'] }
+    packagex {'apache2':
+      name       => ['apache24', 'apache22'],
+      ensure     => '< 2.4.0',
+      versions   => { ports => {apache22=>['2.2.25'], apache24=>['2.4.6']} },
+      candidates => { ports => {apache22=>'2.2.25', apache24=>'2.4.6'} },
+      installed  => { },  # see later ...
+    }
 
-**Example**: since version 0.1.6 you may use plain package name:
+With the above syntax, `packagex` selects for installation one of the packages
+listed in `name` array. What is selected for installation depends on the
+available package versions (the `versions` parameter), the user requirements
+defined by version expression (the `ensure` parameter) and on the order in
+which the package names appear in `name` parameter (left-most names take
+precedence). If there is still a package having  multiple versions suitable for
+installation, the most recent version is selected.
 
-    bsdportconfig { 'apache22': options => {'SUEXEC'=>on} }
+The obvious question is what to put into the `name`, `versions`, `candidates`
+and `installed` parameters (it would be quite stupid to hard-code them each and
+every time). The proposed approach is to generate their values automatically at
+agent side and to send them to the master as facts. The
+[repoutil](https://forge.puppetlabs.com/ptomulik/repoutil) plugin may be used 
+to generate data for `versions` and `candidates`.
 
-**Example**: since version 0.2.0 full port names are also supported:
+For this example we assume that the relevant package names for the http server
+we're going to install are: `apache2` (Debian), `apache22` and `apache24`
+(FreeBSD). We then implement three facts: an `apache_repo_versions` fact, an
+`apache_repo_candidates` fact, and an `apache_installed` fact.
 
-    bsdportconfig { 'apache22-2.2.25': options => {'SUEXEC'=>on} }
+First fact, the `apache_repo_versions`, tells us what versions of apache
+packages are available for installation:
+
+    # lib/facter/apache_repo_versions.rb
+    require 'puppet/util/repoutil'
+    Facter.add(:apache_repo_versions, :timeout => 600) do
+      setcode do
+        names = ['apache2', 'apache22', 'apache24' ]
+        Puppet::Util::RepoUtils.package_versions(names).to_pson
+      end
+    end
+
+Second fact, the `apache_repo_candidates`, tells what versions of apache
+packages are installation candidates:
+
+    # lib/facter/apache_repo_candidates.rb
+    require 'puppet/util/repoutil'
+    Facter.add(:apache_repo_candidates, :timeout => 600) do
+      setcode do
+        names = ['apache2', 'apache22', 'apache24' ]
+        Puppet::Util::RepoUtils.package_candidates(names).to_pson
+      end
+    end
+
+Third fact, the `apache_installed`, tells us what apache packages are currently
+installed on the agent
+
+    # lib/facter/apache_installed.rb
+    Facter.add(:apache_installed, :timeout => 600) do
+      setcode do
+        installed = {}
+        names = ['apache2', 'apache22', 'apache24']
+        names.each do |name|
+          package = Puppet::Resource::indirection.find("package/#{name}")
+          if package.is_a?(Puppet::Resource) and package[:ensure] =~ /^[0-9]+\./
+            installed[name] = package[:ensure]
+          end
+        end
+        installed.to_pson
+      end
+    end
+
+Now, things become a little bit easier. To install apache < 2.4, we do:
+
+    packagex {'apache2':
+      names     => ['apache2', 'apache22', 'apache24'],
+      ensure    => '< 2.4.0',
+      versions  => $::apache_repo_versions,
+      candidates  => $::apache_repo_candidates,
+      installed => $::apache_installed,
+    }
+
+Once, your module becomes ready for apache 2.4, you may change the 
+`ensure => '< 2.4.0'` to `ensure => '~= 2.4'`, to install apache 2.4 and keep
+the version 2.4 installed.
+
+In real world, the installation and configuration of the apache package is more
+tricky than shown above. Apache configuration options change from version to
+version and some of them differ significantly between versions `2.2` and `2.4`.
+It should be known in advance which version is going to be installed in order
+to select appropriate templates for configuration files. In addition, the
+following aspects must be considered before installing the package
+
+* for apache < 2.4 MPM must be selected by selecting appropriate package, 
+  for >= 2.4 MPMs are available as dynamic modules, and default MPM is chosen
+  at compile time (via build options) - some build options must be set on
+  FreeBSD ports to select default MPM,
+* most of the apache modules are part of the apache project; on Debian most of
+  them are available as separate installable packages; on FreeBSD (ports),
+  however, you must set appropriate options (`make config`) for an appropriate
+  apache port to have your modules installed,
+
+Consider the following situation. Your repository contains several packages
+that provide *apache2* http server. For example, the FreeBSD ports include (at
+the time of this writing) the following packages:
+
+* `apache22` - version `2.2.25`, prefork MPM,
+* `apache22-event-mpm` - version `2.2.25`, event MPM,
+* `apache22-itk-mpm` - version `2.2.25`, itk MPM,
+* `apache22-peruser-mpm` - version `2.2.25`, peruser MPM,
+* `apache22-worker-mpm` - version `2.2.25`, worker MPM,
+* `apache24` - version `2.4.6`, MPM as DSO or selected as compile option.
+
+At the same time, Debian repositories provide the following packages:
+
+* `apache2` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-event` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-itk` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-prefork` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+* `apache2-mpm-worker` - versions: `2.2.22-13` (worker MPM) and `2.4.6-3` (MPMs as DSO),
+
+You develop puppet classes which install and configure apache http server.
+One of them, let say `apachex::package`, is responsible for the installation.
+
+You give the user an option to choose
+between `2.2`, `2.4` (or, more generally, to use `2.X`). In addition, the
+`apachex::package` needs information about the (default) MPM to be used and few
+other parameters. Let say, you arrive at the following class interface:
+
+    class apachex::package(
+      $version,
+      $mpm,
+      $modules,
+    ) {
+    # ...
+    }
+
+The module should be used together with the `ptomulik-repoutil`. It's included
+in the list of dependencies, and shall install automatically when the
+`ptomulik-packagex` gets installed.
+
 
 
 ## Usage
 
-### Resource type: `bsdportconfig`
+Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
 
-Set build options for BSD ports.
+## Reference
 
-#### TERMINOLOGY
-
-We use the following terminology when referring ports/packages:
-
-  * a string in form `'apache22'` or `'ruby'` is referred to as *package* name
-    (or package in short)
-  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
-    as a *port* name (or port in short)
-  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
-    port *origin* (or origin in short)
-
-Package origins are used as primary identifiers for bsdportconfig instances.
-It's recommended to use package origins or port names to identify ports.
-
-#### AMBIGUITY OF PACKAGE NAMES
-
-Accepting package names (e.g. `apache22`) as the [name](#name-required)
-parameter was introduced for convenience in 0.2.0. However, package names in
-this form are ambiguous, meaning that port search may find multiple ports 
-matching the given package name. For example `'ruby'` package has three ports
-at the time of this writing  (2013-08-30): `ruby-1.8.7.371,1`,
-`ruby-1.9.3.448,1`, and `ruby-2.0.0.195_1,1` with origins `lang/ruby18`,
-`lang/ruby19` and `lang/ruby20` respectively. If you pass a package name which
-is ambiguous, transaction will fail with message such as:
-
-    Error: Could not prefetch bsdportconfig provider 'ports': found 3 ports with name 'ruby': 'ruby-1.8.7.371,1', 'ruby-1.9.3.448,1', 'ruby-2.0.0.195_1,1'
-
-#### Parameters within `bsdportconfig`:
-
-##### name (required)
-
-Reference to a port. A *package* name, *port* name or *origin* may be passed as
-the `name` parameter (see [TERMINOLOGY](#terminology) in resource description).
-If the name has form 'category/subdir' it is treated as an origin. Otherwise,
-the provider tries to find matching port by port name and if it fails, by
-package name. Note, that package names are ambiguous, see [AMBIGUITY OF PACKAGE
-NAMES](#ambiguity-of-package-names) in the resource description.
-
-
-##### options (optional)
-
-Options for the package. This is a hash with keys being option names and values
-being `'on'/'off'` strings.
+Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
 
 ## Limitations
 
-These are current known limitation:
+The `packagex` module has certain limitations, for example:
 
-  * tested manually on FreeBSD only - any feedback welcome from other OSes,
-  * unit tests for provider are still missing,
-  * only on/off options are currently supported, more knowledge about BSD ports
-    is necessary (are there other possibilities?)
-  * only options from option files (`/var/db/ports/*/options{,.local}`) are
-    taken into account when retrieving current resource state, 
-  * we no longer use public `make showconfig` interface to read option values
-    (it was too slow); the options are retrieved from options files only; this
-    may have some limitations now, and may cause some bugs in future - the
-    algorithm used to read files resembles what was seen in ports' Makefiles,
-    but it was also seen, that the algorithm used by ports is going to be
-    changed (so we may desync at some point)
-  * it still has quite poor performance when enumerating instances with `puppet
-    resoruce bsdconfig`; it takes a while to scan options for all ports that
-    arleady have defined them (about 6s for 30 packages for example),
+* the `$build_options` are currently supported only by the `ports` provider,
+* packages are not rebuilt/reinstalled automatically when only `$build_options`
+  get changed; if you need to change build options for a package, you should
+  deinstall it before compiling the modified puppet catalog,
+* version expressions and the resulting extended versioning is not a perfect
+  solution (and will never be probably). It's possible, for example, that the
+  package lists and their versions passed from agents to `packagex` (via facts)
+  are outdated. This may cause failures when puppet start to install requested
+  packages (when the catalog is already compiled). The problem may persist even
+  if an appropriate cache refresh command (`apt-get update`, for example) is
+  invoked systematically by puppet. The facts are always generated before the
+  cache is refreshed.
+
 
 ## Development
 
-Project is held on GitHub:
+The project is held at github:
 
-[https://github.com/ptomulik/puppet-bsdportconfig](https://github.com/ptomulik/puppet-bsdportconfig)
+* [https://github.com/ptomulik/puppet-packagex](https://github.com/ptomulik/puppet-packagex)
 
-Feel free to submit issue reports to issue tracker or create pull requests.
+Issue reports, patches, pull requests are welcome!
