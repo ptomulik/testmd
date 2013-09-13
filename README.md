@@ -36,12 +36,12 @@ You may need to enable pluginsync in your `puppet.conf`.
 
 There are two patterns for addign Vash functionality to your class. The first
 one is to use `Vash::Contained` mixin, as follows
-
+```ruby
     require 'puppet/util/ptomulik/vash/contained'
     class MyVash
       include Puppet::Util::PTomulik::Vash::Contained
     end
-
+```
 The second pattern is to use `Vash::Inherited`
 
     require 'puppet/util/ptomulik/vash/inherited'
