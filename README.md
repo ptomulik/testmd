@@ -36,18 +36,22 @@ You may need to enable pluginsync in your `puppet.conf`.
 
 There are two patterns for addign Vash functionality to your class. The first
 one is to use `Vash::Contained` mixin, as follows
+
 ```ruby
-    require 'puppet/util/ptomulik/vash/contained'
-    class MyVash
-      include Puppet::Util::PTomulik::Vash::Contained
-    end
+require 'puppet/util/ptomulik/vash/contained'
+class MyVash
+  include Puppet::Util::PTomulik::Vash::Contained
+end
 ```
+
 The second pattern is to use `Vash::Inherited`
 
-    require 'puppet/util/ptomulik/vash/inherited'
-    class MyVash < Hash
-      include Puppet::Util::PTomulik::Vash::Inherited
-    end
+```ruby
+require 'puppet/util/ptomulik/vash/inherited'
+class MyVash < Hash
+  include Puppet::Util::PTomulik::Vash::Inherited
+end
+```
 
 With the first pattern, hash data is keept in an instance variable
 `@vash_underlying_hash`. With second pattern the superclass of `MyVash` keeps
@@ -57,31 +61,34 @@ input validation and munging).
 Once you have included `Vash::Contained` or `Vash::Inherited` module to your
 class, you may use it as ordinary Hash:
 
-    vash = MyVash[ [[:a,:A],[:b,:B]] ]
-    vash[:c] = :C
-    # .. and so on
-
+```ruby
+vash = MyVash[ [[:a,:A],[:b,:B]] ]
+vash[:c] = :C
+# .. and so on
+```
 
 Simple validation may be added by defining `vash_valid_key?`,
 `vash_valid_value?` and `vash_valid_pair?` methods (note, all methods that are
 specific to Vash, have `vash_` prefix):
 
-    require 'puppet/util/ptomulik/vash/contained'
-    # accept only integers as keys
-    class MyVash
-      include Puppet::Util::PTomulik::Vash::Contained
-      def vash_valid_key?(key)
-        true if Integer(key) rescue false
-      end
-    end
-    vash = MyVash[1,2]
-    # => {1=>2}
-    vash[2] = 3
-    # => 3
-    vash
-    # => {1=>2, 2=>3}
-    vash['a'] = 1
-    # => raises Puppet::Util::PTomulik::Vash::InvalidKeyError: invalid key "a"
+```ruby
+require 'puppet/util/ptomulik/vash/contained'
+# accept only integers as keys
+class MyVash
+  include Puppet::Util::PTomulik::Vash::Contained
+  def vash_valid_key?(key)
+    true if Integer(key) rescue false
+  end
+end
+vash = MyVash[1,2]
+# => {1=>2}
+vash[2] = 3
+# => 3
+vash
+# => {1=>2, 2=>3}
+vash['a'] = 1
+# => raises Puppet::Util::PTomulik::Vash::InvalidKeyError: invalid key "a"
+```
 
 Similarly restrictions may be placed on values and pairs. The following
 subsection gives more detailed explanations.
