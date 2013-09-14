@@ -91,7 +91,7 @@ vash['a'] = 1
 # => raises Puppet::Util::PTomulik::Vash::InvalidKeyError: invalid key "a"
 ```
 
-Restrictions may further be placed on values and pairs. The following
+Restrictions may further be defined for values and pairs. The following
 subsections shall give more detailed explanations.
 
 ## Usage
