@@ -81,6 +81,9 @@ class MyVash
   # accept only integers as keys
   def vash_valid_key?(key); true if Integer(key) rescue false; end
 end
+```
+
+```ruby
 vash = MyVash[1,2]
 # => {1=>2}
 vash[2] = 3
