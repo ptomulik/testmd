@@ -102,19 +102,19 @@ the workflow is following:
 
 1. Input items are passed to `#vash_validate_item` (the term *item* is used
    for original `[key,value]` pair as entered by user). 
-2. The `key` and `value` are validated separately by `#vash_validate_key` and
+2. The key and value are validated separately by `#vash_validate_key` and
    `#vash_validate_value`. These methods call `#vash_valid_key?` and
-   `#vash_valid_value?` to ask, if the `key` and `value` may be further
+   `#vash_valid_value?` to ask, if the key and value may be further
    processed.
-3. If `key` and `value` are acceptable, the `#vash_validate_key` and
+3. If key and value are acceptable, the `#vash_validate_key` and
    `#vash_validate_value` methods are called to perform optional data munging.
-   The `#vash_validate_key` and `#vash_validate_value` return munged `key` and
-   `value`.
-4. The munged `key,value` pair is referred to as *pair*. It is passed to
+   The `#vash_validate_key` and `#vash_validate_value` return munged key and
+   value.
+4. The munged `[key,value]` pair is referred to as *pair*. It is passed to
    `#vash_validate_pair` in order to ensure, that it satisfies pair
    restrictions. The `#vash_validate_pair` asks `#vash_valid_pair?` whether the
    given pair may be accepted or not (note: both methods operate on already
-   munged `key`s and `value`s).
+   munged keys and values).
 5. If verification succeeds, the pair is passed to `#vash_munge_pair` and
    returned back to the caller.
 
