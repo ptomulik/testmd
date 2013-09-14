@@ -144,7 +144,7 @@ require 'puppet/util/ptomulik/vash/contained'
 class Variables
   include Puppet::Util::PTomulik::Vash::Contained
   # accept only valid identifiers as keys
-  def vash_valid_key?(key); (key =~ /^[a-zA-Z]\w*$/) ? true : false; end
+  def vash_valid_key?(key); key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/); end
   # accept only what is convertible to integer
   def vash_valid_value?(val); true if Integer(val) rescue false; end
 end
@@ -167,8 +167,9 @@ vars
 #### Example 2: Data munging
 
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
-shortcoming - the `vars['seven']` holds string, for example. If we'd like to have
-integers in our container, so we had to add data munging to our class:
+shortcoming - it doesn't convert values to integers. For example
+`vars['seven']` is a string. If we'd like to have integers in our container, so
+we had to add data munging to our class:
 
 ```ruby
 class Variables
@@ -176,14 +177,14 @@ class Variables
 end
 ```
 
-Repeat last step from [Example 1](#example-1-defining-valid-keys-and-values):
+Now we have
 
 ```ruby
 vars = Variables['seven','7']
 # => {"seven"=>7}
 ```
 
-We may also munge keys, for example convert camelCase names to uner\_score:
+We may also munge keys, for example convert camelCase names to under\_score:
 
 ```ruby
 class Variables
@@ -198,10 +199,20 @@ vars = Variables['TwentyFive','25']
 
 #### Example 3: Defining valid pairs
 
+Some variables may not accept certain values. To prevent Vash from accepting
+such pairs, a pair validation may be used. In this example we prevent variables
+endine with `_price` to accept negative values:
 
 ```ruby
-  # for keys starting with small_ accept only integers that are less than 10
-  def vash_valid_pair?(pair); (pair[0]=~/^small_/i) ? (pair[1] < 10) : true; end
+class Variables
+  # for keys ending with _price we accept only non-negative values
+  def vash_valid_pair?(pair); (pair[0]=~/_?price$/) ? (pair[1]>=0) : true; end
+end
+```
+
+```ruby
+vars = Variables['lemonPrice', '-4']
+# InvalidPairError: invalid (key,value) combination ("lemon_price",-4) at index 0
 ```
 
 #### Example 2: Customized key and value names
