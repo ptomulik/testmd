@@ -268,9 +268,9 @@ rename the incoming variable to not override the existing one:
 class Variables
   def vash_munge_pair(pair)
     key = pair[0].dup
-    i = 0
-    while not (old = self[pair[0]]).nil?
-      pair[0] = "#{key}#{i}" if old != pair[1]
+    i = 1
+    while (old = self[pair[0]]) and old != pair[1]
+      pair[0] = "#{key}#{i}"
       i += 1
     end
     pair
@@ -280,9 +280,11 @@ end
 
 ```ruby
 vars = Variables['myVar', 1]
+# => {"my_var"=>1}
 vars['my_var'] = 2
+# => 2
 vars
-# => {"my_var0"=>2, "my_var"=>1}
+# => {"my_var1"=>2, "my_var"=>1}
 ```
 
 ## Reference
