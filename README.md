@@ -117,10 +117,16 @@ the workflow is following:
    munged `key`s and `value`s).
 5. If verification succeeds, the pair is passed to `#vash_munge_pair` and
    returned back to the caller.
+
+In any of these points, if the validation fails, an exception is raised. The
+`Vash` by default raises `Puppet::Util::PTomulik::Vash::InvalidKeyError`,
+`Puppet::Util::PTomulik::Vash::InvalidValueError` or
+`Puppet::Util::PTomulik::Vash::InvalidPairError`. All of them are subclasses of
+`::ArgumentError`.
  
-You may customize `Vash` by overwriting any of the above-mentioned methods or
-any of the other methods (it's also good to prepare some specs/tests for your
-customized class, see [testing](#testing))
+You create custom `Vash`es by overwriting any of the above-mentioned methods in
+your class or any of the other methods not mentioned yet (it's also good to
+prepare some specs/tests for your customized class, see [Testing](#testing))
 
 ## Reference
 
