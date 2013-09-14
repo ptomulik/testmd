@@ -97,11 +97,11 @@ subsections shall give more detailed explanations.
 ## Usage
 
 The main purpose of `Vash` mixins is to extend basic `Hash` functionality
-adding validation and munging of input data. When new data enters the `Vash`,
+adding validation and munging of input data. When new data enters `Vash`,
 the workflow is following:
 
-1. Input items are passed to `#vash_validate_item` (_the term "item" is used
-   for original `[key,value]` pair as entered by user_). 
+1. Input items are passed to `#vash_validate_item` (the term *item* is used
+   for original `[key,value]` pair as entered by user). 
 2. The `key` and `value` are validated separately by `#vash_validate_key` and
    `#vash_validate_value`. These methods call `#vash_valid_key?` and
    `#vash_valid_value?` to ask, if the `key` and `value` may be further
