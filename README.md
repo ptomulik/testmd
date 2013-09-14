@@ -67,6 +67,9 @@ vash[:c] = :C
 # .. and so on
 ```
 
+There is no validation nor munging by default, so `MyVash` behaves exactly same
+way as `Hash`, accepting any input data and not modifying it.
+
 Simple validation may be added by defining `vash_valid_key?`,
 `vash_valid_value?` and `vash_valid_pair?` methods (note, all methods that are
 specific to Vash, have `vash_` prefix):
@@ -111,3 +114,4 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
+ptomulik@tea:$ 
