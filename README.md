@@ -104,7 +104,7 @@ adding validation and munging of input data. When new data enters `Vash`,
 the workflow is following:
 
 1. Input items are passed to `#vash_validate_item` (the term *item* is used
-   for original `[key,value]` pair as entered by user). 
+   for original `[key,value]` pair as entered by user).
 2. The key and value are validated separately by `#vash_validate_key` and
    `#vash_validate_value`. These methods call `#vash_valid_key?` and
    `#vash_valid_value?` to ask, if the key and value may be further
@@ -126,10 +126,14 @@ In any of these points, if the validation fails, an exception is raised. The
 `Puppet::Util::PTomulik::Vash::InvalidValueError` or
 `Puppet::Util::PTomulik::Vash::InvalidPairError`. All of them are subclasses of
 `::ArgumentError`.
- 
+
 Custom Vashes may be created by overwriting any of the above-mentioned methods
 in your class (or any of the other methods not mentioned yet). It's also good
 to prepare some specs/tests for your customized class (see [Testing](#testing)).
+
+We'll start with simple customized Vash in [Example
+1](#example-1-defining-valid-keys-and-values) and will proceed with extending
+it in subsequent examples.
 
 #### Example 1: Defining valid keys and values
 
@@ -160,10 +164,44 @@ vars['seven'] = '7'
 vars
 # => {"nine"=>9, "ten"=>10, "seven"=>"7"}
 ```
-#### Example 2: Defining valid pairs
+#### Example 2: Data munging
 
-In this and the following examples we'll overwrite methods in the `Variables`
-class from [Example 1](#example-1-defining-valid-keys-and-values).
+The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
+shortcoming - see `vars['seven'], it holds string. If we'd like to have
+integers in our container, so we had to add data munging to our class:
+
+```ruby
+class Variables
+  def vash_munge_value(val); Integer(val); end
+end
+```
+
+Repeat last step from [Example 1](#example-1-defining-valid-keys-and-values):
+
+```ruby
+vars = Variables['seven','7']
+# => "7"
+vars
+# => {"seven"=>7}
+```
+
+We may also munge keys, to convert them to symbols:
+
+```ruby
+class Variables
+  def vash_munge_key(key); key.intern; end
+end
+```
+
+```ruby
+vars = Variables['six','6']
+# => "7"
+vars
+# => {:six=>6}
+```
+
+#### Example 3: Defining valid pairs
+
 
 ```ruby
   # for keys starting with small_ accept only integers that are less than 10
