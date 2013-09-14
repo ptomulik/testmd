@@ -168,7 +168,7 @@ vars
 
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
 shortcoming - it doesn't convert values to integers. For example
-`vars['seven']` is `"7" (a string). If we'd like to have integers in our
+`vars['seven']` is `"7"` (a string). If we'd like to have integers in our
 container, so we had to add data munging to our class:
 
 ```ruby
