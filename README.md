@@ -94,10 +94,27 @@ vash['a'] = 1
 ```
 
 Similarly restrictions may be placed on values and pairs. The following
-subsection gives more detailed explanations.
+subsections shall give more detailed explanations.
 
 ## Usage
 
+The main purpose of `Vash` mixins is to extend basic `Hash` functionality
+adding validation and munging of input data. The workflow is following:
+
+-# input items are passed to `#vash_validate_item`, the term `item` is used for
+   the original `[key,value]` pair entered by user. 
+-# `key` and `value` are validated with `#vash_validate_key` and
+   `#vash_validate_value`. These methods use `#vash_valid_key?` and
+   `#vash_valid_value?` to decide, if the input item may be further processed
+-# the `#vash_validate_key` and `#vash_validate_value` methods perform munging,
+   and return munged `key` and `value`. They call `#vash_munge_key` and
+   `#vash_munge_value` to perform data munging,
+-# the munged `key,value` pair is passed to `#vash_validate_pair` in order to
+   ensure, that it satisfies pair restrictions, the `#vash_validate_pair` asks
+   `#vash_valid_pair?` whether the given pair is valid or not (note: both
+   methods receive pair, which have key and value already munged).
+-# if the verification succeeds, the pair is optionally munged by
+   `#vash_munge_pair` and returned back to the caller.
 
 
 ## Reference
@@ -114,4 +131,3 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
-ptomulik@tea:$ 
