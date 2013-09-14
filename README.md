@@ -76,12 +76,10 @@ specific to Vash, have `vash_` prefix):
 
 ```ruby
 require 'puppet/util/ptomulik/vash/contained'
-# accept only integers as keys
 class MyVash
   include Puppet::Util::PTomulik::Vash::Contained
-  def vash_valid_key?(key)
-    true if Integer(key) rescue false
-  end
+  # accept only integers as keys
+  def vash_valid_key?(key); true if Integer(key) rescue false; end
 end
 vash = MyVash[1,2]
 # => {1=>2}
