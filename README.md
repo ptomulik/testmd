@@ -137,7 +137,7 @@ it in subsequent examples.
 
 #### Example 1: Defining valid keys and values
 
-Let's prepare simple Vash of integer variables:
+Let's prepare simple container with integer variables:
 
 ```ruby
 require 'puppet/util/ptomulik/vash/contained'
@@ -167,7 +167,7 @@ vars
 #### Example 2: Data munging
 
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
-shortcoming - see `vars['seven'], it holds string. If we'd like to have
+shortcoming - the `vars['seven']` holds string, for example. If we'd like to have
 integers in our container, so we had to add data munging to our class:
 
 ```ruby
@@ -180,8 +180,6 @@ Repeat last step from [Example 1](#example-1-defining-valid-keys-and-values):
 
 ```ruby
 vars = Variables['seven','7']
-# => "7"
-vars
 # => {"seven"=>7}
 ```
 
@@ -195,8 +193,6 @@ end
 
 ```ruby
 vars = Variables['six','6']
-# => "7"
-vars
 # => {:six=>6}
 ```
 
