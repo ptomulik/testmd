@@ -169,7 +169,7 @@ vars
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
 shortcoming - it doesn't convert values to integers. For example
 `vars['seven']` is `"7"` (a string). If we'd like to have integers in our
-container, so we had to add data munging to our class:
+container, we had to add value munging `Variables`: 
 
 ```ruby
 class Variables
@@ -269,4 +269,3 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
-
