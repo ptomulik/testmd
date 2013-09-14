@@ -88,7 +88,7 @@ vash[2] = 3
 vash
 # => {1=>2, 2=>3}
 vash['a'] = 1
-# => raises Puppet::Util::PTomulik::Vash::InvalidKeyError: invalid key "a"
+# InvalidKeyError: invalid key "a"
 ```
 
 Restrictions may further be defined for values and pairs. The following
@@ -143,11 +143,19 @@ class Variables
 end
 ```
 
+Perform simple tests:
+
 ```ruby
 vars = Variables['ten', 10, 'nine', 9]
 # => {"nine"=>9,"ten"=>10}
 vars[2] = 20
-# raises => Puppet::Util::PTomulik::Vash::InvalidKeyError: invalid key 2
+# InvalidKeyError: invalid key 2
+vars['eight'] = 'e'
+# InvalidValueError: invalid value "e" at key "eight"
+vars['seven'] = '7'
+# => "7"
+vars
+# => {"nine"=>9, "ten"=>10, "seven"=>"7"}
 ```
 #### Example 2: Defining valid pairs
 
