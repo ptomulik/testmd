@@ -169,7 +169,7 @@ vars
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
 shortcoming - it doesn't convert values to integers. For example
 `vars['seven']` is `"7"` (a string). If we'd like to have integers in our
-container, we had to add value munging `Variables`: 
+container, we had to add value munging to `Variables`: 
 
 ```ruby
 class Variables
@@ -201,7 +201,7 @@ vars = Variables['TwentyFive','25']
 
 Some variables may not accept certain values. To prevent Vash from accepting
 such pairs, a pair validation may be used. In this example we prevent variables
-endine with `_price` from accepting negative values:
+ending with `_price` from accepting negative values:
 
 ```ruby
 class Variables
@@ -217,8 +217,8 @@ vars = Variables['lemonPrice', '-4']
 
 #### Example 4: Customizing error messages
 
-To have meaningful messages, we may override `vash_key_name`, `vash_value_name`
-and `vash_pair_name`, for example:
+Sometimes default error messages are not meaningful. To circumvent this, we may
+override `vash_key_name`, `vash_value_name` and `vash_pair_name`, for example:
 
 ```ruby
 class Variables
