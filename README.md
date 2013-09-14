@@ -131,11 +131,11 @@ Custom Vashes may be created by overwriting any of the above-mentioned methods
 in your class (or any of the other methods not mentioned yet). It's also good
 to prepare some specs/tests for your customized class (see [Testing](#testing)).
 
-We'll start with simple customized Vash in [Example
-1](#example-1-defining-valid-keys-and-values) and will proceed with extending
-it in subsequent examples.
+We'll start with simple customized Vash in
+[Example 1](#example-1-defining-restrictions-for-keys-and-values)
+and will continue extending it in subsequent examples.
 
-#### Example 1: Defining valid keys and values
+#### Example 1: Defining restrictions for keys and values
 
 Let's prepare simple container with integer variables:
 
@@ -164,7 +164,7 @@ vars['seven'] = '7'
 vars
 # => {"nine"=>9, "ten"=>10, "seven"=>"7"}
 ```
-#### Example 2: Data munging
+#### Example 2: Munging keys and values
 
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
 shortcoming - it doesn't convert values to integers. For example
@@ -197,7 +197,7 @@ vars = Variables['TwentyFive','25']
 # => {"twenty_five"=>25}
 ```
 
-#### Example 3: Defining valid pairs
+#### Example 3: Defining restrictions for pairs
 
 Some variables may not accept certain values. To prevent Vash from accepting
 such pairs, a pair validation may be used. In this example we prevent variables
@@ -256,7 +256,34 @@ vars = Variables['lemonPrice', -1]
 # InvalidPairError: invalid value -1 for variable lemon_price at index 0
 ```
 
-#### Example 2: Customized key and value names
+#### Example 5: Munging pairs
+
+There is also another level where data may be modified. At the very end of
+input processing, we may munge entire pairs (for example switch keys with
+values or perform other combinations). In this example we'll look if a variable
+with specified name exists, and if it exists but has different value, we'll
+rename the incoming variable to not override the existing one:
+
+```ruby
+class Variables
+  def vash_munge_pair(pair)
+    key = pair[0].dup
+    i = 0
+    while not (old = self[pair[0]]).nil?
+      pair[0] = "#{key}#{i}" if old != pair[1]
+      i += 1
+    end
+    pair
+  end
+end
+```
+
+```ruby
+vars = Variables['myVar', 1]
+vars['my_var'] = 2
+vars
+# => {"my_var0"=>2, "my_var"=>1}
+```
 
 ## Reference
 
