@@ -183,17 +183,17 @@ vars = Variables['seven','7']
 # => {"seven"=>7}
 ```
 
-We may also munge keys, to convert them to symbols:
+We may also munge keys, for example convert camelCase names to uner\_score:
 
 ```ruby
 class Variables
-  def vash_munge_key(key); key.intern; end
+  def vash_munge_key(key); key.gsub(/([a-z])([A-Z])/,'\1_\2').downcase; end
 end
 ```
 
 ```ruby
-vars = Variables['six','6']
-# => {:six=>6}
+vars = Variables['TwentyFive','25']
+# => {"twenty_five"=>25}
 ```
 
 #### Example 3: Defining valid pairs
