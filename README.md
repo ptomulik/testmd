@@ -109,8 +109,8 @@ the workflow is following:
    `#vash_validate_value`. These methods call `#vash_valid_key?` and
    `#vash_valid_value?` to ask, if the key and value may be further
    processed.
-3. If key and value are acceptable, the `#vash_validate_key` and
-   `#vash_validate_value` methods are called to perform optional data munging.
+3. If key and value are acceptable, the `#vash_munge_key` and
+   `#vash_munge_value` are called to perform optional data munging.
    The `#vash_validate_key` and `#vash_validate_value` return munged key and
    value.
 4. The munged `[key,value]` pair is referred to as *pair*. It is passed to
@@ -119,7 +119,7 @@ the workflow is following:
    given pair may be accepted or not (note: both methods operate on already
    munged keys and values).
 5. If verification succeeds, the pair is passed to `#vash_munge_pair` and
-   returned back to the caller.
+   added to Vash container.
 
 In any of these points, if the validation fails, an exception is raised. The
 `Vash` by default raises `Puppet::Util::PTomulik::Vash::InvalidKeyError`,
