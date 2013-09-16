@@ -101,39 +101,12 @@ subsections shall give more detailed explanations.
 
 ## Usage
 
-The main purpose of `Vash` mixins is to extend basic `Hash` functionality
-adding validation and munging of input data. When new data enters `Vash`,
-the workflow is following:
-
-1. Input items are passed to `#vash_validate_item` (the term *item* is used
-   for original `[key,value]` pair as entered by user).
-2. The key and value are validated separately by `#vash_validate_key` and
-   `#vash_validate_value`. These methods call `#vash_valid_key?` and
-   `#vash_valid_value?` to ask, if the key and value may be further
-   processed.
-3. If key and value are acceptable, the `#vash_munge_key` and
-   `#vash_munge_value` are called to perform optional data munging.
-   The `#vash_validate_key` and `#vash_validate_value` return munged key and
-   value.
-4. The munged `[key,value]` pair is referred to as *pair*. It is passed to
-   `#vash_validate_pair` in order to ensure, that it satisfies pair
-   restrictions. The `#vash_validate_pair` asks `#vash_valid_pair?` whether the
-   given pair may be accepted or not (note: both methods operate on already
-   munged keys and values).
-5. If verification succeeds, the pair is passed to `#vash_munge_pair` and
-   added to Vash container.
-
-In any of these points, if the validation fails, an exception is raised. The
-`Vash` by default raises `Puppet::Util::PTomulik::Vash::InvalidKeyError`,
-`Puppet::Util::PTomulik::Vash::InvalidValueError` or
-`Puppet::Util::PTomulik::Vash::InvalidPairError`. All of them are subclasses of
-`::ArgumentError`.
-
-Custom Vashes may be created by overwriting any of the above-mentioned methods
-in your class (or any of the other methods not mentioned yet). It's also good
-to prepare some specs/tests for your customized class (see [Testing](#testing)).
-
-We'll start with simple customized Vash in
+Custom Vashes may be created by including
+`Puppet::Util::PTomulik::Vash::Contained` or
+`Puppet::Util::PTomulik::Vash::Inherited` mixin to your class and then
+overwriting some of its methods. It's also good to prepare some specs/tests for
+your customized class (see [Testing](#testing)).  We'll start with simple
+customized Vash in
 [Example 3.1](#example-3-1-defining-restrictions-for-keys-and-values)
 and will continue extending it in subsequent examples.
 
@@ -294,6 +267,33 @@ vars
 ```
 
 ## Reference
+
+When new data enters `Vash`, the workflow is following:
+
+1. Input items are passed to `#vash_validate_item` (the term *item* is used
+   for original `[key,value]` pair as entered by user).
+2. The key and value are validated separately by `#vash_validate_key` and
+   `#vash_validate_value`. These methods call `#vash_valid_key?` and
+   `#vash_valid_value?` to ask, if the key and value may be further
+   processed.
+3. If key and value are acceptable, the `#vash_munge_key` and
+   `#vash_munge_value` are called to perform optional data munging.
+   The `#vash_validate_key` and `#vash_validate_value` return munged key and
+   value.
+4. The munged `[key,value]` pair is referred to as *pair*. It is passed to
+   `#vash_validate_pair` in order to ensure, that it satisfies pair
+   restrictions. The `#vash_validate_pair` asks `#vash_valid_pair?` whether the
+   given pair may be accepted or not (note: both methods operate on already
+   munged keys and values).
+5. If verification succeeds, the pair is passed to `#vash_munge_pair` and
+   added to Vash container.
+
+In any of these points, if the validation fails, an exception is raised. The
+`Vash` by default raises `Puppet::Util::PTomulik::Vash::InvalidKeyError`,
+`Puppet::Util::PTomulik::Vash::InvalidValueError` or
+`Puppet::Util::PTomulik::Vash::InvalidPairError`. All of them are subclasses of
+`::ArgumentError`.
+
 
 ## Testing
 
