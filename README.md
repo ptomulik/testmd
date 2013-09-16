@@ -7,13 +7,13 @@
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Setup](#setup)
-    * [What vash affects](#what-[modulename]-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with vash](#beginning-with-vash)
 4. [Usage](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations](#limitations)
-6. [Development](#development)
+5. [Reference](#reference)
+6. [Testing](#testing)
+7. [Limitations](#limitations)
+8. [Development](#development)
 
 ## Overview
 
@@ -28,14 +28,14 @@ at input.
 
 ## Setup
 
-### Setup Requirements
+### Setup requirements
 
 You may need to enable pluginsync in your `puppet.conf`.
 
 ### Beginning with vash
 
-There are two patterns for addign Vash functionality to your class. The first
-one is to use `Vash::Contained` mixin, as follows
+There are two ways to add *Vash* functionality to your class. The first one is
+to use `Vash::Contained` mixin, as follows
 
 ```ruby
 require 'puppet/util/ptomulik/vash/contained'
@@ -132,10 +132,10 @@ in your class (or any of the other methods not mentioned yet). It's also good
 to prepare some specs/tests for your customized class (see [Testing](#testing)).
 
 We'll start with simple customized Vash in
-[Example 1](#example-1-defining-restrictions-for-keys-and-values)
+[Example 3.1](#example-3-1-defining-restrictions-for-keys-and-values)
 and will continue extending it in subsequent examples.
 
-#### Example 1: Defining restrictions for keys and values
+#### Example 3.1: Defining restrictions for keys and values
 
 Let's prepare simple container with integer variables:
 
@@ -164,7 +164,7 @@ vars['seven'] = '7'
 vars
 # => {"nine"=>9, "ten"=>10, "seven"=>"7"}
 ```
-#### Example 2: Munging keys and values
+#### Example 3.2: Munging keys and values
 
 The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
 shortcoming - it doesn't convert values to integers. For example
@@ -197,7 +197,7 @@ vars = Variables['TwentyFive','25']
 # => {"twenty_five"=>25}
 ```
 
-#### Example 3: Defining restrictions for pairs
+#### Example 3.3: Defining restrictions for pairs
 
 Some variables may not accept certain values. To prevent Vash from accepting
 such pairs, a pair validation may be used. In this example we prevent variables
@@ -215,7 +215,7 @@ vars = Variables['lemonPrice', '-4']
 # InvalidPairError: invalid (key,value) combination ("lemon_price",-4) at index 0
 ```
 
-#### Example 4: Customizing error messages
+#### Example 3.4: Customizing error messages
 
 Default error messages may be misleading in certain applications. To circumvent
 this, we may override `vash_key_name`, `vash_value_name` and `vash_pair_name`,
@@ -257,7 +257,7 @@ vars = Variables['lemonPrice', -1]
 # InvalidPairError: invalid value -1 for variable lemon_price at index 0
 ```
 
-#### Example 5: Munging pairs
+#### Example 3.5: Munging pairs
 
 There is also another level where data may be modified. At the very end of
 input processing, we may munge entire pairs. In this example we'll append
@@ -308,6 +308,8 @@ The shared examples may be found in the following files:
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash.rb*
 
+#### Example 6.1
+
 Let's begin with a simple example. Say, we want to ensure, that our new class:
 
 ```ruby
@@ -338,8 +340,9 @@ end
 ```
 
 This should generate about 580 test cases. Because `MyHash` has all the
-functionality of its base class `Hash`, the tests should obviously pass. The
-`:sample_items` array is used to initialize hash and also as inut argument to
+functionality of its base class `Hash`, all these should pass. 
+
+The `:sample_items` array is used to initialize hash and also as input argument to
 some hash functions. The `:hash_arguments` is an array of hashes used to test
 methods accepting hash as an argument (e.g. `merge!`). The `:missing_key` and
 `:missing_value` are sample key and value that are correct (should pass
@@ -352,4 +355,3 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
-
