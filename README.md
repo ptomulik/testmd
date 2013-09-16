@@ -308,8 +308,39 @@ The shared examples may be found in the following files:
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash.rb*
 
-Let's start 
+Let's begin with a simple class, that should have hash functionality, basically
+let it be simply:
 
+```ruby
+class MyHash < Hash
+end
+```
+
+We may use `Vash::Hash` shared example to verify, that our class behaves as
+hash should:
+
+```ruby
+# spec/unit/my_has_spec.rb
+require 'spec_helper'
+require 'unit/puppet/shared_behaviours/ptomulik/vash/hash'
+
+class MyHash < Hash
+end
+
+describe MyHash
+  it_behaves_like 'Vash::Hash', {
+    :sample_items   => [ [:a,:A,], ['b','B'] ],
+    :hash_arguments => [ { :a=>:X, :d=>:D } ],
+    :mising_key     => :c,
+    :missing_value  => :C,
+  }
+end
+
+```
+
+This should generate about 580 test cases (we test almost all hash methods with
+about 3 tests per method). Because MyHash is replicates all the Hash behaviour,
+the tests should obviously pass.
 
 ## Development
 
