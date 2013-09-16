@@ -6,9 +6,7 @@
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
-3. [Setup](#setup)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with vash](#beginning-with-vash)
+3. [Beginning with vash](#beginning-with-vash)
 4. [Usage](#usage)
 5. [Reference](#reference)
 6. [Testing](#testing)
@@ -19,7 +17,7 @@
 
 *Vash* (a validating hash) provides mixins to add
 [Hash](http://www.ruby-doc.org/core/Hash.html) methods to user class enabling
-simple validation and munging of data entering hash.
+simple validation and munging of data entering that hash.
 
 # Module Description
 
@@ -28,13 +26,7 @@ to enable simple data validation and munging, such that you may define
 restrictions on keys, values and pairs entering your hash and coalesce them
 at input.
 
-## Setup
-
-### Setup requirements
-
-You may need to enable pluginsync in your `puppet.conf`.
-
-### Beginning with vash
+## Beginning with vash
 
 There are two ways to add *Vash* functionality to your class. The first one is
 to use `Vash::Contained` mixin, as follows
