@@ -295,13 +295,12 @@ Note, that you may need to install necessary gems to run tests:
 bundle install --path vendor/bundle
 ```
 
-The module is accompanied with quite extensive test suite. The tests are
-designed to verify behaviour of the behaviour of classes under test to a
-behaviour of other classes such as original `Hash`. 
-
-Reusable shared\_examples are provided for developers who want to implement
-cusom `Vash` bclasses (they exampls may be actually used to test any class that
-is intended to behave as Hash, Vash::Validator or complete Vash). 
+For developers, the module provides quite extensive test suite. The tests are
+designed to verify behaviour of the classes under test to a behaviour of a
+well-tested classes such as original `Hash`. Reusable *shared\_examples* are
+provided for developers who want to implement cusom `Vash` bclasses (they
+exampls may be actually used to test any class that is intended to behave as
+Hash, Vash::Validator or complete Vash). 
 
 
 ## Development
