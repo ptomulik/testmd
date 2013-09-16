@@ -35,20 +35,20 @@ You may need to enable pluginsync in your `puppet.conf`.
 ### Beginning with vash
 
 There are two patterns for addign Vash functionality to your class. The first
-one is to use `Vash::Contained` mixin, as follows
-
-```ruby
-require 'puppet/util/ptomulik/vash/contained'
-class MyVash
-  include Puppet::Util::PTomulik::Vash::Contained
-end
-```
-
-The second pattern is to use `Vash::Inherited`
-
-```ruby
-require 'puppet/util/ptomulik/vash/inherited'
-class MyVash < Hash
+one is to use `Vash::Contained` mixin, as follows                                 
+                                                                                  
+```ruby                                                                           
+require 'puppet/util/ptomulik/vash/contained'                                     
+class MyVash                                                                      
+  include Puppet::Util::PTomulik::Vash::Contained                                 
+end                                                                               
+```                                                                               
+                                                                                  
+The second pattern is to use `Vash::Inherited`                                    
+                                                                                  
+```ruby                                                                           
+require 'puppet/util/ptomulik/vash/inherited'                                     
+class MyVash < Hash                                                               
   include Puppet::Util::PTomulik::Vash::Inherited
 end
 ```
@@ -290,6 +290,27 @@ vars
 ## Reference
 
 ## Testing
+
+To run existing unit tests simply type
+
+```bash
+bundle exec rake spec
+```
+
+Note, that you may need to install necessary gems to run tests:
+
+```bash
+bundle install --path vendor/bundle
+```
+
+The module is accompanied with quite extensive test suite. The tests are
+designed to verify behaviour of the behaviour of classes under test to a
+behaviour of other classes such as original `Hash`. 
+
+Reusable shared\_examples are provided for developers who want to implement
+cusom `Vash` bclasses (they exampls may be actually used to test any class that
+is intended to behave as Hash, Vash::Validator or complete Vash). 
+
 
 ## Development
 
