@@ -319,26 +319,26 @@ has all the functionality of standard `Hash`. We may use `Vash::Hash` shared
 example to verify, that our class behaves as hash should:
 
 ```ruby
-# spec/unit/my_has_spec.rb
+# spec/unit/my_hash_spec.rb
 require 'spec_helper'
 require 'unit/puppet/shared_behaviours/ptomulik/vash/hash'
 
 class MyHash < Hash
 end
 
-describe MyHash
+describe MyHash do
   it_behaves_like 'Vash::Hash', {
     :sample_items   => [ [:a,:A,], ['b','B'] ],
     :hash_arguments => [ { :a=>:X, :d=>:D } ],
     :mising_key     => :c,
-    :missing_value  => :C,
+    :missing_value  => :C
   }
 end
 
 ```
 
-This should generate about 580 test cases. Because MyHash has all the
-functionality of its base clas `Hash`, the tests should obviously pass. The
+This should generate about 580 test cases. Because `MyHash` has all the
+functionality of its base class `Hash`, the tests should obviously pass. The
 `:sample_items` array is used to initialize hash and also as inut argument to
 some hash functions. The `:hash_arguments` is an array of hashes used to test
 methods accepting hash as an argument (e.g. `merge!`). The `:missing_key` and
@@ -352,3 +352,4 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
+
