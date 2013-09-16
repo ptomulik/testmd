@@ -79,7 +79,9 @@ require 'puppet/util/ptomulik/vash/contained'
 class MyVash
   include Puppet::Util::PTomulik::Vash::Contained
   # accept only integers as keys
-  def vash_valid_key?(key); true if Integer(key) rescue false; end
+  def vash_valid_key?(key)
+    true if Integer(key) rescue false
+  end
 end
 ```
 
@@ -144,9 +146,13 @@ require 'puppet/util/ptomulik/vash/contained'
 class Variables
   include Puppet::Util::PTomulik::Vash::Contained
   # accept only valid identifiers as keys
-  def vash_valid_key?(key); key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/); end
+  def vash_valid_key?(key)
+    key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/)
+  end
   # accept only what is convertible to integer
-  def vash_valid_value?(val); true if Integer(val) rescue false; end
+  def vash_valid_value?(val)
+    true if Integer(val) rescue false
+  end
 end
 ```
 
@@ -173,7 +179,9 @@ container, we had to add value munging to `Variables`:
 
 ```ruby
 class Variables
-  def vash_munge_value(val); Integer(val); end
+  def vash_munge_value(val)
+    Integer(val)
+  end
 end
 ```
 
@@ -188,7 +196,9 @@ We may also munge keys, for example convert camelCase names to under\_score:
 
 ```ruby
 class Variables
-  def vash_munge_key(key); key.gsub(/([a-z])([A-Z])/,'\1_\2').downcase; end
+  def vash_munge_key(key)
+    key.gsub(/([a-z])([A-Z])/,'\1_\2').downcase
+  end
 end
 ```
 
@@ -206,7 +216,9 @@ ending with `_price` from accepting negative values:
 ```ruby
 class Variables
   # for keys ending with _price we accept only non-negative values
-  def vash_valid_pair?(pair); (pair[0]=~/price$/) ? (pair[1]>=0) : true; end
+  def vash_valid_pair?(pair)
+    (pair[0]=~/price$/) ? (pair[1]>=0) : true
+  end
 end
 ```
 
@@ -266,7 +278,9 @@ variable value to its name.
 
 ```ruby
 class Variables
-  def vash_munge_pair(pair); [pair[0] + pair[1].to_s, pair[1]]; end
+  def vash_munge_pair(pair)
+    [pair[0] + pair[1].to_s, pair[1]]
+  end
 end
 ```
 
