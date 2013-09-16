@@ -62,7 +62,7 @@ vash[:c] = :C
 ```
 
 There is no validation nor munging by default, so `MyVash` behaves exactly same
-way as `Hash`, accepting any input data and not modifying it.
+way `Hash` does, accepting any input data and not modifying it.
 
 Simple validation may be added by defining `vash_valid_key?`,
 `vash_valid_value?` and `vash_valid_pair?` methods (note, all methods that are
@@ -101,7 +101,7 @@ Custom Vashes may be created by including
 overwriting some of its methods. It's also good to prepare some specs/tests for
 your customized class (see [Testing](#testing)).  We'll start with simple
 customized Vash in
-[Example 3.1](#example-3-1-defining-restrictions-for-keys-and-values)
+[Example 3.1](#example-31-defining-restrictions-for-keys-and-values)
 and will continue extending it in subsequent examples.
 
 #### Example 3.1: Defining restrictions for keys and values
@@ -139,10 +139,10 @@ vars
 ```
 #### Example 3.2: Munging keys and values
 
-The class from [Example 1](#example-1-defining-valid-keys-and-values) has one
-shortcoming - it doesn't convert values to integers. For example
-`vars['seven']` is `"7"` (a string). If we'd like to have integers in our
-container, we had to add value munging to `Variables`: 
+The class from [Example 3.1](#example-31-defining-valid-keys-and-values) has
+one drawback - it doesn't convert values to integers. For example
+`vars['seven']` is `"7"` (a string). Value munging may be added to `Variables`
+in order to convert data provided by user to integers.
 
 ```ruby
 class Variables
@@ -238,9 +238,8 @@ vars = Variables['lemonPrice', -1]
 
 #### Example 3.5: Munging pairs
 
-There is also another level where data may be modified. At the very end of
-input processing, we may munge entire pairs. In this example we'll append
-variable value to its name.
+We may also munge pairs entering our `Variables` container. In this example
+we'll append variable value to its name.
 
 
 ```ruby
