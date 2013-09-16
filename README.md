@@ -194,7 +194,30 @@ vars = Variables['lemonPrice', '-4']
 # InvalidPairError: invalid (key,value) combination ("lemon_price",-4) at index 0
 ```
 
-#### Example 3.4: Customizing error messages
+#### Example 3.4: Munging pairs
+
+We may also munge pairs entering our `Variables` container. In this example
+we'll append variable value to its name.
+
+
+```ruby
+class Variables
+  def vash_munge_pair(pair)
+    [pair[0] + pair[1].to_s, pair[1]]
+  end
+end
+```
+
+```ruby
+vars = Variables['myVar', 1]
+# => {"my_var1"=>1}
+vars['my_var'] = 2
+# => 2
+vars
+# => {"my_var2"=>2, "my_var1"=>1}
+```
+
+#### Example 3.5: Customizing error messages
 
 Default error messages may be misleading in certain applications. To circumvent
 this, we may override `vash_key_name`, `vash_value_name` and `vash_pair_name`,
@@ -234,29 +257,6 @@ end
 ```ruby
 vars = Variables['lemonPrice', -1]
 # InvalidPairError: invalid value -1 for variable lemon_price at index 0
-```
-
-#### Example 3.5: Munging pairs
-
-We may also munge pairs entering our `Variables` container. In this example
-we'll append variable value to its name.
-
-
-```ruby
-class Variables
-  def vash_munge_pair(pair)
-    [pair[0] + pair[1].to_s, pair[1]]
-  end
-end
-```
-
-```ruby
-vars = Variables['myVar', 1]
-# => {"my_var1"=>1}
-vars['my_var'] = 2
-# => 2
-vars
-# => {"my_var2"=>2, "my_var1"=>1}
 ```
 
 ## Reference
