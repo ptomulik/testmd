@@ -17,7 +17,8 @@
 
 ## Overview
 
-Hash mixin with simple validation and munging.
+*Vash* (a validating hash) provides mixins to add *Hash* methods to user class
+enabling simple validation and munging of data entering hash.
 
 # Module Description
 
