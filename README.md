@@ -139,8 +139,8 @@ vars
 ```
 #### Example 3.2: Munging keys and values
 
-The class from [Example 3.1](#example-31-defining-valid-keys-and-values) has
-one drawback - it doesn't convert values to integers. For example
+The class from [Example 3.1](#example-31-defining-restrictions-for-keys-and-values)
+has one drawback - it doesn't convert values to integers. For example
 `vars['seven']` is `"7"` (a string). Value munging may be added to `Variables`
 in order to convert data provided by user to integers.
 
