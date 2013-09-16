@@ -325,7 +325,7 @@ end
 ```
 
 has all the functionality of standard `Hash`. We may use `Vash::Hash` shared
-example to verify, that our class behaves as hash should:
+example to verify, that our class has the expected behaviour:
 
 ```ruby
 # spec/unit/my_hash_spec.rb
@@ -346,14 +346,14 @@ end
 
 ```
 
-This should generate about 580 test cases. Because `MyHash` has all the
-functionality of its base class `Hash`, all these should pass. 
-
 The `:sample_items` array is used to initialize hash and also as input argument to
 some hash functions. The `:hash_arguments` is an array of hashes used to test
 methods accepting hash as an argument (e.g. `merge!`). The `:missing_key` and
 `:missing_value` are sample key and value that are correct (should pass
 key/value and pair validation) but is not present in `:sample_items`.
+
+The above snippet shall generate about 580 test cases. Because `MyHash` has all
+the functionality of (its base class) `Hash`, we expect all tests to pass. 
 
 ## Development
 
