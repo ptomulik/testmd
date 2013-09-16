@@ -17,8 +17,9 @@
 
 ## Overview
 
-*Vash* (a validating hash) provides mixins to add *Hash* methods to user class
-enabling simple validation and munging of data entering hash.
+*Vash* (a validating hash) provides mixins to add
+[Hash](http://www.ruby-doc.org/core/Hash.html) methods to user class enabling
+simple validation and munging of data entering hash.
 
 # Module Description
 
