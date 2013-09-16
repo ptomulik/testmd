@@ -296,11 +296,19 @@ bundle install --path vendor/bundle
 ```
 
 For developers, the module provides quite extensive test suite. The tests are
-designed to verify behaviour of the classes under test to a behaviour of a
-well-tested classes such as original `Hash`. Reusable *shared\_examples* are
+designed such that they verify behaviour a class being tested to a behaviour of
+already tested class such as standard `Hash`. Reusable *shared\_examples* are
 provided for developers who want to implement cusom `Vash` bclasses (they
 exampls may be actually used to test any class that is intended to behave as
 Hash, Vash::Validator or complete Vash). 
+
+The shared examples may be found in the following files:
+
+* *spec/unit/puppet/shared_behaviours/ptomulik/vash/hash.rb*
+* *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*
+* *spec/unit/puppet/shared_behaviours/ptomulik/vash.rb*
+
+Let's start 
 
 
 ## Development
