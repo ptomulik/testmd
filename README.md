@@ -35,20 +35,20 @@ You may need to enable pluginsync in your `puppet.conf`.
 ### Beginning with vash
 
 There are two patterns for addign Vash functionality to your class. The first
-one is to use `Vash::Contained` mixin, as follows                                 
-                                                                                  
-```ruby                                                                           
-require 'puppet/util/ptomulik/vash/contained'                                     
-class MyVash                                                                      
-  include Puppet::Util::PTomulik::Vash::Contained                                 
-end                                                                               
-```                                                                               
-                                                                                  
-The second pattern is to use `Vash::Inherited`                                    
-                                                                                  
-```ruby                                                                           
-require 'puppet/util/ptomulik/vash/inherited'                                     
-class MyVash < Hash                                                               
+one is to use `Vash::Contained` mixin, as follows
+
+```ruby
+require 'puppet/util/ptomulik/vash/contained'
+class MyVash
+  include Puppet::Util::PTomulik::Vash::Contained
+end
+```
+
+The second pattern is to use `Vash::Inherited`
+
+```ruby
+require 'puppet/util/ptomulik/vash/inherited'
+class MyVash < Hash
   include Puppet::Util::PTomulik::Vash::Inherited
 end
 ```
@@ -217,8 +217,9 @@ vars = Variables['lemonPrice', '-4']
 
 #### Example 4: Customizing error messages
 
-Sometimes default error messages are not meaningful. To circumvent this, we may
-override `vash_key_name`, `vash_value_name` and `vash_pair_name`, for example:
+Default error messages may be misleading in certain applications. To circumvent
+this, we may override `vash_key_name`, `vash_value_name` and `vash_pair_name`,
+for example:
 
 ```ruby
 class Variables
@@ -244,7 +245,7 @@ The last message is still not well-formed. To correct this, we may reimplement
 class Variables
   # note: args[0] optionally contains index of a failing pair
   def vash_pair_exception(pair, *args)
-    msg  = "invalid value #{pair[1]} for variable #{pair[0]}"
+    msg  = "invalid value #{pair[1].inspect} for variable #{pair[0].inspect}"
     msg += " at index #{args[0]}" unless args[0].nil?
     [Puppet::Util::PTomulik::Vash::InvalidPairError, msg]
   end
@@ -259,32 +260,23 @@ vars = Variables['lemonPrice', -1]
 #### Example 5: Munging pairs
 
 There is also another level where data may be modified. At the very end of
-input processing, we may munge entire pairs (for example switch keys with
-values or perform other combinations). In this example we'll look if a variable
-with specified name exists, and if it exists but has different value, we'll
-rename the incoming variable to not override the existing one:
+input processing, we may munge entire pairs. In this example we'll append
+variable value to its name.
+
 
 ```ruby
 class Variables
-  def vash_munge_pair(pair)
-    key = pair[0].dup
-    i = 1
-    while (old = self[pair[0]]) and old != pair[1]
-      pair[0] = "#{key}#{i}"
-      i += 1
-    end
-    pair
-  end
+  def vash_munge_pair(pair); [pair[0] + pair[1].to_s, pair[1]]; end
 end
 ```
 
 ```ruby
 vars = Variables['myVar', 1]
-# => {"my_var"=>1}
+# => {"my_var1"=>1}
 vars['my_var'] = 2
 # => 2
 vars
-# => {"my_var1"=>2, "my_var"=>1}
+# => {"my_var2"=>2, "my_var1"=>1}
 ```
 
 ## Reference
