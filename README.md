@@ -111,7 +111,6 @@ Let's prepare simple container with integer variables:
 ```ruby
 require 'puppet/util/ptomulik/vash/contained'
 class Variables
-  include Puppet::Util::PTomulik::Vash::Contained
   # accept only valid identifiers as keys
   def vash_valid_key?(key)
     key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/)
@@ -359,7 +358,9 @@ the functionality of (its base class) `Hash`, we expect all tests to pass.
 
 ### Shared examples reference
 
-#### `Vash::Hash` shared examples
+#### *Vash::Hash* shared examples
+
+Ensure that a class provides all functionalities of the standard `Hash`.
 
 *Synopsis*:
 
@@ -387,7 +388,7 @@ end
 
 *Parameters*:
 
-* `sample items` (required) - used to determine *existing_key*, *existing_value*
+* *sample_items* (required) - used to determine *existing_key*, *existing_value*
   and key/value arguments to tested methods; also used to initialize instances
   of described class before they get tested (unless *hash_initializers*
   parameter is provided); This may be a Hash or an array of
@@ -397,7 +398,7 @@ end
 * *hash_arguments* (requirer) - an array of hashes used as arguments to some
   tested methods (those, that accept hash as argument, for example `merge!`),
 * *model* (optional) - an object which models expected Hash behaviour, the
-  *model* object is not used by its own, but `model.class` is used by the
+  *model* object is not used by its own, but *model.class* is used by the
   shared examples,
 * *model_class* (optional) - a class which models expected Hash behaviour,
    by default `Puppet::SharedBehaviours::PTomulik::Vash::Hash` is used,
@@ -422,30 +423,30 @@ end
     }
   end
   ```
-* `hash_initializers` (optional) - an Array of hashes, used to initialize
+* *hash_initializers* (optional) - an Array of hashes, used to initialize
   instances of the tested class and generate tests with such an initialized
-  instances; if not provided, `sample_items` parameter is used to initialize
+  instances; if not provided, *sample_items* parameter is used to initialize
   one instance per method.
 
-* `disable_exception_matching` (optional) - if set to `true`, do not specify,
+* *disable_exception_matching* (optional) - if set to *true*, do not specify,
   that subject's methods behave exactly as model's method with respect to the
   raised exceptions,
-* `disable_value_matching` (optional) - if set to `true`, do not verify whether
+* *disable_value_matching* (optional) - if set to *true*, do not verify whether
   the values returned by the subject's methods are same as values returned by
   model's methods,
-* `disable_class_check` (optional) - if set to `true`, do not check whether the
+* *disable_class_check* (optional) - if set to *true*, do not check whether the
   classes of values returned by subject's methods are correct,
-* `disable_value_is_self_check` (optional) - some Hash methods are supposed to
-  return `self` object, (for example `merge!`); if this flag is set to `true`,
-  do not check whether these methods return `self` object properly,
-* `match_attributes` (optional) - an array of subject's attributes to match
+* *disable_value_is_self_check* (optional) - some Hash methods are supposed to
+  return *self* object, (for example `merge!`); if this flag is set to *true*,
+  do not check whether these methods return *self* object properly,
+* *match_attributes* (optional) - an array of subject's attributes to match
   against appropriate attributes; the attributes are not part of hash content;
-  an example attribute is `default` value.
-* `match_attributes_at_end` (optional) - an array of attributes to match
+  an example attribute is *default* value.
+* *match_attributes_at_end* (optional) - an array of attributes to match
   against model after the operation under test (e.g. `:match_attributes =>
-  :default` causes that `default` values of subject and model hashes are
+  :default` causes that *default* values of subject and model hashes are
   compared after the tested method is invoked),
-* `disable_content_matching` - do not test whether the content of subject and
+* *disable_content_matching* - do not test whether the content of subject and
   model hash is same after the operation under test,
 
 Most of these parameters might be overwritten on per-method basis, for example:
@@ -457,8 +458,57 @@ it_behaves_like 'Hash::Vash', {
 }
 ```
 
-#### `Vash::Validator` shared examples
-#### `Vash` shared examples
+#### *Vash::Validator* shared examples
+
+Ensure that a class provides all functionalities of
+`Puppet::Util::PTomulik::Vash::Validator`.
+
+*Synopsis*
+```ruby
+it_behaves_like 'Vash::Validator', params
+```
+
+*Example:*:
+
+```ruby
+require 'puppet/util/ptomulik/vash/validator'
+require 'unit/puppet/shared_behaviours/ptomulik/vash/validator'
+class MyValidator
+  include Puppet::Util::PTomulik::Vash::Validator
+  # accept only valid identifiers as keys
+  def vash_valid_key?(key)
+    key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/)
+  end
+  # accept only what is convertible to integer
+  def vash_valid_value?(val)
+    true if Integer(val) rescue false
+  end
+end
+
+describe MyValidator do
+  it_behaves_like 'Vash::Validator', {
+    :valid_keys     => ['one', 'two'],
+    :invalid_keys   => ["7'th",''],
+    :valid_values   => [1,-1,'0'],
+    :invalid_values => [{},'x'],
+  }
+end
+```
+
+*Parameters*:
+
+See comments in source code: *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*.
+
+#### *Vash* shared examples
+
+*Synopsis*
+
+```ruby
+it_behaves_like 'Vash', params
+```
+where `params` is a Hash of mixed parameters to `Vash::Hash` and
+`Vash::Validator`. Note, that you don't have to define *sample_items*, because
+they are internally generated from *valid_items* and *invalid_items*.
 
 ## Development
 
