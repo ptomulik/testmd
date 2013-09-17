@@ -334,8 +334,7 @@ has all the functionality of standard `Hash`. We may use `Vash::Hash`
 require 'spec_helper'
 require 'unit/puppet/shared_behaviours/ptomulik/vash/hash'
 
-class MyHash < Hash
-end
+class MyHash < Hash; end
 
 describe MyHash do
   it_behaves_like 'Vash::Hash', {
@@ -362,6 +361,61 @@ the functionality of (its base class) `Hash`, we expect all tests to pass.
 ### Shared examples reference
 
 #### `Vash::Hash` shared examples
+
+*Synopsis*:
+
+```ruby
+it_behaves_like 'Vash::Hash', params
+```
+
+where `params` is a Hash with parameters for test driver.
+
+*Example usage*:
+
+```ruby
+require 'unit/puppet/shared_behaviours/ptomulik/vash/hash'
+# ...
+# MyHash is the class under test
+describe MyHash do
+  it_behaves_like 'Vash::Hash', {
+    :sample_items   => [ [:a,:A,], ['b','B'] ],
+    :hash_arguments => [ { :a=>:X, :d=>:D } ],
+    :missing_key    => :c,
+    :missing_value  => :C
+  }
+end
+```
+
+*Parameters*:
+
+* `model` (optional) - an object which models expected Hash behaviour, the
+  `model` object is not used by its own, but `model.class` is used by the
+  shared examples,
+* `model_class` (optional) - a class which models expected Hash behaviour,
+   by default `Puppet::SharedBehaviours::PTomulik::Vash::Hash` is used,
+   which is direct subclass of standard `Hash`,
+* `methods` (optional) - a hash of procs/lambdas which override appropriate
+  methods in the behaviour class. This may be used to slightly modify model
+  behaviour used by shared examples, for example:
+  ```ruby
+  # slightly modified hash ...
+  class MyHash < Hash
+    def default; nil; end
+    def default=(arg)
+      raise RuntimeError, "can't change default for MyHash"
+    end
+  end
+  describe MyHash do
+    it_behaves_like 'Vash::Hash', {
+      # ... other params ...
+      :methods => {
+        :default  => lambda { nil } # our #default method always returns nil
+        :default= => lambda { raise RuntimeError, "can't change default for MyHash" }
+      }
+    }
+  end
+  ```
+
 #### `Vash::Validator` shared examples
 #### `Vash` shared examples
 
