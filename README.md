@@ -322,8 +322,7 @@ The shared examples may be found in the following files:
 Say, we want to ensure, that our new class:
 
 ```ruby
-class MyHash < Hash
-end
+class MyHash < Hash; end
 ```
 
 has all the functionality of standard `Hash`. We may use `Vash::Hash` 
@@ -388,20 +387,22 @@ end
 
 *Parameters*:
 
-* `sample items` (required) - used to determine `existing_key`, `existing_value`
+* `sample items` (required) - used to determine *existing_key*, *existing_value*
   and key/value arguments to tested methods; also used to initialize instances
-  of described class before they get tested (unless `hash_initializers`
+  of described class before they get tested (unless *hash_initializers*
   parameter is provided); This may be a Hash or an array of
   items (array of 2-element arrays).
-* `missing_key` (required) - an example key that is not in `sample_items`,
-* `missing_value` (required) - an example value that is not in `sample_items`,
-* `model` (optional) - an object which models expected Hash behaviour, the
-  `model` object is not used by its own, but `model.class` is used by the
+* *missing_key* (required) - an example key that is not in *sample_items*,
+* *missing_value* (required) - an example value that is not in *sample_items*,
+* *hash_arguments* (requirer) - an array of hashes used as arguments to some
+  tested methods (those, that accept hash as argument, for example `merge!`),
+* *model* (optional) - an object which models expected Hash behaviour, the
+  *model* object is not used by its own, but `model.class` is used by the
   shared examples,
-* `model_class` (optional) - a class which models expected Hash behaviour,
+* *model_class* (optional) - a class which models expected Hash behaviour,
    by default `Puppet::SharedBehaviours::PTomulik::Vash::Hash` is used,
    which is direct subclass of standard `Hash`,
-* `methods` (optional) - a hash of procs/lambdas used to override methods in
+* *methods* (optional) - a hash of procs/lambdas used to override methods in
   the behaviour class. This may be used to slightly modify model behaviour used
   by shared examples, for example:
 
@@ -466,4 +467,3 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
-ptomulik@tea:$ 
