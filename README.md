@@ -304,12 +304,12 @@ bundle install --path vendor/bundle
 
 ### Shared examples overview
 
-For developers, the module provides quite extensive set of rspec shared
-examples. The tests are designed such that they compare behaviour of a subject
-class with a behaviour of an already-tested class such as standard `Hash`.
-Reusable *shared\_examples* are provided for developers who want to implement
-cusom `Vash` classes (these examples may be actually used to test any class
-that is intended to behave as Hash, Vash::Validator or complete Vash). 
+The module provides quite extensive set of rspec shared examples for
+developers. The tests are designed such that they compare behaviour of a
+subject class with a behaviour of an already-tested class such as standard
+`Hash`.  Reusable *shared\_examples* are provided for developers who want to
+implement cusom `Vash` classes (these examples may be actually used to test any
+class that is intended to behave as Hash, Vash::Validator or complete Vash). 
 
 The shared examples may be found in the following files:
 
@@ -319,7 +319,7 @@ The shared examples may be found in the following files:
 
 #### Example 6.1
 
-Let's begin with a simple example. Say, we want to ensure, that our new class:
+Say, we want to ensure, that our new class:
 
 ```ruby
 class MyHash < Hash
@@ -360,6 +360,10 @@ The above snippet shall generate about 700 test cases. Because `MyHash` has all
 the functionality of (its base class) `Hash`, we expect all tests to pass. 
 
 ### Shared examples reference
+
+#### `Vash::Hash` shared examples
+#### `Vash::Validator` shared examples
+#### `Vash` shared examples
 
 ## Development
 
