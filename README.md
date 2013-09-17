@@ -388,10 +388,10 @@ end
 
 *Parameters*:
 
-* `sample items` (required) - used to deterine `existing_key`, `existing_value`
-  and key/value arguments to functions to use for tests; also used to
-  initialize instances of the tested class before they get tested (unless
-  `hash_initializers` parameter is provided); This may be a Hash or an array of
+* `sample items` (required) - used to determine `existing_key`, `existing_value`
+  and key/value arguments to tested methods; also used to initialize instances
+  of described class before they get tested (unless `hash_initializers`
+  parameter is provided); This may be a Hash or an array of
   items (array of 2-element arrays).
 * `missing_key` (required) - an example key that is not in `sample_items`,
 * `missing_value` (required) - an example value that is not in `sample_items`,
@@ -401,9 +401,9 @@ end
 * `model_class` (optional) - a class which models expected Hash behaviour,
    by default `Puppet::SharedBehaviours::PTomulik::Vash::Hash` is used,
    which is direct subclass of standard `Hash`,
-* `methods` (optional) - a hash of procs/lambdas which override appropriate
-  methods in the behaviour class. This may be used to slightly modify model
-  behaviour used by shared examples, for example:
+* `methods` (optional) - a hash of procs/lambdas used to override methods in
+  the behaviour class. This may be used to slightly modify model behaviour used
+  by shared examples, for example:
 
   ```ruby
   # slightly modified hash ...
@@ -447,7 +447,7 @@ end
 * `disable_content_matching` - do not test whether the content of subject and
   model hash is same after the operation under test,
 
-Most of these parameters might be overwriten per-method, for example:
+Most of these parameters might be overwritten on per-method basis, for example:
 
 ```ruby
 it_behaves_like 'Hash::Vash', {
@@ -466,3 +466,4 @@ The project is held at github:
 * [https://github.com/ptomulik/puppet-vash](https://github.com/ptomulik/puppet-vash)
 
 Issue reports, patches, pull requests are welcome!
+ptomulik@tea:$ 
