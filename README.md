@@ -402,16 +402,14 @@ end
   # slightly modified hash ...
   class MyHash < Hash
     def default; nil; end
-    def default=(arg)
-      raise RuntimeError, "can't change default for MyHash"
-    end
+    def default=(arg); raise RuntimeError, "can't change default value"; end
   end
   describe MyHash do
     it_behaves_like 'Vash::Hash', {
       # ... other params ...
       :methods => {
         :default  => lambda { nil } # our #default method always returns nil
-        :default= => lambda { raise RuntimeError, "can't change default for MyHash" }
+        :default= => lambda { raise RuntimeError, "can't change default value" }
       }
     }
   end
