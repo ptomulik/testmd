@@ -425,6 +425,37 @@ end
   instances of the tested class and generate tests with such an initialized
   instances; if not provided, `sample_items` parameter is used to initialize
   one instance per method.
+
+* `disable_exception_matching` (optional) - if set to `true`, do not specify,
+  that subject's methods behave exactly as model's method with respect to the
+  raised exceptions,
+* `disable_value_matching` (optional) - if set to `true`, do not verify whether
+  the values returned by the subject's methods are same as values returned by
+  model's methods,
+* `disable_class_check` (optional) - if set to `true`, do not check whether the
+  classes of values returned by subject's methods are correct,
+* `disable_value_is_self_check` (optional) - some Hash methods are supposed to
+  return `self` object, (for example `merge!`); if this flag is set to `true`,
+  do not check whether these methods return `self` object properly,
+* `match_attributes` (optional) - an array of subject's attributes to match
+  against appropriate attributes; the attributes are not part of hash content;
+  an example attribute is `default` value.
+* `match_attributes_at_end` (optional) - an array of attributes to match
+  against model after the operation under test (e.g. `:match_attributes =>
+  :default` causes that `default` values of subject and model hashes are
+  compared after the tested method is invoked),
+* `disable_content_matching` - do not test whether the content of subject and
+  model hash is same after the operation under test,
+
+Most of these parameters might be overwriten per-method, for example:
+
+```ruby
+it_behaves_like 'Hash::Vash', {
+  # ...
+  :fetch => { :disable_value_matching => true },
+}
+```
+
 #### `Vash::Validator` shared examples
 #### `Vash` shared examples
 
