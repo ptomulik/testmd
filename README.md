@@ -388,6 +388,12 @@ end
 
 *Parameters*:
 
+* `sample items` (required) - used to initialize instances of the tested class
+  before they get tested; it's also used to deterine `existing_key` and
+  `existing_value` if these parameters are not provided. This may be a Hash or
+  an array of items (array of 2-element arrays).
+* `missing_key` (required) - an example key that is not in `sample_items`,
+* `missing_value` (required) - an example value that is not in `sample_items`,
 * `model` (optional) - an object which models expected Hash behaviour, the
   `model` object is not used by its own, but `model.class` is used by the
   shared examples,
@@ -402,19 +408,22 @@ end
   # slightly modified hash ...
   class MyHash < Hash
     def default; nil; end
-    def default=(arg); raise RuntimeError, "can't change default value"; end
+    def default=(v); raise RuntimeError, "can't change default value"; end
   end
   describe MyHash do
     it_behaves_like 'Vash::Hash', {
       # ... other params ...
       :methods => {
         :default  => lambda { nil } # our #default method always returns nil
-        :default= => lambda { raise RuntimeError, "can't change default value" }
+        :default= => lambda { |v| raise RuntimeError, "can't change default value" }
       }
     }
   end
   ```
-
+* `hash_initializers` (optional) - an Array of hashes, used to initialize
+  instances of the tested class and generate tests with such an initialized
+  instances; if not provided, `sample_items` parameter is used to initialize
+  one instance per method.
 #### `Vash::Validator` shared examples
 #### `Vash` shared examples
 
