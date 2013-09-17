@@ -308,9 +308,14 @@ developers. The tests are designed such that they compare behaviour of a
 subject class with a behaviour of an already-tested class such as standard
 `Hash`.  Reusable *shared\_examples* are provided for developers who want to
 implement cusom `Vash` classes (these examples may be actually used to test any
-class that is intended to behave as Hash, Vash::Validator or complete Vash). 
+class that is supposed to behave as Hash, Vash::Validator or complete Vash). 
+If you're starting implementing your new *Vash* class, it's recommended to
+first prepare basic test that includes *Vash::Inherited* or *Vash::Contained*
+shared examples and run test each time you overwrite some of *Hash* or
+*Vash::Validator* methods to see what (possibly unexpeted) changes in the
+functionality you have introduced..
 
-The shared examples may be found in the following files:
+The shared examples may be found in following files:
 
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash/hash.rb*
 * *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*
@@ -356,6 +361,48 @@ is not present in `:sample_items`.
 The above snippet shall generate about 700 test cases. Because `MyHash` has all
 the functionality of (its base class) `Hash`, we expect all tests to pass. 
 
+#### Example 6.2
+
+Now suppose, you want to add input validation to *MyHash* and then test its
+behaviour. For that, we include `Puppet::Util::PTomulik::Vash::Inherited`
+module, and use *Vash::Inherited* shared examples.
+
+```ruby
+# spec/unit/my_vash_spec.rb
+require 'spec_helper'
+require 'unit/puppet/shared_behaviours/ptomulik/vash/inherited'
+require 'puppet/util/ptomulik/vash/inherited'
+
+class MyHash < Hash
+  include Puppet::Util::PTomulik::Vash::Inherited 
+  # accept only valid identifiers as keys
+  def vash_valid_key?(key)
+    key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/)
+  end
+end
+
+describe MyHash do
+  it_behaves_like 'Vash::Inherited', {
+    :valid_keys        => ['iden_tifier', 'IdenTifier'],
+    :invalid_keys      => ['', '$#', :a, {}, [], nil],
+    :valid_items       => [ ['x', 1] ],
+    :invalid_items     => [ [[:x, 'a'], :key] ],
+    :hash_arguments    => [ { 'a'=>:A, 'b'=>'B' } ],
+    :missing_key       => 'c',
+    :missing_value     => :C,
+    :methods           => {
+      :vash_valid_key? => lambda{|key| key.is_a?(String) and (key=~/^[a-zA-Z]\w*$/)}
+    }
+  }
+end
+```
+
+In the above snippet, we've told, that *MyHash* class behaves mostly as the
+clean *Vash::Inherited* should behave, with one small exception - we have
+overwritten `vash_valid_key?` method and this is indicated by
+*:vash_valid_key?* parameter (this way we indicate deviations of *MyVash* class
+from basic behavior).
+
 ### Shared examples reference
 
 #### *Vash::Hash* shared examples
@@ -388,18 +435,15 @@ end
 
 *Parameters*:
 
-* *sample_items* (required) - used to determine *existing_key*, *existing_value*
-  and key/value arguments to tested methods; also used to initialize instances
-  of described class before they get tested (unless *hash_initializers*
-  parameter is provided); This may be a Hash or an array of
-  items (array of 2-element arrays).
+* *sample_items* (required) - used to determine key/value arguments to tested
+  methods and *existing_key*/ *existing_value* (if not present in params); also
+  used to initialize instances of described class before they get tested
+  (unless *hash_initializers* parameter is provided); the *sample_items*
+  parameter may be a Hash or an array of items (array of 2-element arrays),
 * *missing_key* (required) - an example key that is not in *sample_items*,
 * *missing_value* (required) - an example value that is not in *sample_items*,
 * *hash_arguments* (requirer) - an array of hashes used as arguments to some
   tested methods (those, that accept hash as argument, for example `merge!`),
-* *model* (optional) - an object which models expected Hash behaviour, the
-  *model* object is not used by its own, but *model.class* is used by the
-  shared examples,
 * *model_class* (optional) - a class which models expected Hash behaviour,
    by default `Puppet::SharedBehaviours::PTomulik::Vash::Hash` is used,
    which is direct subclass of standard `Hash`,
@@ -448,6 +492,9 @@ end
   compared after the tested method is invoked),
 * *disable_content_matching* - do not test whether the content of subject and
   model hash is same after the operation under test,
+* *raises* - an array of exception classes that may be raised by function as a
+  part of its normal behaviour (for example as a result of argument validation)
+  
 
 Most of these parameters might be overwritten on per-method basis, for example:
 
@@ -500,6 +547,8 @@ end
 See comments in source code: *spec/unit/puppet/shared_behaviours/ptomulik/vash/validator.rb*.
 
 #### *Vash* shared examples
+
+Combined *Vash:Hash* and *Vash::Validator* into one shared example.
 
 *Synopsis*
 
