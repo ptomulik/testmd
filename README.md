@@ -397,6 +397,7 @@ end
 * `methods` (optional) - a hash of procs/lambdas which override appropriate
   methods in the behaviour class. This may be used to slightly modify model
   behaviour used by shared examples, for example:
+
   ```ruby
   # slightly modified hash ...
   class MyHash < Hash
