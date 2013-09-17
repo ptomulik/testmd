@@ -302,6 +302,8 @@ Note, that you may need to install necessary gems to run tests:
 bundle install --path vendor/bundle
 ```
 
+### Shared examples overview
+
 For developers, the module provides quite extensive set of rspec shared
 examples. The tests are designed such that they compare behaviour of a subject
 class with a behaviour of an already-tested class such as standard `Hash`.
@@ -339,7 +341,7 @@ describe MyHash do
   it_behaves_like 'Vash::Hash', {
     :sample_items   => [ [:a,:A,], ['b','B'] ],
     :hash_arguments => [ { :a=>:X, :d=>:D } ],
-    :mising_key     => :c,
+    :missing_key    => :c,
     :missing_value  => :C
   }
 end
@@ -354,8 +356,10 @@ an argument (e.g. `merge!`). The `:missing_key` and `:missing_value` are sample
 key and value that are correct (should pass key/value and pair validation) but
 is not present in `:sample_items`.
 
-The above snippet shall generate about 580 test cases. Because `MyHash` has all
+The above snippet shall generate about 700 test cases. Because `MyHash` has all
 the functionality of (its base class) `Hash`, we expect all tests to pass. 
+
+### Shared examples reference
 
 ## Development
 
