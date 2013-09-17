@@ -388,10 +388,11 @@ end
 
 *Parameters*:
 
-* `sample items` (required) - used to initialize instances of the tested class
-  before they get tested; it's also used to deterine `existing_key` and
-  `existing_value` if these parameters are not provided. This may be a Hash or
-  an array of items (array of 2-element arrays).
+* `sample items` (required) - used to deterine `existing_key`, `existing_value`
+  and key/value arguments to functions to use for tests; also used to
+  initialize instances of the tested class before they get tested (unless
+  `hash_initializers` parameter is provided); This may be a Hash or an array of
+  items (array of 2-element arrays).
 * `missing_key` (required) - an example key that is not in `sample_items`,
 * `missing_value` (required) - an example value that is not in `sample_items`,
 * `model` (optional) - an object which models expected Hash behaviour, the
