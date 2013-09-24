@@ -15,9 +15,17 @@ The project is developed on Linux Debian. The following tools may be used:
 
 Eclipse plugins:
 
-* `CDT Main Features (kepler)`_ 8.2.0 or newer,
-* `C/C++ GDB Hardware Debugging (kepler)`_ 7.2.0 or newer,
-* `GNU ARM Eclipse plugin`_.
+* **CDT Main Features (kepler)** 8.2.0 or newer, from::
+
+    http://download.eclipse.org/tools/cdt/releases/kepler
+    
+* **C/C++ GDB Hardware Debugging (kepler)** 7.2.0 or newer, from::
+
+    http://download.eclipse.org/tools/cdt/releases/kepler
+    
+* **GNU ARM Eclipse plugin**, from::
+
+    http://gnuarmeclipse.sourceforge.net/updates
 
 Post notes:
 
@@ -62,8 +70,8 @@ USEFUL RESOURCES
 .. _OpenOCD: http://openocd.sourceforge.net
 .. _CDT Main Features (kepler): http://download.eclipse.org/tools/cdt/releases/kepler
 .. _C/C++ GDB Hardware Debugging (kepler): http://download.eclipse.org/tools/cdt/releases/kepler
-.. _GNU ARM Eclipse plugin: http://gnuarmeclipse.sourceforge.net/updates).
-.. _ARM Microcontroller Firmware Development Framework: http://tech.munts.com/MCU/Frameworks/ARM) 
+.. _GNU ARM Eclipse plugin: http://gnuarmeclipse.sourceforge.net/updates
+.. _ARM Microcontroller Firmware Development Framework: http://tech.munts.com/MCU/Frameworks/ARM
 .. _STM32F4 Discovery: http://www.st.com/web/en/catalog/tools/PF252419
 .. _HY-MiniSTM32V: http://www.haoyuelectronics.com/Attachment/HY-MiniSTM32V/
 .. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
