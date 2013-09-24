@@ -39,14 +39,16 @@ Post notes:
     
   I usually install CodeBench under ``/usr/local/codesourcery/codebench-lite-arm-eabi``, and the above script uses this as default.
 
-DEVELOPMENT BOARD
------------------
+DEVELOPMENT BOARDS
+------------------
 
-* `STM32F4 Discovery`_ Board, needs udev rule to be programmed without root privileges (put these lines to ``/etc/udev/rules.d/60-openocd.rules``, for example)::
+Note, that these boards/interfaces usually need additional udev rules if you wish to use them as non-root user. I used to put them to ``/etc/udev/rules.d/60-openocd.rules`` file.
+
+* `STM32F4 Discovery`_ Board, udev rule::
 
     ATTR{idVendor}=="0483", ATTR{idProduct}=="3748", GROUP="plugdev", MODE="0660" # STM32 STLink
 
-* `HY-MiniSTM32V`_ plus Stellaris Evaluation Board (used as JTAG interface), needs following udev rule::
+* `HY-MiniSTM32V`_ plus Stellaris `EKS-LM3S8962`_ Evaluation Board (used as JTAG interface), udev rule for EKS-LM3S8962::
 
     ATTR{idVendor}=="0403", ATTR{idProduct}=="bcd9", GROUP="plugdev", MODE="0660" # Stellaris Evaluation Board
 
@@ -54,7 +56,7 @@ Once you add new udev rule, reload rules with::
 
     sudo udevadm control --reload-rules
 
-and don't forget to reconnect your board/dongle if it was already connected to PC. 
+and don't forget to reconnect your board/dongle if it was already connected to PC.
 
 TARGET BOARD
 ------------
@@ -74,4 +76,5 @@ USEFUL RESOURCES
 .. _ARM Microcontroller Firmware Development Framework: http://tech.munts.com/MCU/Frameworks/ARM
 .. _STM32F4 Discovery: http://www.st.com/web/en/catalog/tools/PF252419
 .. _HY-MiniSTM32V: http://www.haoyuelectronics.com/Attachment/HY-MiniSTM32V/
+.. _EKS-LM3S8962: http://www.ti.com/tool/ek-lm3s8962
 .. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
