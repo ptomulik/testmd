@@ -8,27 +8,28 @@ Tools
 
 The project is developed on Linux Debian. The following tools are used:
 
-============================ ============ ==========================================
+============================ ============ =============================================
          Software              Version              Notes
-============================ ============ ==========================================
-    `Sourcery CodeBench`_       gcc 4.7+     `Lite Edition/ARM EABI`_ [#n1]_ [#n2]_
+============================ ============ =============================================
+    `Sourcery CodeBench`_       gcc 4.7+     `Lite Edition/ARM EABI`_ [#n1.1]_ [#n1.2]_
     OpenOCD_                    0.7.0+       ``apt-get install openocd``
     Eclipse_                    4.3.0+
     SCons_                      2.3+         ``apt-get install scons``
-============================ ============ ==========================================
+============================ ============ =============================================
 
-.. [#n1] Sourcery CodeBench is a **32-bit aplication**, so amd64 users may need to
-         install some libraries in 32-bit version. For that, i386 arch should be enabled by::
+.. [#n1.1] Sourcery CodeBench is a **32-bit aplication**, so amd64 users may
+  need to install some libraries in 32-bit version. For that, i386 arch should
+  be enabled by::
 
                dpkg --add-architecture i386
 
-.. [#n2] You may use the following script to crete symbolic links to CodeBench
-         tools (I don't like to modify my $PATH)::
+.. [#n1.2] You may use the following script to crete symbolic links to
+  CodeBench tools (I don't like to modify my $PATH):: 
 
-           sudo scripts/symlink-codebench [/path/to/codebench]
+      sudo scripts/symlink-codebench [/path/to/codebench]
 
-         I install it under ``/usr/local/codesourcery/codebench-lite-arm-eabi``,
-         and the above script uses this as default.
+  I install it under ``/usr/local/codesourcery/codebench-lite-arm-eabi``, and
+  the above script uses this as default.
 
 Eclipse Pugins
 ^^^^^^^^^^^^^^
@@ -41,31 +42,6 @@ Eclipse Pugins
  GNU ARM C/C++ Support          0.5.4+    http://gnuarmeclipse.sourceforge.net/updates
  SConsolidator Plugins          0.6.0+    http://www.sconsolidator.com/update
 ============================== ========= ========================================================
-
-Compiling
----------
-
-Compiling entire project
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Run scons script to compile entire project::
-
-    scons
-
-All generated files go to ``build/`` directory. 
-
-It may take a while, because several variants of firmware are generated.
-If you have multiple CPUs (cores) run parallel build::
-
-    scons -j6 # 6-jobs in parallel
-
-Cleaning up build directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To clean-up build dir, type::
-
-    scons -c
-
 
 Development Boards
 ------------------
@@ -95,8 +71,95 @@ If new rules are added, reload rules with::
 
 and don't forget to reconnect your board/dongle.
 
-Target board
-------------
+Compiling
+---------
+
+Compiling entire project
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run scons script to compile entire project::
+
+    scons
+
+All generated files go to ``build/`` directory.
+
+It may take a while, because several variants of firmware are generated.
+If you have multiple CPUs (cores) run parallel build::
+
+    scons -j6 # 6-jobs in parallel
+
+Compiling only what is necessary for one particular board
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To compile ``ledlight`` application for single target board, invoke one of the
+following commands:
+
+============================= ======================================
+        Target Board                    Command
+============================= ======================================
+ `HY-MiniSTM32V`_              ``scons hy-ministm32v``
+ STM32F1-LEDLight              ``scons stm32f1-ledlight``
+ `STM32F4-Discovery`_          ``scons stm32f4-discovery`` [#n4.1]_
+============================= ======================================
+
+.. [#n4.1] This target is currently not supported
+
+Cleaning up build directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To clean-up build dir, type::
+
+    scons -c
+
+Flashing and debugging
+----------------------
+
+Flashing and debugging from CLI 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use GNU debugger and OpenOCD to flash application into your MCU. First step
+is to enter debugger CLI::
+
+    $ arm-none-eabi-gdb
+
+then form GDB session attach to your target board using OpenOCD::
+
+    (gdb) target remote | openocd -c "gdb_port pipe; log_output openocd.log" -f <file.cfg>
+
+Substitute ``<file.cfg>`` with your OpenOCD configuration file.
+We have some prefabricated configuration files for our test beds (see section
+`Configuration files for OpenOCD`_).
+
+Write your program to flash from debugger CLI::
+
+    (gdb) load build/debug/ledlight-hy-ministm32v/ledlight.elf
+
+Note: select appropriate binary file in the above line, it's just an example
+for HY-MiniSTM32V board.
+
+Finally reset your MCU::
+
+    (gdb) monitor reset halt
+
+if you want to debug, or::
+
+    (gdb) monitor reset init
+
+if you want to run your application.
+
+Configuration files for OpenOCD
+```````````````````````````````
+
+Here are some ready to use OpenOCD configuration files:
+
+==================== =====================================================
+        Board                     OpenOCD config file
+==================== =====================================================
+ HY-MiniSTM32V        ``openocd/hy-ministm32-via-luminary.cfg`` [#n5.1]_
+ STM32F4-Discovery    ``openocd/stm32f4-discovery.cfga``
+==================== =====================================================
+
+.. [#n5.1] Programmed via Luminary EKS-LM3S8962 (or other compatible board)
 
 Useful resources
 ----------------
