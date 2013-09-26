@@ -171,25 +171,38 @@ Flashing and debugging from Eclipse
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here I provide an example for ``HY-MiniSTM32V`` only, other boards can be
-configured similarly.
+configured similarly. The crucial step is to create debug configuration 
+in Eclipse.
 
 Creating Debug Configuration in Eclipse
 ```````````````````````````````````````
 
 #. Go to ``Run > Debug Configurations``.
-.. image:: /images/eclipse/menu_run_debug_configurations.png
 
+   .. image:: /images/eclipse/menu_run_debug_configurations.png?raw=true
+         :align: center
+         :alt: see screenshoot
+         
 #. Right click on ``GDB Hardware Debugging`` and select ``New`` from the
    context menu.
+   
+   .. image:: /images/eclipse/menu_gdb_hardware_debugging_new.png?raw=true
+         :align: center
+         :alt: see screenshoot
+         
 #. Fill in form fields in ``Main`` tab, for example:
 
-   =========================== ====================================================================
+   =================== ===================================================================
           Field                                                 Value
-   =========================== ====================================================================
-    C/C++ Application           ``${project_loc:ledlight}/build/debug/ledlight-hy-ministm32v.elf``
-    Project                     ``ledlight``
-   =========================== ====================================================================
+   =================== ===================================================================
+    C/C++ Application   ``${project_loc:ledlight}/build/debug/ledlight-hy-ministm32v.elf``
+    Project             ``ledlight``
+   =================== ===================================================================
 
+   .. image:: /images/eclipse/dialog_gdb_hardware_debugging_main.png?raw=true
+         :align: center
+         :alt: see screenshoot
+         
 #. Configure debugger in ``Debugger`` tab:
 
    =========================== ===================================================================================================
@@ -201,14 +214,32 @@ Creating Debug Configuration in Eclipse
     GDB Connection String       ``| openocd -c "gdb_port pipe; log_output openocd.log" -f openocd/hy-ministm32-via-luminary.cfg``
    =========================== ===================================================================================================
 
+   .. image:: /images/eclipse/dialog_gdb_hardware_debugging_debugger.png?raw=true
+         :align: center
+         :alt: see screenshoot
+
 #. Adjust settings in ``Startup`` tab:
 
-   * Uncheck ``Reset and Delay (seconds)`` checkbox,
+   * Uncheck ``Reset and Delay (seconds)`` and ``Halt`` checkboxes (these commands are already present in our ``*.cfg`` file),
    * Add following ``Run Commands``::
 
         monitor reset init
 
+   .. image:: /images/eclipse/dialog_gdb_hardware_debugging_startup.png?raw=true
+         :align: center
+         :alt: see screenshoot
+         
 #. Click ``Apply`` and  ``Ok``.
+
+Debugging - using Debug Configuration
+`````````````````````````````````````
+
+Just find and click on ``Debug > LEDLIGHT (HY-MiniSTM32V)`` item in your debug
+toolbar.
+
+   .. image:: /images/eclipse/toolbar_debug_ledlight.png?raw=true
+         :align: center
+         :alt: see screenshoot
 
 
 Useful resources
