@@ -24,15 +24,17 @@ The project is developed on Linux Debian. The following tools are used:
                dpkg --add-architecture i386
 
 .. [#n1.2] You may use the following script to crete symbolic links to
-  CodeBench tools (I don't like to modify my $PATH):: 
+  CodeBench tools (I don't like to modify my $PATH)::
 
       sudo scripts/symlink-codebench [/path/to/codebench]
 
   I install it under ``/usr/local/codesourcery/codebench-lite-arm-eabi``, and
   the above script uses this as default.
 
-Eclipse Pugins
-^^^^^^^^^^^^^^
+Eclipse Plugins
+^^^^^^^^^^^^^^^
+
+Install them via **Help > Install Software**.
 
 ============================== ========= ========================================================
          Plugin                 Version                     Repository Link
@@ -63,9 +65,14 @@ file (create if absent). Here are example rules for some on-board interfaces:
 
 * `EKS-LM3S8962`_::
 
-    ATTR{idVendor}=="0403", ATTR{idProduct}=="bcd9", GROUP="plugdev", MODE="0660" # Stellaris Evaluation Board
+    ATTR{idVendor}=="0403", ATTR{idProduct}=="bcd9", GROUP="plugdev", MODE="0660" # Stellaris Board
 
-If new rules are added, reload rules with::
+**NOTE**: this allows all users from ``plugdev`` group to read from and write 
+to your JTAG interfaces. Don't forget to add yourself to ``plugdev`` group::
+
+    sudo usermod -a -G plugdev '<you>'
+
+When new rules are added, reload udev rules with::
 
     sudo udevadm control --reload-rules
 
@@ -114,13 +121,16 @@ To clean-up build dir, type::
 Flashing and debugging
 ----------------------
 
-Flashing and debugging from CLI 
+Flashing and debugging from CLI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use GNU debugger and OpenOCD to flash application into your MCU. First step
 is to enter debugger CLI::
 
-    $ arm-none-eabi-gdb
+    $ arm-none-eabi-gdb build/debug/ledlight-hy-ministm32v.elf
+
+**NOTE**: select appropriate binary file in the above line, it's just an example
+for HY-MiniSTM32V board.
 
 then form GDB session attach to your target board using OpenOCD::
 
@@ -132,20 +142,16 @@ We have some prefabricated configuration files for our test beds (see section
 
 Write your program to flash from debugger CLI::
 
-    (gdb) load build/debug/ledlight-hy-ministm32v/ledlight.elf
-
-Note: select appropriate binary file in the above line, it's just an example
-for HY-MiniSTM32V board.
+    (gdb) load
 
 Finally reset your MCU::
 
-    (gdb) monitor reset halt
-
-if you want to debug, or::
-
     (gdb) monitor reset init
 
-if you want to run your application.
+if you want to run your application, or disconnect from target and quit::
+
+    (gdb) disconnect
+    (gdb) quit
 
 Configuration files for OpenOCD
 ```````````````````````````````
