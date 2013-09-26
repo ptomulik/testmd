@@ -167,6 +167,50 @@ Here are some ready to use OpenOCD configuration files:
 
 .. [#n5.1] Programmed via Luminary EKS-LM3S8962 (or other compatible board)
 
+Flashing and debugging from Eclipse
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here I provide an example for ``HY-MiniSTM32V`` only, other boards can be
+configured similarly.
+
+Creating Debug Configuration in Eclipse
+```````````````````````````````````````
+
+#. Go to ``Run > Debug Configurations``.
+.. image:: /images/eclipse/menu_run_debug_configurations.png
+
+#. Right click on ``GDB Hardware Debugging`` and select ``New`` from the
+   context menu.
+#. Fill in form fields in ``Main`` tab, for example:
+
+   =========================== ====================================================================
+          Field                                                 Value
+   =========================== ====================================================================
+    C/C++ Application           ``${project_loc:ledlight}/build/debug/ledlight-hy-ministm32v.elf``
+    Project                     ``ledlight``
+   =========================== ====================================================================
+
+#. Configure debugger in ``Debugger`` tab:
+
+   =========================== ===================================================================================================
+          Field                                                 Value
+   =========================== ===================================================================================================
+    GDB Command                 ``arm-none-eabi-gdb``
+    Use remote target           *checked*
+    JTAG Device                 OpenOCD (via pipe)
+    GDB Connection String       ``| openocd -c "gdb_port pipe; log_output openocd.log" -f openocd/hy-ministm32-via-luminary.cfg``
+   =========================== ===================================================================================================
+
+#. Adjust settings in ``Startup`` tab:
+
+   * Uncheck ``Reset and Delay (seconds)`` checkbox,
+   * Add following ``Run Commands``::
+
+        monitor reset init
+
+#. Click ``Apply`` and  ``Ok``.
+
+
 Useful resources
 ----------------
 
