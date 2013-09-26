@@ -237,9 +237,9 @@ Debugging - using Debug Configuration
 Just find and click on ``Debug > LEDLIGHT (HY-MiniSTM32V)`` item in your debug
 toolbar.
 
-   .. image:: /images/eclipse/toolbar_debug_ledlight.png?raw=true
-         :align: center
-         :alt: see screenshoot
+.. image:: /images/eclipse/toolbar_debug_ledlight.png?raw=true
+     :align: center
+     :alt: see screenshoot
 
 
 Useful resources
