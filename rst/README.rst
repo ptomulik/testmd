@@ -34,7 +34,7 @@ The project is developed on Linux Debian. The following tools are used:
 Eclipse Plugins
 ^^^^^^^^^^^^^^^
 
-Install them via **Help > Install Software**.
+Install them via **Help > Install New Software**.
 
 ============================== ========= ========================================================
          Plugin                 Version                     Repository Link
@@ -177,20 +177,20 @@ in Eclipse.
 Creating Debug Configuration in Eclipse
 ```````````````````````````````````````
 
-#. Go to ``Run > Debug Configurations``.
+#. Go to **Run > Debug Configurations**.
 
    .. image:: /images/eclipse/menu_run_debug_configurations.png?raw=true
          :align: center
          :alt: see screenshoot
          
-#. Right click on ``GDB Hardware Debugging`` and select ``New`` from the
+#. Right click on **GDB Hardware Debugging** and select **New** from the
    context menu.
    
    .. image:: /images/eclipse/menu_gdb_hardware_debugging_new.png?raw=true
          :align: center
          :alt: see screenshoot
          
-#. Fill in form fields in ``Main`` tab, for example:
+#. Fill in form fields in **Main** tab, for example:
 
    =================== ===================================================================
           Field                                                 Value
@@ -203,7 +203,7 @@ Creating Debug Configuration in Eclipse
          :align: center
          :alt: see screenshoot
          
-#. Configure debugger in ``Debugger`` tab:
+#. Configure debugger in **Debugger** tab:
 
    =========================== ===================================================================================================
           Field                                                 Value
@@ -218,7 +218,7 @@ Creating Debug Configuration in Eclipse
          :align: center
          :alt: see screenshoot
 
-#. Adjust settings in ``Startup`` tab:
+#. Adjust settings in **Startup** tab:
 
    * Uncheck ``Reset and Delay (seconds)`` and ``Halt`` checkboxes (these commands are already present in our ``*.cfg`` file),
    * Add following ``Run Commands``::
@@ -229,12 +229,12 @@ Creating Debug Configuration in Eclipse
          :align: center
          :alt: see screenshoot
          
-#. Click ``Apply`` and  ``Ok``.
+#. Click **Apply** and  **Ok**.
 
 Debugging - using Debug Configuration
 `````````````````````````````````````
 
-Just find and click on ``Debug > LEDLIGHT (HY-MiniSTM32V)`` item in your debug
+Just find and click on **Debug > LEDLIGHT (HY-MiniSTM32V)** item in your debug
 toolbar.
 
 .. image:: /images/eclipse/toolbar_debug_ledlight.png?raw=true
