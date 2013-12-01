@@ -12,8 +12,9 @@
     * [Beginning with packagex](#beginning-with-packagex)
 4. [Usage](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations](#limitations)
-6. [Development](#development)
+6. [Resolved issues](#resolved-issues)
+7. [Limitations](#limitations)
+8. [Development](#development)
 
 ## Overview
 
@@ -67,10 +68,33 @@ Using *portnames* (e.g. `apache22`) as package names in manifests is allowed. Th
 Warning: Puppet::Type::Packagex::ProviderPortsx: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
 ```
 
+## Setup
 
-#### FreeBSD ports provider - resolved issues
+### What packagex affects
 
-##### Outdated ports installed when portorigin used in manifest
+* installs, upgrades, reinstalls and uninstalls (recursivelly!) packages,
+* modifies FreeBSD ports options files `/var/db/ports/xxx_yyy/options.local`,
+
+### Setup Requirements
+
+You may need to enable **pluginsync** in your `puppet.conf`.
+
+### Beginning with packagex
+
+Using `package_options`:
+                                                                                                                                                                                                                                                                               
+    packagex{'apache22': package_options => {'SUEXEC' => true} }                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                               
+## Usage                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                               
+## Reference                                                                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                                                               
+                                                                                                                                                       
+## Resolved issues
+
+### FreeBSD ports provider
+
+#### Outdated ports installed when portorigin used in puppet manifests
 
 The test case is following (2013.11.30):
 
@@ -114,34 +138,153 @@ on output and afer installation we have:
 databases/mysql56-client    =  up-to-date with port 
 ```
 
+The reason for the old *ports* provider to pickup outdated port is the following. If we manually run the `portupgrade` command, we'll see:
 
-## Setup
+```
+~ # /usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client
+--->  Found 3 ports matching 'mysql-client':
+        databases/mysql51-client
+        databases/mysql55-client
+        databases/mysql56-client
+Install 'databases/mysql51-client'? [yes]
+```
 
-### What packagex affects
+The old *ports* provider simply says `y` here and installs first proposed port.
 
-### Setup Requirements
+#### Package resources are not properly listed with `puppet resource package` command
 
-You may need to enable **pluginsync** in your `puppet.conf`.
+The test case is following (2013.11.30):
 
-### Beginning with packagex
+* have installed two ports sharing common *portname*, for example `lang/ruby18` and `lang/ruby19`,
+* have installed `vim-lite` port,
+* have some other ports installed,
 
-Using `package_options`:
-                                                                                                                                                                                                                                                                               
-    packagex{'apache22': package_options => {'SUEXEC' => true} }                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                               
-## Usage                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                               
-## Reference                                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                               
+Comparing length of package lists from several commands suggests that something is wrong here:
+```
+~ # portversion | wc -l
+      56
+~ # pkg_info | wc -l
+      56
+~ # puppet resource package | grep '^package {' | wc -l
+      61
+```
+
+Running diff on package lists:
+
+```
+~ # portversion -Q > /tmp/list1
+~ # puppet resource package | grep package | awk -F "[ :']+" '{print $3}' > /tmp/list2
+~ # diff -u /tmp/list1 /tmp/list2
+--- /tmp/list1  2013-12-01 01:20:10.000000000 +0100
++++ /tmp/list2  2013-12-01 01:20:14.000000000 +0100
+@@ -8,6 +8,7 @@
+ automake-wrapper
+ bash
+ bison
++bzip2-ruby
+ cloc
+ cmake
+ cmake-modules
+@@ -15,14 +16,18 @@
+ db42
+ dialog4ports
+ dmidecode
++editors/vim-lite
+ expat
+ f2c
++facter
+ fpp
+ gdbm
+ gettext
+ gmake
+ hello
+ help2man
++hiera
++json_pure
+ libexecinfo
+ libffi
+ libiconv
+@@ -42,7 +47,7 @@
+ portupgrade
+ puppet
+ ruby
+-ruby
++ruby-augeas
+ ruby19-bdb
+ ruby19-date2
+ ruby19-gems
+```
+
+Now investigating particular suspicious packages reveals some strangeness:
+
+```
+~ # portversion -v 'bzip2-ruby'
+** No matching package found: bzip2-ruby
+
+~ # puppet resource package | grep '^package {' | grep 'vim-lite'
+package { 'editors/vim-lite':
+package { 'vim-lite':
+~ # portversion -v -o vim-lite
+editors/vim-lite            =  up-to-date with port 
+
+~ # puppet resource package | grep '^package {' | grep 'facter'
+package { 'facter':
+package { 'rubygem-facter':
+~ # portversion -v -o facter  
+** No matching package found: facter
+~ # portversion -v -o rubygem-facter
+sysutils/rubygem-facter     =  up-to-date with port 
+
+~ # puppet resource package | grep '^package {' | grep 'hiera'
+package { 'hiera':
+package { 'rubygem-hiera':
+~ # portversion -v hiera
+** No matching package found: hiera
+~ # portversion -v rubygem-hiera
+rubygem-hiera-1.1.2         =  up-to-date with port 
+
+~ # puppet resource package | grep '^package {' | grep 'json_pure'
+package { 'json_pure':
+package { 'rubygem-json_pure':
+~ # portversion -v -o json_pure     
+** No matching package found: json_pure
+~ # portversion -v -o rubygem-json_pure
+devel/rubygem-json_pure     =  up-to-date with port 
+
+~ # puppet resource package | grep '^package {' | grep "'ruby'"
+package { 'ruby':
+~ # portversion -v -o ruby 
+lang/ruby18                 =  up-to-date with port 
+lang/ruby19                 =  up-to-date with port 
+
+~ # puppet resource package | grep '^package {' | grep 'ruby-augeas'
+package { 'ruby-augeas':
+package { 'rubygem-ruby-augeas':
+~ # portversion -v -o ruby-augeas
+** No matching package found: ruby-augeas
+~ # portversion -v -o rubygem-ruby-augeas
+textproc/rubygem-augeas     =  up-to-date with port 
+```                                                                                                                     
+
+The same case, but with the new *portsx* provider yields:
+
+```
+~ # puppet resource packagex | grep 'packagex {' | wc -l
+      56
+~ # portversion -Q -o | sort > /tmp/list1
+~ # puppet resource packagex | grep packagex | awk -F "[ :']+" '{print $3}' | sort > /tmp/list2
+~ # diff -u /tmp/list1 /tmp/list2
+```
+
+which agrees with information obtained from operating system.
+
+
 ## Limitations
 
-* We don't support *pkgng* yet, but it shall be relativelly easy to add this support. The only things to be adapted are the `uninstall` method in provider class and the parts of code that determine `@property_hash[:build_options]` (*pkgng* stores options in package database, so we don't have to parse options files that may be out-of-sync with reality)
-                                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                               
-## Development                                                                                                                                                                                                                                                                 
-                                                                                                                                                                                                                                                                               
-The project is held at github:                                                                                                                                                                                                                                                 
-                                                                                                                                                                                                                                                                               
-* [https://github.com/ptomulik/puppet-packagex](https://github.com/ptomulik/puppet-packagex)                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                               
+* We don't support *pkgng* yet, but it shall be relativelly easy to add this support. The only things to be adapted are the `uninstall` method in provider class and the parts of code that determine `@property_hash[:build_options]` (*pkgng* stores options in package database, so we don't have to parse options files that may be out-of-sync with reality).
+
+
+## Development                                                                                                                                         
+The project is held at github:                                                                                                                         
+* [https://github.com/ptomulik/puppet-packagex](https://github.com/ptomulik/puppet-packagex)                                                           
 Issue reports, patches, pull requests are welcome!                                                                                                                                                                                                                             
