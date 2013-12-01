@@ -49,11 +49,6 @@ to it and its providers. Currently new features include:
     * failures when uninstalling packages due to dependency problems are no
       longer present. Now all packages that depend on the package in question
       get uninstalled as well (`pkg_deinstall -r`),
-    * package conflicts when installing certain ports are no longer present.
-      Original *ports* provider couldn't handle ports with common *portname*
-      and sometimes it tried to install another port of an already installed
-      package. This is no longer an issue, as we nativelly use *portorigin*s to
-      identify packages.
 
 The *build_options* are independent of the well known *install_options* and
 *uninstall_options*. The definition of *build_options* is generally
@@ -147,7 +142,7 @@ Using `build_options` on FreeBSD (with *portsx* provider):
 
 ### FreeBSD ports provider
 
-#### Outdated ports installed when portorigin used in puppet manifests
+#### Outdated ports get installed when portorigin is used in *site.pp*
 
 The test case is following (2013.11.30):
 
@@ -335,6 +330,126 @@ The same case, but with the new *portsx* provider yields:
 
 which agrees with information obtained from operating system.
 
+#### With `ensure => latest` packages are not upgraded
+
+The test case is following (2013.12.1):
+
+* already installed is `help2man-1.43.3`,
+* new version `help2man-1.43.3` is available:
+
+```
+~ # portversion -v help2man
+help2man-1.43.3             <  needs updating (port has 1.43.3_1)
+```
+
+* we have `site.pp` with `package { 'help2man': ensure => latest}`
+
+If we now run puppet, we'll see:
+
+```
+~ # puppet agent -t --debug --trace
+...
+Debug: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Package[help2man]/ensure: help2man "1.43.3" is installed, latest is "1.43.3_1"
+Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes help2man'
+Notice: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Package[help2man]/ensure: ensure changed '1.43.3' to '1.43.3_1'
+...
+...
+```
+
+However, after that the outated version of package is still installed:
+
+```
+~ # portversion -v help2man
+help2man-1.43.3             <  needs updating (port has 1.43.3_1)
+```
+
+The reason becames obvious, when we run the *portupgrade* command manually:
+
+```
+~ # /usr/local/sbin/portupgrade -N -M BATCH=yes help2man
+** Found already installed package(s) of 'misc/help2man': help2man-1.43.3
+```
+
+The `-N` flag shouldn't be here. Correct command line is:
+
+```
+~ # /usr/local/sbin/portupgrade -R -M BATCH=yes help2man
+```
+
+and is used by the new *portsx* provider. If we use the new *portsx* provider,
+the package upgrades smoothly:
+
+```
+~ # puppet agent -t --debug --trace
+...
+Debug: Packagex[help2man](provider=portsx): Newer version in port
+Debug: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Packagex[help2man]/ensure: help2man "1.43.3" is installed, latest is "1.43.3_1"
+Debug: Executing '/usr/local/sbin/portupgrade -R -M BATCH=yes misc/help2man'
+...
+```
+and after that:
+```
+~ # portversion -v help2man
+help2man-1.43.3_1           =  up-to-date with port
+```
+
+Note, for testing purposes, you may downgrade package with `portdowngrade`
+tool.
+
+#### The package upgrade fails if portname changes between versions
+
+The test case is (2013.12.1):
+
+* installed is `mysql-client-5.5.31` (`databases/mysl55-client`)
+* the new version is available:
+
+```
+~ # portversion -v mysql-client
+mysql-client-5.5.31         <  needs updating (port has 5.5.34)
+```
+
+* the portname changes from `mysql-client` to `mysql55-client` between
+  versions.
+* the *site.pp* contains:   `package{'mysql-client': ensure => latest}`
+
+If we run puppet, it fails to upgrade the port:
+
+```
+~ # puppet agent -t --debug --trace
+...
+Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client'
+Error: Could not update: Could not find package mysql-client
+/usr/local/lib/ruby/site_ruby/1.9/puppet/util/errors.rb:96:in `fail'
+/usr/local/lib/ruby/site_ruby/1.9/puppet/type/package.rb:93:in `rescue in block (3 levels) in <module:Puppet>'
+/usr/local/lib/ruby/site_ruby/1.9/puppet/type/package.rb:90:in `block (3 levels) in <module:Puppet>'</module:Puppet></module:Puppet>
+...
+```
+
+Running the *portupgrade* command manually reveals the main problem:
+
+```
+~ # /usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client
+** No such package or port: mysql-client
+```
+
+The new *portsx* provider operates on *portorigins* and the upgrade runs
+without problem:
+
+```
+~ # puppet agent -t --debug --trace
+...
+Debug: Packagex[mysql-client](provider=portsx): Newer version in port
+Debug: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Packagex[mysql-client]/ensure: mysql-client "5.5.31" is installed, latest is "5.5.34"
+Debug: Executing '/usr/local/sbin/portupgrade -R -M BATCH=yes databases/mysql55-client'
+...
+```
+
+Note, that the new *portsx* provider will fail at next transaction (the one
+after successful upgrade). This is because now it's virtually impossible to
+match the outdated portname `mysql-client` to existing ports once the packages
+*portname* changed. The remedy is to use *portorigin*
+`databases/mysql55-client` in *site.pp*. Note, that this helps only for the new
+*portsx* provider (the old still doesn't work due to the `-N` flag issue).
 
 ## Limitations
 
