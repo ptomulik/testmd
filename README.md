@@ -11,10 +11,9 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with packagex](#beginning-with-packagex)
 4. [Usage](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-6. [Resolved issues](#resolved-issues)
-7. [Limitations](#limitations)
-8. [Development](#development)
+5. [Resolved issues](#resolved-issues)
+6. [Limitations](#limitations)
+7. [Development](#development)
 
 ## Overview
 
@@ -85,10 +84,9 @@ Using `package_options`:
                                                                                                                                                                                                                                                                                
     packagex{'apache22': package_options => {'SUEXEC' => true} }                                                                                                                                                                                                               
                                                                                                                                                                                                                                                                                
-## Usage                                                                                                                                                                                                                                                                       
+## Usage                                                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                                                
-## Reference                                                                                                                                                                                                                                                                   
-                                                                                                                                                                                                                                                                               
+
                                                                                                                                                        
 ## Resolved issues
 
