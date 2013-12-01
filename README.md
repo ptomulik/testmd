@@ -7,13 +7,14 @@
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Setup](#setup)
-    * [What packagex affects](#what-[modulename]-affects)
+    * [What packagex affects](#what-packagex-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with packagex](#beginning-with-packagex)
 4. [Usage](#usage)
 5. [Resolved issues](#resolved-issues)
-6. [Limitations](#limitations)
-7. [Development](#development)
+6. [Known incompatibilities](#known-incompatibilities)
+7. [Limitations](#limitations)
+8. [Development](#development)
 
 ## Overview
 
@@ -22,7 +23,7 @@ providers.
 
 This is a place, where I develop and test my extended version of puppet
 *package* resource with enhanced providers. The releases found at
-https://forge.puppetlabs.com/ptomulik/packagex, are known to be functional and
+https://forge.puppetlabs.com/ptomulik/packagex are known to be functional and
 may be used with recent versions of puppet (3.2 and later). Currently I've
 developed *portsx* provider, which is an enhanced and bug-fixed version of
 puppet's *ports* provider.
@@ -46,9 +47,9 @@ to it and its providers. Currently new features include:
       upgradeable, but it never worked for me),
     * *portversion* is used to find installed packages (instead of *pkg_info*),
     * *make search* is used to find uninstalled ports listed in puppet manifests,
-    * failures when uninstalling packages due to dependency problems are no
-      longer present. Now all packages that depend on the package in question
-      get uninstalled as well (`pkg_deinstall -r`),
+    * unable to uninstall package due to dependency problems - this problem may
+      be easily mitigated now by using appropriate *uninstall_options*
+    * added unit tests (original provider was totally untested),
 
 The *build_options* are independent of the well known *install_options* and
 *uninstall_options*. The definition of *build_options* is generally
@@ -83,7 +84,7 @@ several reasons. First, it is said to be faster, because it uses compiled
 version of ports INDEX file. Second, it works with both kinds of package
 databases - with the old *pkg* database and the new
 [*pkgng*](http://www.freebsd.org/doc/handbook/pkgng-intro.html) database,
-providing seamless interface to any of them. Third, it provides package naemes
+providing seamless interface to any of them. Third, it provides package names
 and their "out-of-date" statuses in a single call, so we don't need to
 separatelly check out-of-date status for installed packages. While this version
 of *portsx* is not yet ready to work with *pkgng*, using *portversion* is a big
@@ -115,7 +116,7 @@ origins `databases/mysql51-client`, `databases/mysql55-client` and
 and you use this ambiguous *portname* in your manifest, you'll se the following
 warning:
 
-```
+```console
 Warning: Puppet::Type::Packagex::ProviderPortsx: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
 ```
 
@@ -123,8 +124,8 @@ Warning: Puppet::Type::Packagex::ProviderPortsx: Found 3 ports named 'mysql-clie
 
 ### What packagex affects
 
-* installs, upgrades, reinstalls and uninstalls (recursivelly!) packages,
-* modifies FreeBSD ports options files `/var/db/ports/xxx_yyy/options.local`,
+* installs, upgrades, reinstalls and uninstalls packages,
+* modifies FreeBSD ports options' files `/var/db/ports/*/options.local`,
 
 ### Setup Requirements
 
@@ -132,11 +133,21 @@ You may need to enable **pluginsync** in your `puppet.conf`.
 
 ### Beginning with packagex
 
+Its usage is essentially same as for the original *package* resource. Here I
+just put some examples specific to new features/providers.
+
+#### Example 1 - using build options on FreeBSD
+
 Using `build_options` on FreeBSD (with *portsx* provider):
 
-    packagex{'apache22': build_options => {'SUEXEC' => true} }
+```puppet
+packagex {'apache22': build_options => {'SUEXEC' => true} }
+```
 
 ## Usage
+
+I think, there is nothing worth to be written in addition to
+[Beginning with packagex](#beginning-with-packagex).
 
 ## Resolved issues
 
@@ -147,25 +158,29 @@ Using `build_options` on FreeBSD (with *portsx* provider):
 The test case is following (2013.11.30):
 
 * package `mysql-client` is absent initially,
-* there are three ports available:
+* there are three ports available in ports tree that share `mysql-client`
+  *portname* :
   * `databases/mysql51-client` (oldest),
   * `databases/mysql55-client`, and
   * `databases/mysql55-client` (most recent),
 * the *site.pp* contains: `package {'mysql-client': ensure => present}` or
   `package {'mysql-client': ensure => latest}`,
 
-If we run catalog, we observe in output:
+Note, that the situation with `mysql-client` has changed recently such that
+`databases/mysql55-client` uses `mysql55-client` as *portname* for example, but
+it was the case a little bit earlier that `mysql-client` was used by all three
+ports. Shared *portname*s are still used by some other packages, however.
 
-```
+```console
 ~ # `puppet agent -t --debug --trace`
 ...
-Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client
+Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client'
 ...
 ```
 
 after installation we have:
 
-```
+```console
 ~ # portversion -v -o mysql-client
 databases/mysql51-client    =  up-to-date with port
 ```
@@ -173,7 +188,8 @@ databases/mysql51-client    =  up-to-date with port
 which is certainly not the most recent available version.
 
 The same case, but with new *packagex* provider yields:
-```
+
+```console
 ~ # `puppet agent -t --debug --trace`
 ...
 Warning: Puppet::Type::Packagex::ProviderPortsx: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
@@ -183,14 +199,14 @@ Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes databases/mysql56-
 
 on output and afer installation we have:
 
-```
+```console
 ~ # portversion -v -o mysql-client
 databases/mysql56-client    =  up-to-date with port
 ```
 
 The reason for the old *ports* provider to pickup outdated port is the following. If we manually run the `portupgrade` command, we'll see:
 
-```
+```console
 ~ # /usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client
 --->  Found 3 ports matching 'mysql-client':
         databases/mysql51-client
@@ -205,14 +221,15 @@ The old *ports* provider simply says `y` here and installs first proposed port.
 
 The test case is following (2013.11.30):
 
-* have installed two ports sharing common *portname*, for example `lang/ruby18`
-  and `lang/ruby19`,
-* have installed `vim-lite` port,
-* have some other ports installed,
+* two ports `lang/ruby18` and `lang/ruby19` sharing common *portname* `ruby`
+  are initially installed,
+* `vim-lite` package is initially installed,
+* some other ports are installed, especially those containing ruby gems,
 
 Comparing length of package lists from several commands suggests that something
-is wrong here:
-```
+goes wrong with `puppet resource package` for *ports* provider:
+
+```console
 ~ # portversion | wc -l
       56
 ~ # pkg_info | wc -l
@@ -223,7 +240,7 @@ is wrong here:
 
 Running diff on package lists:
 
-```
+```console
 ~ # portversion -Q > /tmp/list1
 ~ # puppet resource package | grep package | awk -F "[ :']+" '{print $3}' > /tmp/list2
 ~ # diff -u /tmp/list1 /tmp/list2
@@ -231,7 +248,7 @@ Running diff on package lists:
 +++ /tmp/list2  2013-12-01 01:20:14.000000000 +0100
 @@ -8,6 +8,7 @@
  automake-wrapper
- bash
+ console
  bison
 +bzip2-ruby
  cloc
@@ -267,18 +284,25 @@ Running diff on package lists:
  ruby19-gems
 ```
 
-Now investigating particular suspicious packages reveals some strangeness:
+Now investigating particular packages from the list above reveals
+inconsistencies in detail:
 
-```
+```console
+~ # puppet resource package | grep '^package {' | grep 'bzip2-ruby'
+package { 'bzip2-ruby':
 ~ # portversion -v 'bzip2-ruby'
 ** No matching package found: bzip2-ruby
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep 'vim-lite'
 package { 'editors/vim-lite':
 package { 'vim-lite':
 ~ # portversion -v -o vim-lite
 editors/vim-lite            =  up-to-date with port
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep 'facter'
 package { 'facter':
 package { 'rubygem-facter':
@@ -286,7 +310,9 @@ package { 'rubygem-facter':
 ** No matching package found: facter
 ~ # portversion -v -o rubygem-facter
 sysutils/rubygem-facter     =  up-to-date with port
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep 'hiera'
 package { 'hiera':
 package { 'rubygem-hiera':
@@ -294,7 +320,9 @@ package { 'rubygem-hiera':
 ** No matching package found: hiera
 ~ # portversion -v rubygem-hiera
 rubygem-hiera-1.1.2         =  up-to-date with port
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep 'json_pure'
 package { 'json_pure':
 package { 'rubygem-json_pure':
@@ -302,13 +330,17 @@ package { 'rubygem-json_pure':
 ** No matching package found: json_pure
 ~ # portversion -v -o rubygem-json_pure
 devel/rubygem-json_pure     =  up-to-date with port
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep "'ruby'"
 package { 'ruby':
 ~ # portversion -v -o ruby
 lang/ruby18                 =  up-to-date with port
 lang/ruby19                 =  up-to-date with port
+```
 
+```console
 ~ # puppet resource package | grep '^package {' | grep 'ruby-augeas'
 package { 'ruby-augeas':
 package { 'rubygem-ruby-augeas':
@@ -320,24 +352,32 @@ textproc/rubygem-augeas     =  up-to-date with port
 
 The same case, but with the new *portsx* provider yields:
 
-```
+```console
+~ # portversion | wc -l
+      56
+~ # pkg_info | wc -l
+      56
 ~ # puppet resource packagex | grep 'packagex {' | wc -l
       56
+```
+
+```console
 ~ # portversion -Q -o | sort > /tmp/list1
 ~ # puppet resource packagex | grep packagex | awk -F "[ :']+" '{print $3}' | sort > /tmp/list2
 ~ # diff -u /tmp/list1 /tmp/list2
 ```
 
-which agrees with information obtained from operating system.
+that is the information from the new *portsx* provider agrees with that
+obtained from operating system.
 
 #### With `ensure => latest` packages are not upgraded
 
 The test case is following (2013.12.1):
 
-* already installed is `help2man-1.43.3`,
-* new version `help2man-1.43.3` is available:
+* `help2man-1.43.3` is initially installed,
+* new version `help2man-1.43.3` is available in ports tree:
 
-```
+```console
 ~ # portversion -v help2man
 help2man-1.43.3             <  needs updating (port has 1.43.3_1)
 ```
@@ -346,7 +386,7 @@ help2man-1.43.3             <  needs updating (port has 1.43.3_1)
 
 If we now run puppet, we'll see:
 
-```
+```console
 ~ # puppet agent -t --debug --trace
 ...
 Debug: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Package[help2man]/ensure: help2man "1.43.3" is installed, latest is "1.43.3_1"
@@ -358,28 +398,28 @@ Notice: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Package[help2man]/en
 
 However, after that the outated version of package is still installed:
 
-```
+```console
 ~ # portversion -v help2man
 help2man-1.43.3             <  needs updating (port has 1.43.3_1)
 ```
 
 The reason becames obvious, when we run the *portupgrade* command manually:
 
-```
+```console
 ~ # /usr/local/sbin/portupgrade -N -M BATCH=yes help2man
 ** Found already installed package(s) of 'misc/help2man': help2man-1.43.3
 ```
 
 The `-N` flag shouldn't be here. Correct command line is:
 
-```
+```console
 ~ # /usr/local/sbin/portupgrade -R -M BATCH=yes help2man
 ```
 
 and is used by the new *portsx* provider. If we use the new *portsx* provider,
 the package upgrades smoothly:
 
-```
+```console
 ~ # puppet agent -t --debug --trace
 ...
 Debug: Packagex[help2man](provider=portsx): Newer version in port
@@ -388,7 +428,7 @@ Debug: Executing '/usr/local/sbin/portupgrade -R -M BATCH=yes misc/help2man'
 ...
 ```
 and after that:
-```
+```console
 ~ # portversion -v help2man
 help2man-1.43.3_1           =  up-to-date with port
 ```
@@ -403,7 +443,7 @@ The test case is (2013.12.1):
 * installed is `mysql-client-5.5.31` (`databases/mysl55-client`)
 * the new version is available:
 
-```
+```console
 ~ # portversion -v mysql-client
 mysql-client-5.5.31         <  needs updating (port has 5.5.34)
 ```
@@ -414,7 +454,7 @@ mysql-client-5.5.31         <  needs updating (port has 5.5.34)
 
 If we run puppet, it fails to upgrade the port:
 
-```
+```console
 ~ # puppet agent -t --debug --trace
 ...
 Debug: Executing '/usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client'
@@ -427,7 +467,7 @@ Error: Could not update: Could not find package mysql-client
 
 Running the *portupgrade* command manually reveals the main problem:
 
-```
+```console
 ~ # /usr/local/sbin/portupgrade -N -M BATCH=yes mysql-client
 ** No such package or port: mysql-client
 ```
@@ -435,7 +475,7 @@ Running the *portupgrade* command manually reveals the main problem:
 The new *portsx* provider operates on *portorigins* and the upgrade runs
 without problem:
 
-```
+```console
 ~ # puppet agent -t --debug --trace
 ...
 Debug: Packagex[mysql-client](provider=portsx): Newer version in port
@@ -451,13 +491,119 @@ match the outdated portname `mysql-client` to existing ports once the packages
 `databases/mysql55-client` in *site.pp*. Note, that this helps only for the new
 *portsx* provider (the old still doesn't work due to the `-N` flag issue).
 
+#### Uninstall fails when there are other packages that depend on this one
+
+The tests case is (2013.12.1):
+
+* package `apache22-event-mpm-2.2.25` is initially installed,
+* other packages that depend on it are initially installed, for example:
+  * `ap22-mod_rpaf2-0.6_3`
+  * `portdowngrade-1.4`
+  * `subversion-1.8.3`
+* the *site.pp* contains `package{'www/apache22-event-mpm': ensure => absent}`
+
+If we invoke puppet, it runs into trouble:
+
+```console
+~ # puppet agent -t --debug --trace
+...
+Debug: Executing '/usr/local/sbin/pkg_deinstall www/apache22-event-mpm'
+Error: Execution of '/usr/local/sbin/pkg_deinstall www/apache22-event-mpm' returned 1: --->  Deinstalling 'apache22-event-mpm-2.2.25'
+pkg_delete: package 'apache22-event-mpm-2.2.25' is required by these other packages
+and may not be deinstalled:
+ap22-mod_rpaf2-0.6_3
+portdowngrade-1.4
+subversion-1.8.3
+** Listing the failed packages (-:ignored / *:skipped / !:failed)
+        ! apache22-event-mpm-2.2.25     (pkg_delete failed)
+...
+```
+
+Now, if we use the new *portsx* provider with appropriate *uninstall_options*,
+it is again able to uninstalls the package (and all the other packages that
+depend on it if needed). For example, one may use `-r` flag if the old *pkg*
+toolstack is used to manage packages:
+
+```puppet
+packagex { 'www/apache22-event-mpm':
+           ensure => absent,
+           uninstall_options => ['-r'] }
+```
+
+Then running puppet, we can easilly uninstall the package(s) recursivelly.:
+
+```console
+~ # puppet agent -t --debug --trace
+...
+Debug: Executing '/usr/local/sbin/pkg_deinstall -r apache22-event-mpm-2.2.25'
+Notice: /Stage[main]//Node[puppet-test.mgmt.meil.pw.edu.pl]/Packagex[www/apache22-event-mpm]/ensure: removed
+...
+Notice: Finished catalog run in 15.09 seconds
+```
+
+Note that you may disable recursive uninstall by overwritting the
+*uninstall_options* in *site.pp* i.e.  not listing `-r` in options:
+
+
+## Known incompatibilities
+
+Some design decisions caused, that there are incompatibilities w.r.t original
+version of *package* resource and some of its providers.
+
+### Known incompatibilities in *portsx*
+
+#### Portorigins used internally to identify packages.
+
+This may cause some troubles to scrips/manifests that depend on package names
+held by the *portsx* provider. If there are some scripts, for example, which
+parse the output of `puppet resource package ...`, then they may fail with new
+*portsx* provider. To exemplify this, let's see the output of `puppet resource
+...` for the old *ports* provider and new *portsx* provider.
+
+For the old one we have, for example:
+
+```console
+~ # puppet resource package | grep 'package {' | grep "autoconf':"
+package { 'autoconf':
+```
+
+whereas the same for the new implementation is:
+
+```console
+~ # puppet resource packagex | grep 'packagex {' | grep "autoconf':"
+packagex { 'devel/autoconf':
+```
+
+See the difference in the package name?
+
+
+#### The `puppet resource packagex` displays *build_options*
+
+This too may break some scripts that parse output of `puppet resource packagex
+...`. The example output for package having *build_options* is:
+
+```console
+~ # puppet resource packagex 'textproc/libxml2'
+packagex { 'textproc/libxml2':
+  ensure        => '2.8.0_3',
+    build_options => '{:MEM_DEBUG=>false, :SCHEMA=>true, :THREADS=>true, :THREAD_ALLOC=>false, :XMLLINT_HIST=>false}',
+    }
+```
+
+Note, that the *build_options* would never appear in output of the original
+(old) *ports* provider.
+
 ## Limitations
 
-* We don't support *pkgng* yet, but it shall be relativelly easy to add this
+* There is no support for *pkgng* yet, but it shall be relatively easy to add this
   support. The only things to be adapted are the `uninstall` method in provider
   class and the parts of code that determine `@property_hash[:build_options]`
   (*pkgng* stores options in package database, so we don't have to parse
   options files that may be out-of-sync with reality).
+* Currently there is no system tests for the new *portsx* provider. This is,
+  because there are no FreeBSD prefab images provided by `rspec-system` yet. I
+  hope this changes in not so far future, see status of the [request for freebsd
+  prefab images](https://github.com/puppetlabs/rspec-system/issues/52).
 
 
 ## Development
