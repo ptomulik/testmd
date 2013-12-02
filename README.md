@@ -141,8 +141,56 @@ just put some examples specific to new features/providers.
 Using `build_options` on FreeBSD (with *portsx* provider):
 
 ```puppet
-packagex {'apache22': build_options => {'SUEXEC' => true} }
+packagex { 'www/apache22': 
+  build_options => {'SUEXEC' => true}
+}
 ```
+
+#### Example 2 - using *uninstall_options* to cope with dependency problems
+
+Sometimes freebsd refuses to uninstall a package due to dependency problems
+that would appear after deinstallation. In such situations we may use the
+`uninstall_options` to instruct the provider to (for example) uninstall also
+all packages that depend on the package being uninstalled. When using ports
+with old *pkg* package manager (the other is *pkgng* not covered here), one
+would write in its manifest:
+
+```puppet
+packagex { 'www/apache22':
+  ensure => absent,
+  uninstall_options => ['-r'] 
+}
+```
+
+#### Example 3 - using *install_options*
+
+The new *portsx* provider implements *install_options* feature. The flags
+provided via *install_options* are passed to `portupgrade` command when
+installing, reinstalling or upgrading packages. With no *install_options*
+provided, sensible defaults are selected by *portsx* provider.
+
+Let's say we want to install precompiled package, if available (`-P` flag).
+Write the following manifest:
+
+```puppet
+packagex { 'www/apache22':
+  ensure => present,
+  install_options => ['-P', '-M', {'BATCH' => 'yes'}]
+}
+
+```
+
+Now, if we run puppet, we'll see the command:
+
+```console
+~ # puppet agent -t --debug --trace
+...
+Debug: Executing '/usr/local/sbin/portupgrade -N -P -M BATCH=yes www/apache22'
+...
+```
+
+Note, that the *portsx* provider adds some flags by its own (`-N` in the above
+example).
 
 ## Usage
 
