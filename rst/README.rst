@@ -120,7 +120,7 @@ them are passed directly to the generated ``Doxyfile``.
 ======================== =========================================================
        Option                               Description
 ======================== =========================================================
- ``CPP_FILTER``           Script used as a doxygen input filter for C/C++ sources.
+ CPP_FILTER               Script used as a doxygen input filter for C/C++ sources.
  EXAMPLE_PATH_            Passed to Doxyfile.
  EXAMPLE_PATTERNS_        Passed to Doxyfile.
  EXCLUDE_                 Passed to Doxyfile.
@@ -134,7 +134,7 @@ them are passed directly to the generated ``Doxyfile``.
  PROJECT_LOGO_            Passed to Doxyfile. 
  PROJECT_NAME_            Passed to Doxyfile. 
  PROJECT_NUMBER_          Passed to Doxyfile. 
- ``SRCDIR``               Directory containing source files to process.
+ SRCDIR                   Directory containing source files to process.
  STRIP_FROM_INC_PATH_     Passed to Doxyfile. 
  STRIP_FROM_PATH_         Passed to Doxyfile. 
 ======================== =========================================================
