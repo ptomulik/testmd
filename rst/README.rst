@@ -102,7 +102,7 @@ dir         ref to directory          ``'bar/geez'``              ``bar/geez``
 srcentry    ref to source file or dir ``'foo'``                   ``/home/my/proj/src/foo``
 srcfile     ref to source file        ``'foo.txt'``               ``/home/my/proj/src/foo.txt``
 srcdir      ref to source directory   ``'.'``                     ``/home/my/proj/src``
-dualentry   ref to entry + its srouce ``'foo'``                   ``foo /home/my/proj/src/foo``
+dualentry   ref to entry + its source ``'foo'``                   ``foo /home/my/proj/src/foo``
 dualfile    ref to file + its source  ``'foo.txt'``               ``foo.txt /home/my/proj/src/foo.txt``
 dualdir     ref to dir + its source   ``'.'``                     ``. /home/my/proj/src``
 entries     list of entries           ``['foo', 'bar/gez']``      ``foo bar/geez``
