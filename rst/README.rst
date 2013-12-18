@@ -88,9 +88,9 @@ Supported options
 
 There are few types of options described below:
 
-=========== ========================= =========================== =====================================
+=========== ========================= =========================== ===============================================================
 Type        Note                      Example value in SConscript Example output to Doxyfile
-=========== ========================= =========================== =====================================
+=========== ========================= =========================== ===============================================================
 int         integer                   ``3``                       ``3``
 str         string                    ``'str1'`` or ``'str 2'``   ``str1`` or ``"str 2"``
 list        list                      ``['a b', False, 3]``       ``"a b" False 3``
@@ -105,16 +105,16 @@ srcdir      ref to source directory   ``'.'``                     ``/home/my/pro
 dualentry   ref to entry + its srouce ``'foo'``                   ``foo /home/my/proj/src/foo``
 dualfile    ref to file + its source  ``'foo.txt'``               ``foo.txt /home/my/proj/src/foo.txt``
 dualdir     ref to dir + its source   ``'.'``                     ``. /home/my/proj/src``
-entries     list of entries
-files       list of files
-dirs        list of directories
-srcentries  list of source entries
-srcfiles    list of source files
-srcdirs     list of source dirs
-dualentries list of dual entries
-dualfiles   list of dual files
-dualdirs    list of dual directories
-=========== ========================= =========================== =====================================
+entries     list of entries           ``['foo', 'bar/gez']``      ``foo bar/geez``
+files       list of files             ``['foo', 'bar.txt']``      ``foo bar.txt``
+dirs        list of directories       ``['.', 'foo']``            ``. foo``
+srcentries  list of source entries    ``['.', 'foo']``            ``/home/my/proj/src /home/my/proj/src/foo``
+srcfiles    list of source files      ``['a.txt', 'b.txt']``      ``/home/my/proj/src/a.txt /home/my/proj/src/b.txt``
+srcdirs     list of source dirs       ``['.', 'foo']``            ``/home/my/proj/src /home/my/proj/src/foo``
+dualentries list of dual entries      ``['.', 'foo']``            ``. /home/my/proj/src foo /home/my/proj/src/foo``
+dualfiles   list of dual files        ``['a.txt', 'b.txt']``      ``a.txt /home/my/proj/src/a.txt b.txt /home/my/proj/src/b.txt``
+dualdirs    list of dual directories  ``['.', 'foo']``            ``. /home/my/proj/src foo /home/my/proj/src/foo``
+=========== ========================= =========================== ===============================================================
 
 
 
