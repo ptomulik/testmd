@@ -1,8 +1,8 @@
 scons-doxygen-template
 ======================
 
-Template module to generate documentation with Doxygen_ and SCons_.
-Uses scons_doxygen_ tool to run Doxygen from a SCons script.
+SCons_ tool to generate Doxyfile for Doxygen_. The generated Doxyfile may be
+further used by scons_doxygen_ tool.
 
 Usage example
 -------------
@@ -18,11 +18,11 @@ Git-based projects
 
 #. Add scons_doxygen_ as submodule (here we use git mirror of scons_doxygen_)::
 
-      git submodule add git@github.com:ptomulik/scons_doxygen.git site_scons/site_tools/doxygen
+      git submodule add git://github.com/ptomulik/scons_doxygen.git site_scons/site_tools/doxygen
 
-#. Add scons-doxygen-template_ as submodule::
+#. Add scons-tool-doxyfile as submodule::
 
-      git submodule add git@github.com:ptomulik/scons-doxygen-template.git doc
+      git submodule add git://github.com/ptomulik/scons-tool-doxyfile.git site_scons/site_tools/doxyfile
 
 #. Create some source files, for example ``src/test.hpp``:
 
@@ -38,19 +38,20 @@ Git-based projects
 
    .. code-block:: python
 
-      # SConstruct
-      env = Environment(tools =  ['doxygen', 'textfile'])
-      options = {
-        'SRCDIR'                : '#src',
-        'PROJECT_NAME'          : 'Test Project 1',
-        'PROJECT_NUMBER'        : '0.1.0',
-        'PROJECT_BRIEF'         : 'Simple Test Project',
-        'RECURSIVE'             : 'YES'
-      }
-      env.SConscript('doc/SConscript', exports=['env','options'], variant_dir='build/doc', duplicate=0)
-
-      env.Ignore('build','build/doc')
-      env.Alias('api-doc', 'build/doc')
+    # TODO: correct, this is wrong
+    # SConstruct
+    ##      env = Environment(tools =  ['doxygen', 'doxyfile'])
+    ##      options = {
+    ##        'SRCDIR'                : '#src',
+    ##        'PROJECT_NAME'          : 'Test Project 1',
+    ##        'PROJECT_NUMBER'        : '0.1.0',
+    ##        'PROJECT_BRIEF'         : 'Simple Test Project',
+    ##        'RECURSIVE'             : 'YES'
+    ##      }
+    ##      doxyfile = env.Doxyfile(**options)
+    ##      doc = env.Doxygen(doxyfile)
+    ##      env.Depends(doc, doxyfile)
+    ##      env.Ignore('.', doc)
 
 #. Try it out::
 
@@ -66,388 +67,541 @@ Git-based projects
 Details
 -------
 
-Template contents and description
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Module contents and description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The scons-doxygen-template_ consists of two files:
+The scons-tool-doxyfile consists of two files:
 
-* ``SConscript`` file, and 
+* ``__init__.py`` file, and 
 * ``Doxyfile.in`` template.
 
-The ``SConscript`` generates ``Doxyfile`` from ``Doxyfile.in`` and then runs
-doxygen to generate documentation. It accepts several ``options`` to customize
-the generated ``Doxyfile``. This allows using unmodified template to generate
-documentation for several sub-modules in your project by using variant dirs,
-for example
+The ``Doxyfile`` builder generates ``Doxyfile`` file from ``Doxyfile.in``
+template. It accepts several ``options`` to customize the generated
+``Doxyfile``. Same template may be used to generate documentation for several
+sub-projects by using different sets of options (and variant builds, if
+necessary). You may also use your own template file, instead of ``Doxyfile.in``
+provided along with this module.
 
-.. code-block:: python
-
-  # SConstruct
-  env = Environment(tools =  ['doxygen', 'textfile'])
-  options = [ {
-    'SRCDIR'                : '#src/project1',
-    'PROJECT_NAME'          : 'Test Project 1',
-    'PROJECT_NUMBER'        : '0.1.0',
-    'PROJECT_BRIEF'         : 'Project One',
-  }, {
-    'SRCDIR'                : '#src/project2',
-    'PROJECT_NAME'          : 'Test Project 2',
-    'PROJECT_NUMBER'        : '0.2.0',
-    'PROJECT_BRIEF'         : 'Project Two',
-  } ]
-
-  env.SConscript('doc/SConscript', 
-    variant_dir = 'build/doc1',
-    exports = {'env' : env, 'options' : options[0]},
-    duplicate = 0
-  )
-
-  env.SConscript('doc/SConscript', 
-    variant_dir = 'build/doc2',
-    exports = {'env' : env, 'options' : options[1]},
-    duplicate = 0
-  )
-
-Of course, you may also put several copies of the template in different places
-of your project and customize each of them separately.
 
 Supported options
 ^^^^^^^^^^^^^^^^^
 
-The following table summarizes options supported by ``SConscript``.  Most of
-them are passed directly to the generated ``Doxyfile``.
+The following table summarizes options supported by ``SConscript``.  
 
-======================== =========================================================
-       Option                               Description
-======================== =========================================================
- CPP_FILTER               Script used as a doxygen input filter for C/C++ sources.
- EXAMPLE_PATH_            Passed to Doxyfile.
- EXAMPLE_PATTERNS_        Passed to Doxyfile.
- EXCLUDE_                 Passed to Doxyfile.
- FILE_PATTERNS_           Passed to Doxyfile.
- FILTER_PATTERNS_         Passed to Doxyfile.
- FILTER_SOURCE_FILES_     Passed to Doxyfile,
- FILTER_SOURCE_PATTERNS_  Passed to Doxyfile,
- IMAGE_PATH_              Passed to Doxyfile. 
- OUTPUT_DIRECTORY_        Passed to Doxyfile. 
- PROJECT_BRIEF_           Passed to Doxyfile. 
- PROJECT_LOGO_            Passed to Doxyfile. 
- PROJECT_NAME_            Passed to Doxyfile. 
- PROJECT_NUMBER_          Passed to Doxyfile. 
- SRCDIR                   Directory containing source files to process.
- STRIP_FROM_INC_PATH_     Passed to Doxyfile. 
- STRIP_FROM_PATH_         Passed to Doxyfile. 
-======================== =========================================================
+ ======================== ======== ===================================== 
+ Option                   Type     Default                               
+ ======================== ======== ===================================== 
+ DISTRIBUTE_GROUP_DOC_    bool     NO                                    
+ MAN_LINKS_               bool     NO                                    
+ GENERATE_BUGLIST_        bool     YES                                   
+ USE_HTAGS_               bool     NO                                    
+ BINARY_TOC_              bool     NO                                    
+ DIRECTORY_GRAPH_         bool     YES                                   
+ DOT_FONTSIZE_            int      10                                    
+ DOT_NUM_THREADS_         int      0                                     
+ ALLEXTERNALS_            bool     NO                                    
+ EXCLUDE_SYMLINKS_        bool     NO                                    
+ SOURCE_BROWSER_          bool     NO                                    
+ EXPAND_AS_DEFINED_       str                                            
+ DOCBOOK_OUTPUT_          dir                                            
+ AUTOLINK_SUPPORT_        bool     YES                                   
+ SEARCHDATA_FILE_         str      searchdata.xml                        
+ FILE_VERSION_FILTER_     str                                            
+ EXTRACT_ANON_NSPACES_    bool     NO                                    
+ COMPACT_LATEX_           bool     NO                                    
+ SOURCE_TOOLTIPS_         bool     YES                                   
+ TEMPLATE_RELATIONS_      bool     NO                                    
+ OPTIMIZE_FOR_FORTRAN_    bool     NO                                    
+ OUTPUT_DIRECTORY_        dir                                            
+ OPTIMIZE_OUTPUT_FOR_C_   bool     NO                                    
+ HTML_COLORSTYLE_GAMMA_   int      80                                    
+ ABBREVIATE_BRIEF_        str                                            
+ HTML_EXTRA_FILES_        srcfiles                                       
+ LATEX_BATCHMODE_         bool     NO                                    
+ HIDE_UNDOC_RELATIONS_    bool     YES                                   
+ DOCSET_BUNDLE_ID_        str      org.doxygen.Project                   
+ HTML_FILE_EXTENSION_     str      .html                                 
+ OUTPUT_LANGUAGE_         str      English                               
+ INLINE_GROUPED_CLASSES_  bool     NO                                    
+ EXTRACT_STATIC_          bool     NO                                    
+ INCLUDE_GRAPH_           bool     YES                                   
+ PDF_HYPERLINKS_          bool     YES                                   
+ GENERATE_DOCBOOK_        bool     NO                                    
+ EXTRA_SEARCH_MAPPINGS_   str                                            
+ COLS_IN_ALPHA_INDEX_     str                                            
+ HIDE_SCOPE_NAMES_        bool     NO                                    
+ CITE_BIB_FILES_          files                                          
+ TCL_SUBST_               str                                            
+ LAYOUT_FILE_             srcfile                                        
+ OPTIMIZE_OUTPUT_JAVA_    bool     NO                                    
+ STRIP_FROM_INC_PATH_     srcdirs                                        
+ EXAMPLE_PATH_            srcdirs                                        
+ DOT_TRANSPARENT_         bool     NO                                    
+ HIDE_UNDOC_CLASSES_      bool     NO                                    
+ TREEVIEW_WIDTH_          int      250                                   
+ RECURSIVE_               bool     NO                                    
+ PAPER_TYPE_              str      a4                                    
+ QHP_CUST_FILTER_NAME_    str                                            
+ TAB_SIZE_                int      4                                     
+ HTML_OUTPUT_             str      html                                  
+ INPUT_                   entries                                        
+ PROJECT_LOGO_            str                                            
+ INLINE_INHERITED_MEMB_   bool     NO                                    
+ MAX_INITIALIZER_LINES_   int      30                                    
+ MAN_OUTPUT_              str      man                                   
+ IMAGE_PATH_              srcdirs                                        
+ HTML_FOOTER_             srcfile                                        
+ INLINE_INFO_             bool     YES                                   
+ PERLMOD_MAKEVAR_PREFIX_  str                                            
+ CLASS_DIAGRAMS_          bool     YES                                   
+ GENERATE_TODOLIST_       bool     YES                                   
+ MAX_DOT_GRAPH_DEPTH_     int      0                                     
+ DOCSET_FEEDNAME_         str      "Doxygen generated docs"              
+ GENERATE_PERLMOD_        bool     NO                                    
+ DOTFILE_DIRS_            srcdirs                                        
+ CHM_INDEX_ENCODING_      str                                            
+ RTF_HYPERLINKS_          bool     NO                                    
+ DOXYFILE_ENCODING_       str      UTF-8                                 
+ MARKDOWN_SUPPORT_        bool     YES                                   
+ EXT_LINKS_IN_WINDOW_     bool     NO                                    
+ QUIET_                   bool     NO                                    
+ SORT_BRIEF_DOCS_         bool     NO                                    
+ LATEX_FOOTER_            srcfile                                        
+ INCLUDED_BY_GRAPH_       bool     YES                                   
+ XML_OUTPUT_              str      xml                                   
+ MATHJAX_RELPATH_         str      http://cdn.mathjax.org/mathjax/latest 
+ SEARCHENGINE_URL_        str                                            
+ GENERATE_LATEX_          bool     YES                                   
+ XML_SCHEMA_              str                                            
+ CREATE_SUBDIRS_          bool     NO                                    
+ GENERATE_DOCSET_         bool     NO                                    
+ LATEX_SOURCE_CODE_       bool     NO                                    
+ EXTRACT_PRIVATE_         bool     NO                                    
+ FILE_PATTERNS_           str                                            
+ BUILTIN_STL_SUPPORT_     bool     NO                                    
+ GENERATE_TREEVIEW_       bool     NO                                    
+ PROJECT_BRIEF_           str                                            
+ EXTRACT_PACKAGE_         bool     NO                                    
+ USE_MDFILE_AS_MAINPAGE_  srcfile                                        
+ QT_AUTOBRIEF_            bool     NO                                    
+ HIDE_IN_BODY_DOCS_       bool     NO                                    
+ DOT_MULTI_TARGETS_       bool     NO                                    
+ VERBATIM_HEADERS_        bool     YES                                   
+ CALLER_GRAPH_            bool     NO                                    
+ IGNORE_PREFIX_           str                                            
+ HIDE_FRIEND_COMPOUNDS_   bool     NO                                    
+ FILTER_SOURCE_FILES_     bool     NO                                    
+ EXAMPLE_PATTERNS_        str                                            
+ ALPHABETICAL_INDEX_      bool     YES                                   
+ EXAMPLE_RECURSIVE_       bool     NO                                    
+ UML_LOOK_                bool     NO                                    
+ GENERATE_QHP_            bool     NO                                    
+ INCLUDE_FILE_PATTERNS_   str                                            
+ STRICT_PROTO_MATCHING_   bool     NO                                    
+ PERL_PATH_               str      /usr/bin/perl                         
+ PROJECT_NAME_            str      "My Project"                          
+ SEARCH_INCLUDES_         bool     YES                                   
+ GENERATE_TAGFILE_        file                                           
+ EXCLUDE_                 srcdirs                                        
+ LOOKUP_CACHE_SIZE_       int      0                                     
+ MSCFILE_DIRS_            dirs                                           
+ DOT_FONTNAME_            str      Helvetica                             
+ MAKEINDEX_CMD_NAME_      str      makeindex                             
+ BRIEF_MEMBER_DESC_       bool     YES                                   
+ REFERENCES_RELATION_     bool     NO                                    
+ MAN_EXTENSION_           str      .3                                    
+ WARN_IF_UNDOCUMENTED_    bool     YES                                   
+ INPUT_FILTER_            str                                            
+ XML_DTD_                 str                                            
+ LATEX_BIB_STYLE_         str                                            
+ MATHJAX_CODEFILE_        srcfile                                        
+ INTERNAL_DOCS_           bool     NO                                    
+ QCH_FILE_                str                                            
+ OPTIMIZE_OUTPUT_VHDL_    bool     NO                                    
+ RTF_OUTPUT_              str      rtf                                   
+ HHC_LOCATION_            str                                            
+ MULTILINE_CPP_IS_BRIEF_  bool     NO                                    
+ HTML_TIMESTAMP_          bool     YES                                   
+ HTML_HEADER_             srcfile                                        
+ CASE_SENSE_NAMES_        bool     YES                                   
+ LATEX_HEADER_            srcfile                                        
+ EXTERNAL_PAGES_          bool     YES                                   
+ GENERATE_HTMLHELP_       bool     NO                                    
+ GENERATE_ECLIPSEHELP_    bool     NO                                    
+ EXTERNAL_GROUPS_         bool     YES                                   
+ FILTER_PATTERNS_         str                                            
+ HTML_STYLESHEET_         srcfile                                        
+ SUBGROUPING_             bool     YES                                   
+ SORT_MEMBERS_CTORS_1ST_  bool     NO                                    
+ TAGFILES_                str                                            
+ PREDEFINED_              str                                            
+ USE_PDFLATEX_            bool     YES                                   
+ DOT_GRAPH_MAX_NODES_     int      50                                    
+ ENUM_VALUES_PER_LINE_    int      4                                     
+ SORT_GROUP_NAMES_        bool     NO                                    
+ DOT_IMAGE_FORMAT_        str      png                                   
+ EXTRACT_LOCAL_METHODS_   bool     NO                                    
+ DOCSET_PUBLISHER_ID_     str      org.doxygen.Publisher                 
+ HTML_DYNAMIC_SECTIONS_   bool     NO                                    
+ UML_LIMIT_NUM_FIELDS_    int      10                                    
+ HTML_COLORSTYLE_HUE_     int      220                                   
+ GENERATE_XML_            bool     NO                                    
+ CPP_CLI_SUPPORT_         bool     NO                                    
+ QHP_SECT_FILTER_ATTRS_   str                                            
+ GROUP_GRAPHS_            bool     YES                                   
+ SEPARATE_MEMBER_PAGES_   bool     NO                                    
+ PERLMOD_LATEX_           bool     NO                                    
+ FORMULA_FONTSIZE_        int      10                                    
+ ALWAYS_DETAILED_SEC_     bool     NO                                    
+ EXCLUDE_PATTERNS_        str                                            
+ EXTERNAL_SEARCH_ID_      str                                            
+ RTF_EXTENSIONS_FILE_     file                                           
+ LATEX_EXTRA_FILES_       srcfiles                                       
+ COMPACT_RTF_             bool     NO                                    
+ ENABLED_SECTIONS_        str                                            
+ LATEX_HIDE_INDICES_      bool     NO                                    
+ SHOW_USED_FILES_         bool     YES                                   
+ ECLIPSE_DOC_ID_          str      org.doxygen.Project                   
+ GRAPHICAL_HIERARCHY_     bool     YES                                   
+ ALIASES_                 str                                            
+ HTML_COLORSTYLE_SAT_     int      100                                   
+ WARN_IF_DOC_ERROR_       bool     YES                                   
+ GENERATE_RTF_            bool     NO                                    
+ SERVER_BASED_SEARCH_     bool     NO                                    
+ CHM_FILE_                srcfile                                        
+ LATEX_CMD_NAME_          str      latex                                 
+ QHP_NAMESPACE_           str                                            
+ FORMULA_TRANSPARENT_     bool     YES                                   
+ INTERACTIVE_SVG_         bool     NO                                    
+ XML_PROGRAMLISTING_      bool     YES                                   
+ GENERATE_CHI_            bool     NO                                    
+ REFERENCES_LINK_SOURCE_  bool     YES                                   
+ WARN_LOGFILE_            file                                           
+ FILTER_SOURCE_PATTERNS_  str                                            
+ TOC_EXPAND_              bool     NO                                    
+ GENERATE_LEGEND_         bool     YES                                   
+ PROJECT_NUMBER_          str                                            
+ HTML_EXTRA_STYLESHEET_   srcfile                                        
+ SKIP_FUNCTION_MACROS_    bool     YES                                   
+ SHOW_FILES_              bool     YES                                   
+ CLASS_GRAPH_             bool     YES                                   
+ LATEX_OUTPUT_            str      latex                                 
+ GENERATE_MAN_            bool     NO                                    
+ SORT_BY_SCOPE_NAME_      bool     NO                                    
+ CLANG_OPTIONS_           str                                            
+ INCLUDE_PATH_            srcdirs                                        
+ MSCGEN_PATH_             str                                            
+ DOT_CLEANUP_             bool     YES                                   
+ MATHJAX_FORMAT_          str      HTML-CSS                              
+ INPUT_ENCODING_          str      UTF-8                                 
+ IDL_PROPERTY_SUPPORT_    bool     YES                                   
+ FULL_PATH_NAMES_         bool     YES                                   
+ DISABLE_INDEX_           bool     NO                                    
+ SIP_SUPPORT_             bool     NO                                    
+ MACRO_EXPANSION_         bool     NO                                    
+ EXTRACT_ALL_             bool     NO                                    
+ WARNINGS_                bool     YES                                   
+ EXTRACT_LOCAL_CLASSES_   bool     YES                                   
+ REPEAT_BRIEF_            bool     YES                                   
+ INLINE_SOURCES_          bool     NO                                    
+ USE_MATHJAX_             bool     NO                                    
+ EXTENSION_MAPPING_       str                                            
+ SHORT_NAMES_             bool     NO                                    
+ DOT_PATH_                str                                            
+ RTF_STYLESHEET_FILE_     file                                           
+ TYPEDEF_HIDES_STRUCT_    bool     NO                                    
+ PERLMOD_PRETTY_          bool     YES                                   
+ ENABLE_PREPROCESSING_    bool     YES                                   
+ JAVADOC_AUTOBRIEF_       bool     NO                                    
+ STRIP_FROM_PATH_         srcdirs                                        
+ EXCLUDE_SYMBOLS_         str                                            
+ HTML_INDEX_NUM_ENTRIES_  int      100                                   
+ GENERATE_AUTOGEN_DEF_    bool     NO                                    
+ CLANG_ASSISTED_PARSING_  bool     NO                                    
+ COLLABORATION_GRAPH_     bool     YES                                   
+ DOCSET_PUBLISHER_NAME_   str      Publisher                             
+ QHP_CUST_FILTER_ATTRS_   str                                            
+ GENERATE_HTML_           bool     YES                                   
+ CALL_GRAPH_              bool     NO                                    
+ GENERATE_DEPRECATEDLIST_ bool     YES                                   
+ SORT_MEMBER_DOCS_        bool     YES                                   
+ SHOW_INCLUDE_FILES_      bool     YES                                   
+ WARN_FORMAT_             str      "$file:$line: $text"                  
+ WARN_NO_PARAMDOC_        bool     NO                                    
+ MATHJAX_EXTENSIONS_      str                                            
+ EXTERNAL_SEARCH_         bool     NO                                    
+ GENERATE_TESTLIST_       bool     YES                                   
+ INLINE_SIMPLE_STRUCTS_   bool     NO                                    
+ DOT_FONTPATH_            srcdir                                         
+ REFERENCED_BY_RELATION_  bool     NO                                    
+ HAVE_DOT_                bool     NO                                    
+ INHERIT_DOCS_            bool     YES                                   
+ EXTRA_PACKAGES_          str                                            
+ HIDE_UNDOC_MEMBERS_      bool     NO                                    
+ FORCE_LOCAL_INCLUDES_    bool     NO                                    
+ SHOW_NAMESPACES_         bool     YES                                   
+ QHP_VIRTUAL_FOLDER_      str      doc                                   
+ EXPAND_ONLY_PREDEF_      bool     NO                                    
+ SEARCHENGINE_            bool     YES                                   
+ STRIP_CODE_COMMENTS_     bool     YES                                   
+ QHG_LOCATION_            str                                            
+ ======================== ======== ===================================== 
 
-.. _EXAMPLE_PATH: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_example_path
-.. _EXAMPLE_PATTERNS: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_example_patterns
-.. _EXCLUDE: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_exclude
-.. _FILE_PATTERNS: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_file_patterns
-.. _FILTER_PATTERNS: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_filter_patterns
-.. _FILTER_SOURCE_FILES: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_filter_source_files
-.. _FILTER_SOURCE_PATTERNS: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_filter_source_patterns
-.. _IMAGE_PATH: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_image_path
-.. _OUTPUT_DIRECTORY: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_output_directory
-.. _PROJECT_BRIEF: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_project_brief
-.. _PROJECT_LOGO: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_project_logo
-.. _PROJECT_NAME: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_project_name
-.. _PROJECT_NUMBER: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_project_number
-.. _STRIP_FROM_INC_PATH: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_strip_from_inc_path
-.. _STRIP_FROM_PATH: http://www.stack.nl/dimitri/doxygen/manual/config.html#cfg_strip_from_path
-
-Boolean (YES/NO) configuration options:
-
-============================== =========
-  Configuration Option          Default
-============================== =========
-  ALLEXTERNALS_                 NO 
-  ALPHABETICAL_INDEX_           YES
-  ALWAYS_DETAILED_SEC_          NO 
-  AUTOLINK_SUPPORT_             YES
-  BINARY_TOC_                   NO 
-  BRIEF_MEMBER_DESC_            YES
-  BUILTIN_STL_SUPPORT_          NO 
-  CALLER_GRAPH_                 NO 
-  CALL_GRAPH_                   NO 
-  CLANG_ASSISTED_PARSING_       NO 
-  CLASS_DIAGRAMS_               YES
-  CLASS_GRAPH_                  YES
-  COLLABORATION_GRAPH_          YES
-  COMPACT_LATEX_                NO 
-  COMPACT_RTF_                  NO 
-  CPP_CLI_SUPPORT_              NO 
-  CREATE_SUBDIRS_               NO 
-  DIRECTORY_GRAPH_              YES
-  DISABLE_INDEX_                NO 
-  DISTRIBUTE_GROUP_DOC_         NO 
-  DOT_CLEANUP_                  YES
-  DOT_MULTI_TARGETS_            NO 
-  DOT_TRANSPARENT_              NO 
-  ENABLE_PREPROCESSING_         YES
-  EXAMPLE_RECURSIVE_            NO 
-  EXCLUDE_SYMLINKS_             NO 
-  EXPAND_ONLY_PREDEF_           NO 
-  EXTERNAL_GROUPS_              YES
-  EXTERNAL_PAGES_               YES
-  EXTERNAL_SEARCH_              NO 
-  EXTRACT_ALL_                  NO 
-  EXTRACT_ANON_NSPACES_         NO 
-  EXTRACT_LOCAL_CLASSES_        YES
-  EXTRACT_LOCAL_METHODS_        NO 
-  EXTRACT_PACKAGE_              NO 
-  EXTRACT_PRIVATE_              NO 
-  EXTRACT_STATIC_               NO 
-  EXT_LINKS_IN_WINDOW_          NO 
-  FILTER_SOURCE_FILES_          NO 
-  FORCE_LOCAL_INCLUDES_         NO 
-  FORMULA_TRANSPARENT_          YES
-  FULL_PATH_NAMES_              YES
-  GENERATE_AUTOGEN_DEF_         NO 
-  GENERATE_BUGLIST_             YES
-  GENERATE_CHI_                 NO 
-  GENERATE_DEPRECATEDLIST_      YES
-  GENERATE_DOCBOOK_             NO 
-  GENERATE_DOCSET_              NO 
-  GENERATE_ECLIPSEHELP_         NO 
-  GENERATE_HTML_                YES
-  GENERATE_HTMLHELP_            NO 
-  GENERATE_LATEX_               YES
-  GENERATE_LEGEND_              YES
-  GENERATE_MAN_                 NO 
-  GENERATE_PERLMOD_             NO 
-  GENERATE_QHP_                 NO 
-  GENERATE_RTF_                 NO 
-  GENERATE_TESTLIST_            YES
-  GENERATE_TODOLIST_            YES
-  GENERATE_TREEVIEW_            NO 
-  GENERATE_XML_                 NO 
-  GRAPHICAL_HIERARCHY_          YES
-  GROUP_GRAPHS_                 YES
-  HAVE_DOT_                     NO 
-  HIDE_FRIEND_COMPOUNDS_        NO 
-  HIDE_IN_BODY_DOCS_            NO 
-  HIDE_SCOPE_NAMES_             NO 
-  HIDE_UNDOC_CLASSES_           NO 
-  HIDE_UNDOC_MEMBERS_           NO 
-  HIDE_UNDOC_RELATIONS_         YES
-  HTML_DYNAMIC_SECTIONS_        NO 
-  HTML_TIMESTAMP_               YES
-  IDL_PROPERTY_SUPPORT_         YES
-  INCLUDED_BY_GRAPH_            YES
-  INCLUDE_GRAPH_                YES
-  INHERIT_DOCS_                 YES
-  INLINE_GROUPED_CLASSES_       NO 
-  INLINE_INFO_                  YES
-  INLINE_INHERITED_MEMB_        NO 
-  INLINE_SIMPLE_STRUCTS_        NO 
-  INLINE_SOURCES_               NO 
-  INTERACTIVE_SVG_              NO 
-  INTERNAL_DOCS_                NO 
-  JAVADOC_AUTOBRIEF_            NO 
-  LATEX_BATCHMODE_              NO 
-  LATEX_HIDE_INDICES_           NO 
-  LATEX_SOURCE_CODE_            NO 
-  MACRO_EXPANSION_              NO 
-  MAN_LINKS_                    NO 
-  MARKDOWN_SUPPORT_             YES
-  MULTILINE_CPP_IS_BRIEF_       NO 
-  OPTIMIZE_FOR_FORTRAN_         NO 
-  OPTIMIZE_OUTPUT_FOR_C_        NO 
-  OPTIMIZE_OUTPUT_JAVA_         NO 
-  OPTIMIZE_OUTPUT_VHDL_         NO 
-  PDF_HYPERLINKS_               YES
-  PERLMOD_LATEX_                NO 
-  PERLMOD_PRETTY_               YES
-  QT_AUTOBRIEF_                 NO 
-  QUIET_                        NO 
-  RECURSIVE_                    NO 
-  REFERENCED_BY_RELATION_       NO 
-  REFERENCES_LINK_SOURCE_       YES
-  REFERENCES_RELATION_          NO 
-  REPEAT_BRIEF_                 YES
-  RTF_HYPERLINKS_               NO 
-  SEARCHENGINE_                 YES
-  SEARCH_INCLUDES_              YES
-  SEPARATE_MEMBER_PAGES_        NO 
-  SERVER_BASED_SEARCH_          NO 
-  SHORT_NAMES_                  NO 
-  SHOW_FILES_                   YES
-  SHOW_INCLUDE_FILES_           YES
-  SHOW_NAMESPACES_              YES
-  SHOW_USED_FILES_              YES
-  SIP_SUPPORT_                  NO 
-  SKIP_FUNCTION_MACROS_         YES
-  SORT_BRIEF_DOCS_              NO 
-  SORT_BY_SCOPE_NAME_           NO 
-  SORT_GROUP_NAMES_             NO 
-  SORT_MEMBERS_CTORS_1ST_       NO 
-  SORT_MEMBER_DOCS_             YES
-  SOURCE_BROWSER_               NO 
-  SOURCE_TOOLTIPS_              YES
-  STRICT_PROTO_MATCHING_        NO 
-  STRIP_CODE_COMMENTS_          YES
-  SUBGROUPING_                  YES
-  TEMPLATE_RELATIONS_           NO 
-  TOC_EXPAND_                   NO 
-  TYPEDEF_HIDES_STRUCT_         NO 
-  UML_LOOK_                     NO 
-  USE_MATHJAX_                  NO 
-  USE_PDFLATEX_                 YES
-  VERBATIM_HEADERS_             YES
-  WARNINGS_                     YES
-  WARN_IF_DOC_ERROR_            YES
-  WARN_IF_UNDOCUMENTED_         YES
-  WARN_NO_PARAMDOC_             NO 
-  XML_PROGRAMLISTING_           YES
-============================== =========
-
-.. <!-- boolean (YES/NO) configuration options -->
-.. _ALLEXTERNALS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_allexternals
-.. _ALPHABETICAL_INDEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_alphabetical_index
-.. _ALWAYS_DETAILED_SEC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_always_detailed_sec
-.. _AUTOLINK_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_autolink_support
-.. _BINARY_TOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_binary_toc
-.. _BRIEF_MEMBER_DESC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_brief_member_desc
-.. _BUILTIN_STL_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_builtin_stl_support
-.. _CALLER_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_caller_graph
-.. _CALL_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_call_graph
-.. _CLANG_ASSISTED_PARSING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_clang_assisted_parsing
-.. _CLASS_DIAGRAMS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_class_diagrams
-.. _CLASS_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_class_graph
-.. _COLLABORATION_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_collaboration_graph
-.. _COMPACT_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_compact_latex
-.. _COMPACT_RTF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_compact_rtf
-.. _CPP_CLI_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_cpp_cli_support
-.. _CREATE_SUBDIRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_create_subdirs
-.. _DIRECTORY_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_directory_graph
-.. _DISABLE_INDEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_disable_index
 .. _DISTRIBUTE_GROUP_DOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_distribute_group_doc
-.. _DOT_CLEANUP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_cleanup
-.. _DOT_MULTI_TARGETS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_multi_targets
-.. _DOT_TRANSPARENT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_transparent
-.. _ENABLE_PREPROCESSING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_enable_preprocessing
-.. _EXAMPLE_RECURSIVE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_example_recursive
-.. _EXCLUDE_SYMLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_exclude_symlinks
-.. _EXPAND_ONLY_PREDEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_expand_only_predef
-.. _EXTERNAL_GROUPS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_groups
-.. _EXTERNAL_PAGES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_pages
-.. _EXTERNAL_SEARCH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_search
-.. _EXTRACT_ALL: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_all
-.. _EXTRACT_ANON_NSPACES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_anon_nspaces
-.. _EXTRACT_LOCAL_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_local_classes
-.. _EXTRACT_LOCAL_METHODS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_local_methods
-.. _EXTRACT_PACKAGE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_package
-.. _EXTRACT_PRIVATE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_private
-.. _EXTRACT_STATIC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_static
-.. _EXT_LINKS_IN_WINDOW: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_ext_links_in_window
-.. _FILTER_SOURCE_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_filter_source_files
-.. _FORCE_LOCAL_INCLUDES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_force_local_includes
-.. _FORMULA_TRANSPARENT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_formula_transparent
-.. _FULL_PATH_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_full_path_names
-.. _GENERATE_AUTOGEN_DEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_autogen_def
-.. _GENERATE_BUGLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_buglist
-.. _GENERATE_CHI: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_chi
-.. _GENERATE_DEPRECATEDLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_deprecatedlist
-.. _GENERATE_DOCBOOK: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_docbook
-.. _GENERATE_DOCSET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_docset
-.. _GENERATE_ECLIPSEHELP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_eclipsehelp
-.. _GENERATE_HTML: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_html
-.. _GENERATE_HTMLHELP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_htmlhelp
-.. _GENERATE_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_latex
-.. _GENERATE_LEGEND: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_legend
-.. _GENERATE_MAN: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_man
-.. _GENERATE_PERLMOD: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_perlmod
-.. _GENERATE_QHP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_qhp
-.. _GENERATE_RTF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_rtf
-.. _GENERATE_TESTLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_testlist
-.. _GENERATE_TODOLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_todolist
-.. _GENERATE_TREEVIEW: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_treeview
-.. _GENERATE_XML: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_xml
-.. _GRAPHICAL_HIERARCHY: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_graphical_hierarchy
-.. _GROUP_GRAPHS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_group_graphs
-.. _HAVE_DOT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_have_dot
-.. _HIDE_FRIEND_COMPOUNDS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_friend_compounds
-.. _HIDE_IN_BODY_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_in_body_docs
-.. _HIDE_SCOPE_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_scope_names
-.. _HIDE_UNDOC_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_classes
-.. _HIDE_UNDOC_MEMBERS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_members
-.. _HIDE_UNDOC_RELATIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_relations
-.. _HTML_DYNAMIC_SECTIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_dynamic_sections
-.. _HTML_TIMESTAMP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_timestamp
-.. _IDL_PROPERTY_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_idl_property_support
-.. _INCLUDED_BY_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_included_by_graph
-.. _INCLUDE_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_include_graph
-.. _INHERIT_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inherit_docs
-.. _INLINE_GROUPED_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_grouped_classes
-.. _INLINE_INFO: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_info
-.. _INLINE_INHERITED_MEMB: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_inherited_memb
-.. _INLINE_SIMPLE_STRUCTS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_simple_structs
-.. _INLINE_SOURCES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_sources
-.. _INTERACTIVE_SVG: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_interactive_svg
-.. _INTERNAL_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_internal_docs
-.. _JAVADOC_AUTOBRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_javadoc_autobrief
-.. _LATEX_BATCHMODE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_batchmode
-.. _LATEX_HIDE_INDICES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_hide_indices
-.. _LATEX_SOURCE_CODE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_source_code
-.. _MACRO_EXPANSION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_macro_expansion
 .. _MAN_LINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_man_links
-.. _MARKDOWN_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_markdown_support
-.. _MULTILINE_CPP_IS_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_multiline_cpp_is_brief
-.. _OPTIMIZE_FOR_FORTRAN: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_for_fortran
-.. _OPTIMIZE_OUTPUT_FOR_C: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_for_c
-.. _OPTIMIZE_OUTPUT_JAVA: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_java
-.. _OPTIMIZE_OUTPUT_VHDL: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_vhdl
-.. _PDF_HYPERLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_pdf_hyperlinks
-.. _PERLMOD_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perlmod_latex
-.. _PERLMOD_PRETTY: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perlmod_pretty
-.. _QT_AUTOBRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qt_autobrief
-.. _QUIET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_quiet
-.. _RECURSIVE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_recursive
-.. _REFERENCED_BY_RELATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_referenced_by_relation
-.. _REFERENCES_LINK_SOURCE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_references_link_source
-.. _REFERENCES_RELATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_references_relation
-.. _REPEAT_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_repeat_brief
-.. _RTF_HYPERLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_rtf_hyperlinks
-.. _SEARCHENGINE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_searchengine
-.. _SEARCH_INCLUDES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_search_includes
-.. _SEPARATE_MEMBER_PAGES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_separate_member_pages
-.. _SERVER_BASED_SEARCH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_server_based_search
-.. _SHORT_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_short_names
-.. _SHOW_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_files
-.. _SHOW_INCLUDE_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_include_files
-.. _SHOW_NAMESPACES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_namespaces
-.. _SHOW_USED_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_used_files
-.. _SIP_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sip_support
-.. _SKIP_FUNCTION_MACROS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_skip_function_macros
-.. _SORT_BRIEF_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_brief_docs
-.. _SORT_BY_SCOPE_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_by_scope_name
-.. _SORT_GROUP_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_group_names
-.. _SORT_MEMBERS_CTORS_1ST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_members_ctors_1st
-.. _SORT_MEMBER_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_member_docs
+.. _GENERATE_BUGLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_buglist
+.. _USE_HTAGS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_htags
+.. _BINARY_TOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_binary_toc
+.. _DIRECTORY_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_directory_graph
+.. _DOT_FONTSIZE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_fontsize
+.. _DOT_NUM_THREADS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_num_threads
+.. _ALLEXTERNALS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_allexternals
+.. _EXCLUDE_SYMLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_exclude_symlinks
 .. _SOURCE_BROWSER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_source_browser
+.. _EXPAND_AS_DEFINED: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_expand_as_defined
+.. _DOCBOOK_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_docbook_output
+.. _AUTOLINK_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_autolink_support
+.. _SEARCHDATA_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_searchdata_file
+.. _FILE_VERSION_FILTER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_file_version_filter
+.. _EXTRACT_ANON_NSPACES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_anon_nspaces
+.. _COMPACT_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_compact_latex
 .. _SOURCE_TOOLTIPS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_source_tooltips
-.. _STRICT_PROTO_MATCHING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strict_proto_matching
-.. _STRIP_CODE_COMMENTS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strip_code_comments
-.. _SUBGROUPING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_subgrouping
 .. _TEMPLATE_RELATIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_template_relations
-.. _TOC_EXPAND: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_toc_expand
-.. _TYPEDEF_HIDES_STRUCT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_typedef_hides_struct
-.. _UML_LOOK: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_uml_look
-.. _USE_MATHJAX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_mathjax
-.. _USE_PDFLATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_pdflatex
+.. _OPTIMIZE_FOR_FORTRAN: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_for_fortran
+.. _OUTPUT_DIRECTORY: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_output_directory
+.. _OPTIMIZE_OUTPUT_FOR_C: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_for_c
+.. _HTML_COLORSTYLE_GAMMA: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_colorstyle_gamma
+.. _ABBREVIATE_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_abbreviate_brief
+.. _HTML_EXTRA_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_extra_files
+.. _LATEX_BATCHMODE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_batchmode
+.. _HIDE_UNDOC_RELATIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_relations
+.. _DOCSET_BUNDLE_ID: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_docset_bundle_id
+.. _HTML_FILE_EXTENSION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_file_extension
+.. _OUTPUT_LANGUAGE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_output_language
+.. _INLINE_GROUPED_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_grouped_classes
+.. _EXTRACT_STATIC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_static
+.. _INCLUDE_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_include_graph
+.. _PDF_HYPERLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_pdf_hyperlinks
+.. _GENERATE_DOCBOOK: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_docbook
+.. _EXTRA_SEARCH_MAPPINGS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extra_search_mappings
+.. _COLS_IN_ALPHA_INDEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_cols_in_alpha_index
+.. _HIDE_SCOPE_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_scope_names
+.. _CITE_BIB_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_cite_bib_files
+.. _TCL_SUBST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_tcl_subst
+.. _LAYOUT_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_layout_file
+.. _OPTIMIZE_OUTPUT_JAVA: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_java
+.. _STRIP_FROM_INC_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strip_from_inc_path
+.. _EXAMPLE_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_example_path
+.. _DOT_TRANSPARENT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_transparent
+.. _HIDE_UNDOC_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_classes
+.. _TREEVIEW_WIDTH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_treeview_width
+.. _RECURSIVE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_recursive
+.. _PAPER_TYPE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_paper_type
+.. _QHP_CUST_FILTER_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhp_cust_filter_name
+.. _TAB_SIZE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_tab_size
+.. _HTML_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_output
+.. _INPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_input
+.. _PROJECT_LOGO: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_project_logo
+.. _INLINE_INHERITED_MEMB: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_inherited_memb
+.. _MAX_INITIALIZER_LINES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_max_initializer_lines
+.. _MAN_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_man_output
+.. _IMAGE_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_image_path
+.. _HTML_FOOTER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_footer
+.. _INLINE_INFO: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_info
+.. _PERLMOD_MAKEVAR_PREFIX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perlmod_makevar_prefix
+.. _CLASS_DIAGRAMS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_class_diagrams
+.. _GENERATE_TODOLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_todolist
+.. _MAX_DOT_GRAPH_DEPTH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_max_dot_graph_depth
+.. _DOCSET_FEEDNAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_docset_feedname
+.. _GENERATE_PERLMOD: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_perlmod
+.. _DOTFILE_DIRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dotfile_dirs
+.. _CHM_INDEX_ENCODING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_chm_index_encoding
+.. _RTF_HYPERLINKS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_rtf_hyperlinks
+.. _DOXYFILE_ENCODING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_doxyfile_encoding
+.. _MARKDOWN_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_markdown_support
+.. _EXT_LINKS_IN_WINDOW: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_ext_links_in_window
+.. _QUIET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_quiet
+.. _SORT_BRIEF_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_brief_docs
+.. _LATEX_FOOTER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_footer
+.. _INCLUDED_BY_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_included_by_graph
+.. _XML_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_xml_output
+.. _MATHJAX_RELPATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mathjax_relpath
+.. _SEARCHENGINE_URL: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_searchengine_url
+.. _GENERATE_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_latex
+.. _XML_SCHEMA: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_xml_schema
+.. _CREATE_SUBDIRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_create_subdirs
+.. _GENERATE_DOCSET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_docset
+.. _LATEX_SOURCE_CODE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_source_code
+.. _EXTRACT_PRIVATE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_private
+.. _FILE_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_file_patterns
+.. _BUILTIN_STL_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_builtin_stl_support
+.. _GENERATE_TREEVIEW: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_treeview
+.. _PROJECT_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_project_brief
+.. _EXTRACT_PACKAGE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_package
+.. _USE_MDFILE_AS_MAINPAGE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_mdfile_as_mainpage
+.. _QT_AUTOBRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qt_autobrief
+.. _HIDE_IN_BODY_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_in_body_docs
+.. _DOT_MULTI_TARGETS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_multi_targets
 .. _VERBATIM_HEADERS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_verbatim_headers
-.. _WARNINGS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warnings
-.. _WARN_IF_DOC_ERROR: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_if_doc_error
+.. _CALLER_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_caller_graph
+.. _IGNORE_PREFIX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_ignore_prefix
+.. _HIDE_FRIEND_COMPOUNDS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_friend_compounds
+.. _FILTER_SOURCE_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_filter_source_files
+.. _EXAMPLE_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_example_patterns
+.. _ALPHABETICAL_INDEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_alphabetical_index
+.. _EXAMPLE_RECURSIVE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_example_recursive
+.. _UML_LOOK: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_uml_look
+.. _GENERATE_QHP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_qhp
+.. _INCLUDE_FILE_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_include_file_patterns
+.. _STRICT_PROTO_MATCHING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strict_proto_matching
+.. _PERL_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perl_path
+.. _PROJECT_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_project_name
+.. _SEARCH_INCLUDES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_search_includes
+.. _GENERATE_TAGFILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_tagfile
+.. _EXCLUDE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_exclude
+.. _LOOKUP_CACHE_SIZE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_lookup_cache_size
+.. _MSCFILE_DIRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mscfile_dirs
+.. _DOT_FONTNAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_fontname
+.. _MAKEINDEX_CMD_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_makeindex_cmd_name
+.. _BRIEF_MEMBER_DESC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_brief_member_desc
+.. _REFERENCES_RELATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_references_relation
+.. _MAN_EXTENSION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_man_extension
 .. _WARN_IF_UNDOCUMENTED: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_if_undocumented
-.. _WARN_NO_PARAMDOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_no_paramdoc
+.. _INPUT_FILTER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_input_filter
+.. _XML_DTD: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_xml_dtd
+.. _LATEX_BIB_STYLE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_bib_style
+.. _MATHJAX_CODEFILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mathjax_codefile
+.. _INTERNAL_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_internal_docs
+.. _QCH_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qch_file
+.. _OPTIMIZE_OUTPUT_VHDL: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_optimize_output_vhdl
+.. _RTF_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_rtf_output
+.. _HHC_LOCATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hhc_location
+.. _MULTILINE_CPP_IS_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_multiline_cpp_is_brief
+.. _HTML_TIMESTAMP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_timestamp
+.. _HTML_HEADER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_header
+.. _CASE_SENSE_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_case_sense_names
+.. _LATEX_HEADER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_header
+.. _EXTERNAL_PAGES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_pages
+.. _GENERATE_HTMLHELP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_htmlhelp
+.. _GENERATE_ECLIPSEHELP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_eclipsehelp
+.. _EXTERNAL_GROUPS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_groups
+.. _FILTER_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_filter_patterns
+.. _HTML_STYLESHEET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_stylesheet
+.. _SUBGROUPING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_subgrouping
+.. _SORT_MEMBERS_CTORS_1ST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_members_ctors_1st
+.. _TAGFILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_tagfiles
+.. _PREDEFINED: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_predefined
+.. _USE_PDFLATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_pdflatex
+.. _DOT_GRAPH_MAX_NODES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_graph_max_nodes
+.. _ENUM_VALUES_PER_LINE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_enum_values_per_line
+.. _SORT_GROUP_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_group_names
+.. _DOT_IMAGE_FORMAT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_image_format
+.. _EXTRACT_LOCAL_METHODS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_local_methods
+.. _DOCSET_PUBLISHER_ID: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_docset_publisher_id
+.. _HTML_DYNAMIC_SECTIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_dynamic_sections
+.. _UML_LIMIT_NUM_FIELDS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_uml_limit_num_fields
+.. _HTML_COLORSTYLE_HUE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_colorstyle_hue
+.. _GENERATE_XML: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_xml
+.. _CPP_CLI_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_cpp_cli_support
+.. _QHP_SECT_FILTER_ATTRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhp_sect_filter_attrs
+.. _GROUP_GRAPHS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_group_graphs
+.. _SEPARATE_MEMBER_PAGES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_separate_member_pages
+.. _PERLMOD_LATEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perlmod_latex
+.. _FORMULA_FONTSIZE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_formula_fontsize
+.. _ALWAYS_DETAILED_SEC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_always_detailed_sec
+.. _EXCLUDE_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_exclude_patterns
+.. _EXTERNAL_SEARCH_ID: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_search_id
+.. _RTF_EXTENSIONS_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_rtf_extensions_file
+.. _LATEX_EXTRA_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_extra_files
+.. _COMPACT_RTF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_compact_rtf
+.. _ENABLED_SECTIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_enabled_sections
+.. _LATEX_HIDE_INDICES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_hide_indices
+.. _SHOW_USED_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_used_files
+.. _ECLIPSE_DOC_ID: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_eclipse_doc_id
+.. _GRAPHICAL_HIERARCHY: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_graphical_hierarchy
+.. _ALIASES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_aliases
+.. _HTML_COLORSTYLE_SAT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_colorstyle_sat
+.. _WARN_IF_DOC_ERROR: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_if_doc_error
+.. _GENERATE_RTF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_rtf
+.. _SERVER_BASED_SEARCH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_server_based_search
+.. _CHM_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_chm_file
+.. _LATEX_CMD_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_cmd_name
+.. _QHP_NAMESPACE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhp_namespace
+.. _FORMULA_TRANSPARENT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_formula_transparent
+.. _INTERACTIVE_SVG: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_interactive_svg
 .. _XML_PROGRAMLISTING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_xml_programlisting
+.. _GENERATE_CHI: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_chi
+.. _REFERENCES_LINK_SOURCE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_references_link_source
+.. _WARN_LOGFILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_logfile
+.. _FILTER_SOURCE_PATTERNS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_filter_source_patterns
+.. _TOC_EXPAND: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_toc_expand
+.. _GENERATE_LEGEND: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_legend
+.. _PROJECT_NUMBER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_project_number
+.. _HTML_EXTRA_STYLESHEET: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_extra_stylesheet
+.. _SKIP_FUNCTION_MACROS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_skip_function_macros
+.. _SHOW_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_files
+.. _CLASS_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_class_graph
+.. _LATEX_OUTPUT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_latex_output
+.. _GENERATE_MAN: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_man
+.. _SORT_BY_SCOPE_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_by_scope_name
+.. _CLANG_OPTIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_clang_options
+.. _INCLUDE_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_include_path
+.. _MSCGEN_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mscgen_path
+.. _DOT_CLEANUP: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_cleanup
+.. _MATHJAX_FORMAT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mathjax_format
+.. _INPUT_ENCODING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_input_encoding
+.. _IDL_PROPERTY_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_idl_property_support
+.. _FULL_PATH_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_full_path_names
+.. _DISABLE_INDEX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_disable_index
+.. _SIP_SUPPORT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sip_support
+.. _MACRO_EXPANSION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_macro_expansion
+.. _EXTRACT_ALL: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_all
+.. _WARNINGS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warnings
+.. _EXTRACT_LOCAL_CLASSES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extract_local_classes
+.. _REPEAT_BRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_repeat_brief
+.. _INLINE_SOURCES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_sources
+.. _USE_MATHJAX: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_use_mathjax
+.. _EXTENSION_MAPPING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extension_mapping
+.. _SHORT_NAMES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_short_names
+.. _DOT_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_path
+.. _RTF_STYLESHEET_FILE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_rtf_stylesheet_file
+.. _TYPEDEF_HIDES_STRUCT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_typedef_hides_struct
+.. _PERLMOD_PRETTY: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_perlmod_pretty
+.. _ENABLE_PREPROCESSING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_enable_preprocessing
+.. _JAVADOC_AUTOBRIEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_javadoc_autobrief
+.. _STRIP_FROM_PATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strip_from_path
+.. _EXCLUDE_SYMBOLS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_exclude_symbols
+.. _HTML_INDEX_NUM_ENTRIES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_index_num_entries
+.. _GENERATE_AUTOGEN_DEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_autogen_def
+.. _CLANG_ASSISTED_PARSING: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_clang_assisted_parsing
+.. _COLLABORATION_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_collaboration_graph
+.. _DOCSET_PUBLISHER_NAME: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_docset_publisher_name
+.. _QHP_CUST_FILTER_ATTRS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhp_cust_filter_attrs
+.. _GENERATE_HTML: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_html
+.. _CALL_GRAPH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_call_graph
+.. _GENERATE_DEPRECATEDLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_deprecatedlist
+.. _SORT_MEMBER_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_sort_member_docs
+.. _SHOW_INCLUDE_FILES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_include_files
+.. _WARN_FORMAT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_format
+.. _WARN_NO_PARAMDOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_warn_no_paramdoc
+.. _MATHJAX_EXTENSIONS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_mathjax_extensions
+.. _EXTERNAL_SEARCH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_external_search
+.. _GENERATE_TESTLIST: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_testlist
+.. _INLINE_SIMPLE_STRUCTS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inline_simple_structs
+.. _DOT_FONTPATH: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_dot_fontpath
+.. _REFERENCED_BY_RELATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_referenced_by_relation
+.. _HAVE_DOT: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_have_dot
+.. _INHERIT_DOCS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_inherit_docs
+.. _EXTRA_PACKAGES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_extra_packages
+.. _HIDE_UNDOC_MEMBERS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_hide_undoc_members
+.. _FORCE_LOCAL_INCLUDES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_force_local_includes
+.. _SHOW_NAMESPACES: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_show_namespaces
+.. _QHP_VIRTUAL_FOLDER: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhp_virtual_folder
+.. _EXPAND_ONLY_PREDEF: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_expand_only_predef
+.. _SEARCHENGINE: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_searchengine
+.. _STRIP_CODE_COMMENTS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strip_code_comments
+.. _QHG_LOCATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhg_location
 
-
-.. <!-- Other links -->
-.. _SCons: http://scons.org
-.. _Doxygen: http://doxygen.org
-.. _scons_doxygen: https://bitbucket.org/russel/scons_doxygen
-.. _scons-doxygen-template: https://github.com/ptomulik/scons-doxygen-template
 
 LICENSE
 -------
