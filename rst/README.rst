@@ -88,34 +88,6 @@ Supported options
 
 There are few types of options described below:
 
-=========== ========================= =========================== =====================================
-Type        Note                      Example value               Example output
-=========== ========================= =========================== =====================================
-int         integer                   ``3``                       ``3``
-str         string                    ``'str1'`` or ``'str 2'``   ``str1`` or ``"str 2"``
-list        list                      ``['a b', False, 3]``       ``"a b" False 3``
-dict        dictionary                ``{'a' : 'A', 'b' : 'B'}``  ``a=A b=B``
-bool        boolean                   ``True`` or ``False``       ``YES`` or ``NO``
-entry       ref to file or directory  ``'foo/bar'``               ``foo/bar``
-file        ref to file               ``'foo/bar.txt'``           ``foo/bar.txt``
-dir         ref to directory          ``'bar/geez'``              ``bar/geez``
-srcentry    ref to source file or dir ``'foo'``                   ``/home/my/proj/src/foo``
-srcfile     ref to source file        ``'foo.txt'``               ``/home/my/proj/src/foo.txt``
-srcdir      ref to source directory   ``'.'``                     ``/home/my/proj/src``
-dualentry   ref to entry + its srouce ``'foo'``                   ``foo /home/my/proj/src/foo``
-dualfile    ref to file + its source  ``'foo.txt'``               ``foo.txt /home/my/proj/src/foo.txt``
-dualdir     ref to dir + its source   ``'.'``                     ``. /home/my/proj/src``
-entries     list of entries
-files       list of files
-dirs        list of directories
-srcentries  list of source entries
-srcfiles    list of source files
-srcdirs     list of source dirs
-dualentries list of dual entries
-dualfiles   list of dual files
-dualdirs    list of dual directories
-=========== ========================= =========================== =====================================
-
 
 
 The supported options are summarized in the following table:
