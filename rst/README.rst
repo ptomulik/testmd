@@ -88,6 +88,34 @@ Supported options
 
 There are few types of options described below:
 
+=========== ========================= =========================== =====================================
+Type        Note                      Example value in SConscript Example output to Doxyfile
+=========== ========================= =========================== =====================================
+int         integer                   ``3``                       ``3``
+str         string                    ``'str1'`` or ``'str 2'``   ``str1`` or ``"str 2"``
+list        list                      ``['a b', False, 3]``       ``"a b" False 3``
+dict        dictionary                ``{'a' : 'A', 'b' : 'B'}``  ``a=A b=B``
+bool        boolean                   ``True`` or ``False``       ``YES`` or ``NO``
+entry       ref to file or directory  ``'foo/bar'``               ``foo/bar``
+file        ref to file               ``'foo/bar.txt'``           ``foo/bar.txt``
+dir         ref to directory          ``'bar/geez'``              ``bar/geez``
+srcentry    ref to source file or dir ``'foo'``                   ``/home/my/proj/src/foo``
+srcfile     ref to source file        ``'foo.txt'``               ``/home/my/proj/src/foo.txt``
+srcdir      ref to source directory   ``'.'``                     ``/home/my/proj/src``
+dualentry   ref to entry + its srouce ``'foo'``                   ``foo /home/my/proj/src/foo``
+dualfile    ref to file + its source  ``'foo.txt'``               ``foo.txt /home/my/proj/src/foo.txt``
+dualdir     ref to dir + its source   ``'.'``                     ``. /home/my/proj/src``
+entries     list of entries
+files       list of files
+dirs        list of directories
+srcentries  list of source entries
+srcfiles    list of source files
+srcdirs     list of source dirs
+dualentries list of dual entries
+dualfiles   list of dual files
+dualdirs    list of dual directories
+=========== ========================= =========================== =====================================
+
 
 
 The supported options are summarized in the following table:
@@ -95,260 +123,6 @@ The supported options are summarized in the following table:
 ======================== ======== =====================================
 Option                   Type     Default
 ======================== ======== =====================================
-DISTRIBUTE_GROUP_DOC_    bool     NO
-MAN_LINKS_               bool     NO
-GENERATE_BUGLIST_        bool     YES
-USE_HTAGS_               bool     NO
-BINARY_TOC_              bool     NO
-DIRECTORY_GRAPH_         bool     YES
-DOT_FONTSIZE_            int      10
-DOT_NUM_THREADS_         int      0
-ALLEXTERNALS_            bool     NO
-EXCLUDE_SYMLINKS_        bool     NO
-SOURCE_BROWSER_          bool     NO
-EXPAND_AS_DEFINED_       str
-DOCBOOK_OUTPUT_          dir
-AUTOLINK_SUPPORT_        bool     YES
-SEARCHDATA_FILE_         str      searchdata.xml
-FILE_VERSION_FILTER_     str
-EXTRACT_ANON_NSPACES_    bool     NO
-COMPACT_LATEX_           bool     NO
-SOURCE_TOOLTIPS_         bool     YES
-TEMPLATE_RELATIONS_      bool     NO
-OPTIMIZE_FOR_FORTRAN_    bool     NO
-OUTPUT_DIRECTORY_        dir
-OPTIMIZE_OUTPUT_FOR_C_   bool     NO
-HTML_COLORSTYLE_GAMMA_   int      80
-ABBREVIATE_BRIEF_        str
-HTML_EXTRA_FILES_        srcfiles
-LATEX_BATCHMODE_         bool     NO
-HIDE_UNDOC_RELATIONS_    bool     YES
-DOCSET_BUNDLE_ID_        str      org.doxygen.Project
-HTML_FILE_EXTENSION_     str      .html
-OUTPUT_LANGUAGE_         str      English
-INLINE_GROUPED_CLASSES_  bool     NO
-EXTRACT_STATIC_          bool     NO
-INCLUDE_GRAPH_           bool     YES
-PDF_HYPERLINKS_          bool     YES
-GENERATE_DOCBOOK_        bool     NO
-EXTRA_SEARCH_MAPPINGS_   str
-COLS_IN_ALPHA_INDEX_     str
-HIDE_SCOPE_NAMES_        bool     NO
-CITE_BIB_FILES_          files
-TCL_SUBST_               str
-LAYOUT_FILE_             srcfile
-OPTIMIZE_OUTPUT_JAVA_    bool     NO
-STRIP_FROM_INC_PATH_     srcdirs
-EXAMPLE_PATH_            srcdirs
-DOT_TRANSPARENT_         bool     NO
-HIDE_UNDOC_CLASSES_      bool     NO
-TREEVIEW_WIDTH_          int      250
-RECURSIVE_               bool     NO
-PAPER_TYPE_              str      a4
-QHP_CUST_FILTER_NAME_    str
-TAB_SIZE_                int      4
-HTML_OUTPUT_             str      html
-INPUT_                   entries
-PROJECT_LOGO_            str
-INLINE_INHERITED_MEMB_   bool     NO
-MAX_INITIALIZER_LINES_   int      30
-MAN_OUTPUT_              str      man
-IMAGE_PATH_              srcdirs
-HTML_FOOTER_             srcfile
-INLINE_INFO_             bool     YES
-PERLMOD_MAKEVAR_PREFIX_  str
-CLASS_DIAGRAMS_          bool     YES
-GENERATE_TODOLIST_       bool     YES
-MAX_DOT_GRAPH_DEPTH_     int      0
-DOCSET_FEEDNAME_         str      "Doxygen generated docs"
-GENERATE_PERLMOD_        bool     NO
-DOTFILE_DIRS_            srcdirs
-CHM_INDEX_ENCODING_      str
-RTF_HYPERLINKS_          bool     NO
-DOXYFILE_ENCODING_       str      UTF-8
-MARKDOWN_SUPPORT_        bool     YES
-EXT_LINKS_IN_WINDOW_     bool     NO
-QUIET_                   bool     NO
-SORT_BRIEF_DOCS_         bool     NO
-LATEX_FOOTER_            srcfile
-INCLUDED_BY_GRAPH_       bool     YES
-XML_OUTPUT_              str      xml
-MATHJAX_RELPATH_         str      http://cdn.mathjax.org/mathjax/latest
-SEARCHENGINE_URL_        str
-GENERATE_LATEX_          bool     YES
-XML_SCHEMA_              str
-CREATE_SUBDIRS_          bool     NO
-GENERATE_DOCSET_         bool     NO
-LATEX_SOURCE_CODE_       bool     NO
-EXTRACT_PRIVATE_         bool     NO
-FILE_PATTERNS_           str
-BUILTIN_STL_SUPPORT_     bool     NO
-GENERATE_TREEVIEW_       bool     NO
-PROJECT_BRIEF_           str
-EXTRACT_PACKAGE_         bool     NO
-USE_MDFILE_AS_MAINPAGE_  srcfile
-QT_AUTOBRIEF_            bool     NO
-HIDE_IN_BODY_DOCS_       bool     NO
-DOT_MULTI_TARGETS_       bool     NO
-VERBATIM_HEADERS_        bool     YES
-CALLER_GRAPH_            bool     NO
-IGNORE_PREFIX_           str
-HIDE_FRIEND_COMPOUNDS_   bool     NO
-FILTER_SOURCE_FILES_     bool     NO
-EXAMPLE_PATTERNS_        str
-ALPHABETICAL_INDEX_      bool     YES
-EXAMPLE_RECURSIVE_       bool     NO
-UML_LOOK_                bool     NO
-GENERATE_QHP_            bool     NO
-INCLUDE_FILE_PATTERNS_   str
-STRICT_PROTO_MATCHING_   bool     NO
-PERL_PATH_               str      /usr/bin/perl
-PROJECT_NAME_            str      "My Project"
-SEARCH_INCLUDES_         bool     YES
-GENERATE_TAGFILE_        file
-EXCLUDE_                 srcdirs
-LOOKUP_CACHE_SIZE_       int      0
-MSCFILE_DIRS_            dirs
-DOT_FONTNAME_            str      Helvetica
-MAKEINDEX_CMD_NAME_      str      makeindex
-BRIEF_MEMBER_DESC_       bool     YES
-REFERENCES_RELATION_     bool     NO
-MAN_EXTENSION_           str      .3
-WARN_IF_UNDOCUMENTED_    bool     YES
-INPUT_FILTER_            str
-XML_DTD_                 str
-LATEX_BIB_STYLE_         str
-MATHJAX_CODEFILE_        srcfile
-INTERNAL_DOCS_           bool     NO
-QCH_FILE_                str
-OPTIMIZE_OUTPUT_VHDL_    bool     NO
-RTF_OUTPUT_              str      rtf
-HHC_LOCATION_            str
-MULTILINE_CPP_IS_BRIEF_  bool     NO
-HTML_TIMESTAMP_          bool     YES
-HTML_HEADER_             srcfile
-NSE_NAMES_        bool     OS dependent
-LATEX_HEADER_            srcfile
-EXTERNAL_PAGES_          bool     YES
-GENERATE_HTMLHELP_       bool     NO
-GENERATE_ECLIPSEHELP_    bool     NO
-EXTERNAL_GROUPS_         bool     YES
-FILTER_PATTERNS_         str
-HTML_STYLESHEET_         srcfile
-SUBGROUPING_             bool     YES
-SORT_MEMBERS_CTORS_1ST_  bool     NO
-TAGFILES_                str
-PREDEFINED_              str
-USE_PDFLATEX_            bool     YES
-DOT_GRAPH_MAX_NODES_     int      50
-ENUM_VALUES_PER_LINE_    int      4
-SORT_GROUP_NAMES_        bool     NO
-DOT_IMAGE_FORMAT_        str      png
-EXTRACT_LOCAL_METHODS_   bool     NO
-DOCSET_PUBLISHER_ID_     str      org.doxygen.Publisher
-HTML_DYNAMIC_SECTIONS_   bool     NO
-UML_LIMIT_NUM_FIELDS_    int      10
-HTML_COLORSTYLE_HUE_     int      220
-GENERATE_XML_            bool     NO
-CPP_CLI_SUPPORT_         bool     NO
-QHP_SECT_FILTER_ATTRS_   str
-GROUP_GRAPHS_            bool     YES
-SEPARATE_MEMBER_PAGES_   bool     NO
-PERLMOD_LATEX_           bool     NO
-FORMULA_FONTSIZE_        int      10
-ALWAYS_DETAILED_SEC_     bool     NO
-EXCLUDE_PATTERNS_        str
-EXTERNAL_SEARCH_ID_      str
-RTF_EXTENSIONS_FILE_     file
-LATEX_EXTRA_FILES_       srcfiles
-COMPACT_RTF_             bool     NO
-ENABLED_SECTIONS_        str
-LATEX_HIDE_INDICES_      bool     NO
-SHOW_USED_FILES_         bool     YES
-ECLIPSE_DOC_ID_          str      org.doxygen.Project
-GRAPHICAL_HIERARCHY_     bool     YES
-ALIASES_                 str
-HTML_COLORSTYLE_SAT_     int      100
-WARN_IF_DOC_ERROR_       bool     YES
-GENERATE_RTF_            bool     NO
-SERVER_BASED_SEARCH_     bool     NO
-CHM_FILE_                srcfile
-LATEX_CMD_NAME_          str      latex
-QHP_NAMESPACE_           str
-FORMULA_TRANSPARENT_     bool     YES
-INTERACTIVE_SVG_         bool     NO
-XML_PROGRAMLISTING_      bool     YES
-GENERATE_CHI_            bool     NO
-REFERENCES_LINK_SOURCE_  bool     YES
-WARN_LOGFILE_            file
-FILTER_SOURCE_PATTERNS_  str
-TOC_EXPAND_              bool     NO
-GENERATE_LEGEND_         bool     YES
-PROJECT_NUMBER_          str
-HTML_EXTRA_STYLESHEET_   srcfile
-SKIP_FUNCTION_MACROS_    bool     YES
-SHOW_FILES_              bool     YES
-CLASS_GRAPH_             bool     YES
-LATEX_OUTPUT_            str      latex
-GENERATE_MAN_            bool     NO
-SORT_BY_SCOPE_NAME_      bool     NO
-CLANG_OPTIONS_           str
-INCLUDE_PATH_            srcdirs
-MSCGEN_PATH_             str
-DOT_CLEANUP_             bool     YES
-MATHJAX_FORMAT_          str      HTML-CSS
-INPUT_ENCODING_          str      UTF-8
-IDL_PROPERTY_SUPPORT_    bool     YES
-FULL_PATH_NAMES_         bool     YES
-DISABLE_INDEX_           bool     NO
-SIP_SUPPORT_             bool     NO
-MACRO_EXPANSION_         bool     NO
-EXTRACT_ALL_             bool     NO
-WARNINGS_                bool     YES
-EXTRACT_LOCAL_CLASSES_   bool     YES
-REPEAT_BRIEF_            bool     YES
-INLINE_SOURCES_          bool     NO
-USE_MATHJAX_             bool     NO
-EXTENSION_MAPPING_       str
-SHORT_NAMES_             bool     NO
-DOT_PATH_                str
-RTF_STYLESHEET_FILE_     file
-TYPEDEF_HIDES_STRUCT_    bool     NO
-PERLMOD_PRETTY_          bool     YES
-ENABLE_PREPROCESSING_    bool     YES
-JAVADOC_AUTOBRIEF_       bool     NO
-STRIP_FROM_PATH_         srcdirs
-EXCLUDE_SYMBOLS_         str
-HTML_INDEX_NUM_ENTRIES_  int      100
-GENERATE_AUTOGEN_DEF_    bool     NO
-CLANG_ASSISTED_PARSING_  bool     NO
-COLLABORATION_GRAPH_     bool     YES
-DOCSET_PUBLISHER_NAME_   str      Publisher
-QHP_CUST_FILTER_ATTRS_   str
-GENERATE_HTML_           bool     YES
-CALL_GRAPH_              bool     NO
-GENERATE_DEPRECATEDLIST_ bool     YES
-SORT_MEMBER_DOCS_        bool     YES
-SHOW_INCLUDE_FILES_      bool     YES
-WARN_FORMAT_             str      "$file:$line: $text"
-WARN_NO_PARAMDOC_        bool     NO
-MATHJAX_EXTENSIONS_      str
-EXTERNAL_SEARCH_         bool     NO
-GENERATE_TESTLIST_       bool     YES
-INLINE_SIMPLE_STRUCTS_   bool     NO
-DOT_FONTPATH_            srcdir
-REFERENCED_BY_RELATION_  bool     NO
-HAVE_DOT_                bool     NO
-INHERIT_DOCS_            bool     YES
-EXTRA_PACKAGES_          str
-HIDE_UNDOC_MEMBERS_      bool     NO
-FORCE_LOCAL_INCLUDES_    bool     NO
-SHOW_NAMESPACES_         bool     YES
-QHP_VIRTUAL_FOLDER_      str      doc
-EXPAND_ONLY_PREDEF_      bool     NO
-SEARCHENGINE_            bool     YES
-STRIP_CODE_COMMENTS_     bool     YES
-QHG_LOCATION_            str
 ======================== ======== =====================================
 
 .. _DISTRIBUTE_GROUP_DOC: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_distribute_group_doc
