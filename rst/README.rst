@@ -651,6 +651,11 @@ QHG_LOCATION_            str
 .. _STRIP_CODE_COMMENTS: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_strip_code_comments
 .. _QHG_LOCATION: http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_qhg_location
 
+.. <!-- Other links -->
+.. _SCons: http://scons.org
+.. _Doxygen: http://doxygen.org
+.. _scons_doxygen: https://bitbucket.org/russel/scons_doxygen
+.. _scons-doxygen-template: https://github.com/ptomulik/scons-doxygen-template
 
 LICENSE
 -------
