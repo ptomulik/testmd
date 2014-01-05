@@ -6,6 +6,7 @@
 
 #### Table of Contents
 
+0. [Caution](#caution)
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Setup](#setup)
@@ -17,45 +18,71 @@
 6. [Limitations](#limitations)
 7. [Development](#development)
 
+## Caution
+
+This is an experimental module. It may be substantially changed, renamed or
+removed at all without a notice. Do not use in production.
+
 ## Overview
 
-__NOTE__: this is an experimental module. It may be substantially changed, renamed or removed at all without a notice. Do not use in production.
+This library contains extension modules for searching FreeBSD
+[ports(7)](http://www.freebsd.org/cgi/man.cgi?query=ports&sektion=7) and
+packages. It uses `make search` command to search available ports and
+[portversion(1)](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
+to query already installed packages. Both, the old
+[pkg](http://www.freebsd.org/doc/handbook/packages-using.html) and the new
+[pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) databases are
+supported. The library also allows manipulating build options (normally set
+with *make config*) and determining other characteristics of FreeBSD packaging
+system.
 
-This library provides functions for searching through FreeBSD [ports(7)](http://www.freebsd.org/cgi/man.cgi?query=ports&sektion=7) and installed packages. It uses `make search` command to search through available ports and [portversion(1)](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1) to query already installed packages. Both, the old [pkg](http://www.freebsd.org/doc/handbook/packages-using.html) and the new [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) databases are supported. The library also allows manipulating build options (the options normally set with *make config*).
+The library is developed primarily for
+[ptomulik-packagex\_portsx](https://github.com/ptomulik/puppet-packagex_portsx)
+module, which implements [ports](https://www.freebsd.org/ports/) provider for
+[packagex](https://github.com/ptomulik/puppet-packagex) resource.
 
-The library is developed primarily for [ptomulik-packagex\_portsx](https://github.com/ptomulik/puppet-packagex_portsx) module, which implements [ports](https://www.freebsd.org/ports/) provider for [packagex](https://github.com/ptomulik/puppet-packagex) resource.
+## Module Description
 
-## Module Description                                                                     
-                                                                                          
-This module provides a                                                                    
-                                                                                          
-#### FreeBSD ports collection and its terminology                                         
-                                                                                          
-We use the following terminology when referring ports/packages:                           
-                                                                                          
-  * a string in form `'apache22'` or `'ruby'` is referred to as *portname*                
-  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to           
-    as a *pkgname*                                                                        
-  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a              
-    port *origin* or *portorigin*                                                         
-                                                                                          
+The library contains the following ruby modules:
+
+- `Puppet::Util::PTomulik::Packagex::Portsx::Functions` - common stuff used by
+  other modules,
+- `Puppet::Util::PTomulik::Packagex::Portsx::Options` - maintains FreeBSD ports
+  options (build options, normally settable by `make search`),
+- `Puppet::Util::PTomulik::Packagex::Portsx::PkgRecord` - represents single
+  record from package database (database of installed packages, either pkg or
+  pkgng),
+- `Puppet::Util::PTomulik::Packagex::Portsx::PkgSearch` - methods for searching
+  database of installed packages,
+- `Puppet::Util::PTomulik::Packagex::Portsx::PortSearch` - methods for
+  searching ports INDEX,
+- `Puppet::Util::PTomulik::Packagex::Portsx::PortRecord` - represents single
+  record from ports INDEX,
+- `Puppet::Util::PTomulik::Packagex::Portsx::Record` - superclass for PkgRecord
+  and PortRecotr
+
+
+#### FreeBSD ports collection and its terminology
+
+Ports and packages in FreeBSD may be identified by either *portnames*,
+*pkgnames* or *portorigins*. We use the following terminology when referring
+ports/packages:
+
+  * a string in form `'apache22'` or `'ruby'` is referred to as *portname*
+  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
+    as a *pkgname*
+  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
+    port *origin* or *portorigin*
+
 See [http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html](http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html)
-
-#### FreeBSD ports collection and ambiguity of portnames
-
-The *portnames* are ambiguous which means a port search may find multiple ports
-matching a single *portname*. For example, at some time it was that
-`'mysql-client'` package had three ports: with origins
-`databases/mysql51-client`, `databases/mysql55-client` and
-`databases/mysql56-client`. This may cause some problems to applications using
-this library, so youre encouraged to use port origins (instead of port names).
 
 ## Setup
 
 ### What portsxutil affects
 
-This is just a library and shouldn't touch anything in your system when
-installed. The operations provided by 
+This is just a library and shouldn't alter your system (it performs read-only
+operations). The module uses Facter and some *read-only* shell commands to
+query information related to FreeBSD ports/packages.
 
 ### Setup Requirements
 
@@ -66,6 +93,13 @@ You may need to enable **pluginsync** in your `puppet.conf`.
 ## Usage
 
 ## Reference
+
+The complete reference may be generated with [yard](http://yardoc.org/) as
+follows:
+
+```bash
+yard -m markdown
+```
 
 ## Limitations
 
