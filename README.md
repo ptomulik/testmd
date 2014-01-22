@@ -68,14 +68,14 @@ autorequire other "per instance" resources that are necessary to setup the
 instance properly. It also maintains resources that can't be handled by other
 resource types.
 
-As an example of system resources maintained by `apachex_instance` one can
-take the `freebsd` provider which maintains a configuration file called
+As an example of system resources maintained by **apachex_instance** one can
+take the `freebsd` provider which maintains a configuration file named 
 `/etc/rc.conf.d/${apache_name}_instances.conf`. The file defines a list of
 apache instances that should be started at boot time. See
 [wiki article](http://wiki.apache.org/httpd/RunningMultipleApacheInstances)
 for more details.
 
-Note that `apache_instance` does not start any instances by it's own and
+Note that **apache_instance** does not start any instances by it's own and
 doesn't create any additional resources. It just sets soft dependence to
 other resources, which should be defined in manifest file for each
 apache instance.
@@ -85,7 +85,7 @@ apache instance.
 - **name** - identifies instances of the **apachex_instance** resource. The
   **name** must be a string matching `/^[a-zA-Z_]\w*$/` regular expression,
   that is it must be a valid identifier such as `foo_bar24`.
-- **modules** - (default: =**name**) name of [apache_modules](#apache_modules)
+- **modules** - (default: =**name**) name of [apachex_modules](#apachex_modules)
   for this apache instance. It defines the module list to be loaded at startup
   by this apache instance. The **modules** must be a string.
 - **instance_options** - other options, for example  . The
@@ -112,22 +112,14 @@ apachex_modules { foo:
 #####Parameters for apachex\_modules
 
 - **name** - identifies instances of the **apaches_modules** resource.
-- **modules** - modules gathered by this resource. This is a hash in form:
-  ```puppet
-  {
-    xxx => '/path/to/mox_xxx.so'
-    ...
-  }
-  ```
+- **modules** - modules gathered by this resource. This is a hash in form
+  `$modules = { xxx => '/path/to/mox_xxx.so', ...  }`.
   The keys and values in the hash correspond to `module` and `filename`
   parameter of the `LoadModule` directive respectively, see [LoadModule
   directive](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule).
   Filenames may be given as either absolute paths or paths relative to
   `ServerRoot`. The above `key => value` pair will generate the following
-  LoadModule directive:
-  ```
-  LoadModule xxx_module /path/to/mod_xxx.so
-  ```
+  LoadModule directive: `LoadModule xxx_module /path/to/mod_xxx.so`,
   assuming that **loadmodule_suffix** is set to `_module` (which is the
   default).
 
