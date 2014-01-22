@@ -18,7 +18,7 @@ This is very early development. Do not use it in production!
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
-##Overview
+##<a id="overview"></a>Overview
 
 The Apachex module allows you to set up and configure apache server, define
 virtual hosts and manage web services with minimal effort.
@@ -252,14 +252,14 @@ by `apachex::package`
 
 [Back to index](#classes-and-defined-types)
 
-###Resource Types and Providers
+###<a id="resource-types-and-providers"></a>Resource Types and Providers
 
 - [apachex_instance](#apachex_instance)
-  - [Parameters for apachex_instance](#parameters-for-apachex_instance)
+  - [apachex_instance parameters](#apachex_instance-parameters)
 - [apachex_modules](#apachex_modules)
-  - [Parameters for apachex_modules](#parameters-for-apachex_modules)
+  - [apachex_modules parameters](#apachex_modules-parameters)
 
-####apachex\_instance
+####<a id="apachex_instance"></a>apachex\_instance
 
 Instance of apache server, supports running multiple instances of apache.
 
@@ -287,7 +287,7 @@ apache instance.
 
 [Back to index](#resource-types-and-providers)
 
-#####Parameters for apachex\_instance
+#####<a id="apachex_instance-parameters"></a>apachex\_instance parameters
 
 - **name** - identifies instances of the **apachex_instance** resource. The
   **name** must be a string matching `/^[a-zA-Z_]\w*$/` regular expression,
@@ -300,7 +300,7 @@ apache instance.
 
 [Back to index](#resource-types-and-providers)
 
-####apachex\_modules
+####<a id="apachex_modules"></a>apachex\_modules
 
 Apache modules for an apache instance.
 
@@ -320,7 +320,7 @@ apachex_modules { foo:
 
 [Back to index](#resource-types-and-providers)
 
-#####Parameters for apachex\_modules
+#####<a id="apachex_modules-parameters"></a>apachex\_modules parameters
 
 - **name** - identifies instances of the **apachex_modules** resource.
 - **modules** - modules gathered by this resource. This is a hash in form
@@ -411,9 +411,7 @@ apachex_modules { foo:
 
 [Back to index](#resource-types-and-providers)
 
-
-
-#### Variables
+####<a id="variables"></a>Variables
 
 These variables are required by apachex::package class:
 
@@ -448,7 +446,7 @@ These variables are defined by apachex::package and can be used elsewhere:
     Regular expression that matches all the names of the installed mpm modules.
     This determines, after all, what MPMs may be enabled at runtime.
 
-#### Examples
+####<a id="examples"></a>Examples
 
 Use all default parameters:
 
@@ -495,14 +493,10 @@ Install FreeBSD port of apache 2.4, but disable shared MPM modules:
     }
 
 
-##Limitations
+##<a id="limitations"></a>Limitations
 
 This is where you list OS compatibility, version compatibility, etc.
 
-##Development
+##<a id="development"></a>Development
 
 Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-##Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
