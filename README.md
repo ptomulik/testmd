@@ -151,7 +151,10 @@ apachex_modules { foo:
 
   ```puppet
   apachex_modules{xxx:
-    modules => { foo => '/path/to/mod_foo.so' },
+    modules => { 
+      foo => '/path/to/mod_foo.so',
+      bar => '/path/to/mod_bar.so' 
+    },
     id_suffix => '_sfx',
   }
   ```
@@ -161,6 +164,7 @@ apachex_modules { foo:
 
   ```apache
   LoadModule foo_sfx /path/to/mod_foo.so
+  LoadModule bar_sfx /path/to/mod_bar.so
   ```
 
   The **id_suffix** parameter must be a String.
@@ -184,7 +188,8 @@ apachex_modules { foo:
   ```puppet
   apachex_modules{xxx:
     modules => {
-      foo => '/path/to/mod_foo.so'
+      foo => '/path/to/mod_foo.so',
+      bar => '/path/to/mod_bar.so'
     }
     id_map => {
       foo => custom_foo_id
@@ -196,6 +201,7 @@ apachex_modules { foo:
 
   ```apache
       LoadModule custom_foo_id /path/to/mod_foo.so
+      LoadModule bar_module /path/to/mod_bar.so
   ```
 
   The **id_map** must be a Hash. Keys and values in **id_map** must match
