@@ -53,6 +53,11 @@ Put the classes, types, and resources for customizing, configuring, and doing th
 
 ###Resource Types and Providers
 
+- [apachex_instance](#apachex_instance)
+  - [Parameters for apachex_instance](#parameters-for-apachex_instance)
+- [apachex_modules](#apachex_modules)
+  - [Parameters for apachex_modules](#parameters-for-apachex_modules)
+
 ####apachex\_instance
 
 Instance of apache server, supports running multiple instances of apache.
@@ -62,23 +67,24 @@ different configurations and as different users. This pattern is used by
 to setup hosting environments with decent privilege separation
 (for example, multiple instances of http server behind a reverse proxy).
 
-The [apachex_instance](#apachex_instance) resource represents single instance
-of a running apache server in puppet manifest. It's main puprose is to
-autorequire other "per instance" resources that are necessary to setup the
-instance properly. It also maintains resources that can't be handled by other
-resource types.
+The **apachex_instance** resource represents single instance of a running
+apache server in puppet manifest. It's main puprose is to autorequire other
+"per instance" resources that are necessary to setup the instance properly. It
+also maintains resources that can't be handled by other resource types.
 
 As an example of system resources maintained by **apachex_instance** one can
-take the `freebsd` provider which maintains a configuration file named 
+take the `freebsd` provider which maintains a configuration file named
 `/etc/rc.conf.d/${apache_name}_instances.conf`. The file defines a list of
 apache instances that should be started at boot time. See
 [wiki article](http://wiki.apache.org/httpd/RunningMultipleApacheInstances)
 for more details.
 
-Note that **apache_instance** does not start any instances by it's own and
+Note that **apachex_instance** does not start any instances by it's own and
 doesn't create any additional resources. It just sets soft dependence to
 other resources, which should be defined in manifest file for each
 apache instance.
+
+[Back to index](#resource-types-and-providers)
 
 #####Parameters for apachex\_instance
 
@@ -88,8 +94,10 @@ apache instance.
 - **modules** - (default: =**name**) name of [apachex_modules](#apachex_modules)
   for this apache instance. It defines the module list to be loaded at startup
   by this apache instance. The **modules** must be a string.
-- **instance_options** - other options, for example  . The
+- **instance_options** - (default: `{}`) additional (provider-specific) options. The
   **instance_options** must be a Hash.
+
+[Back to index](#resource-types-and-providers)
 
 ####apachex\_modules
 
@@ -109,36 +117,92 @@ apachex_modules { foo:
 }
 ```
 
+[Back to index](#resource-types-and-providers)
+
 #####Parameters for apachex\_modules
 
-- **name** - identifies instances of the **apaches_modules** resource.
+- **name** - identifies instances of the **apachex_modules** resource.
 - **modules** - modules gathered by this resource. This is a hash in form
-  `$modules = { xxx => '/path/to/mox_xxx.so', ...  }`.
-  The keys and values in the hash correspond to `module` and `filename`
-  parameter of the `LoadModule` directive respectively, see [LoadModule
-  directive](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule).
-  Filenames may be given as either absolute paths or paths relative to
-  `ServerRoot`. The above `key => value` pair will generate the following
-  LoadModule directive: `LoadModule xxx_module /path/to/mod_xxx.so`,
-  assuming that **loadmodule_suffix** is set to `_module` (which is the
+
+  ```puppet
+  $modules = { xxx => '/path/to/mox_xxx.so', ...  }
+  ```
+
+  The keys and values in the hash correspond to *module* and *filename*
+  parameter of the
+  [LoadModule](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule)
+  directive respectively. Filenames may be given as either absolute paths or
+  paths relative to `ServerRoot`. The above `key => value` pair shall generate
+  the following **LoadModule** directive:
+
+  ```apache
+  LoadModule xxx_module /path/to/mod_xxx.so
+  ```
+
+  assuming that **id_suffix** is set to `_module` (which is the
   default).
 
   Keys must match `/^[a-zA-Z_]\w*$/` expression, that is they must be
-  valid identifiers. Values must be a string or symbol.
-- **loadmodule_suffix** - sets the suffix used for `module` aparameter to the
-  `LoadModule` directive, see
-  [LoadModule](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule).
-  If for example `loadmodule_suffix` is `_bar`, then `modules => { foo =>
-  '/path/to/mod_foo.so' }` will generate:
+  valid identifiers. Values must be Strings or Symbols.
+- **id_suffix** - (default: `'_module'`) sets the suffix used for *module*
+  parameter to the
+  [LoadModule](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule)
+  directive. The following code:
+
+  ```puppet
+  apachex_modules{xxx:
+    modules => { foo => '/path/to/mod_foo.so' },
+    id_suffix => '_sfx',
+  }
   ```
-  LoadModule foo_bar /path/to/mod_foo.so
+
+  shall generate:
+
+
+  ```apache
+  LoadModule foo_sfx /path/to/mod_foo.so
   ```
-  The **loadmodule_suffix** must be a string.
 
-####apachex\_rcconf
+  The **id_suffix** parameter must be a String.
 
-#####Parameters for apachex\_rcconf
+- **id_map** - (default: `{}`) maps **modules** to *module ids* (used by
+  [LoadModule](http://httpd.apache.org/docs/current/mod/mod_so.html#loadmodule)).
+  This provides a way to define custom *module ids* for modules, which for some
+  reason can not use default *module ids* created by concatenating module name
+  with **id_suffix**.
 
+  This is a hash in form:
+
+  ```puppet
+  $id_map = { 'xxx' => 'xxx_module', ... }
+  ```
+
+  which maps module names given as keys in **modules** to *module ids*
+  used by **LoadModule** directives. For example, the following manifest
+
+
+  ```puppet
+  apachex_modules{xxx:
+    modules => {
+      foo => '/path/to/mod_foo.so'
+    }
+    id_map => {
+      foo => custom_foo_id
+    }
+  }
+  ```
+
+  shall generate:
+
+  ```apache
+      LoadModule custom_foo_id /path/to/mod_foo.so
+  ```
+
+  The **id_map** must be a Hash. Keys and values in **id_map** must match
+  `/^[a-zA-Z_]\w*$/` regular expression, that is they must form valid
+  identifiers.
+
+[Back to index](#resource-types-and-providers)
 
 ###Facts
 
