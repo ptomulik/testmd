@@ -169,6 +169,8 @@ end
 
 ###<a id="example-8-building-dependencies-between-parameters"></a>Example 8: Building dependencies between parameters
 
+Macros may be used to define types or classes whose parameters are interdependent. In other words, if one parameter is altered by user, others should be adjusted automatically, unless user speciy them as well. For example:
+
 ```ruby
 # mymodule/lib/puppet/parser/macros/foo/a.rb
 Puppet::Parser.newmacro 'foo::a' do
@@ -192,7 +194,7 @@ end
 define foo( $a = determine('foo::a'),
             $b = determine('foo::b', $a) )
 {
-  notify{$title: "${title}: a=${a}, b=${b}"}
+  notify{$title: "${title}: a=\'${a}\', b=\'${b}\'"}
 }
 foo {defaults: }
 foo {custom_a: a => 'custom a' }
