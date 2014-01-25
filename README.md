@@ -7,8 +7,8 @@
 ####Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Usage - Configuration options and additional functionality](#usage)
+2. [Module Description](#module-description)
+3. [Usage](#usage)
    * [Example 1: Defining macro in ruby code](#example-1-defining-macro-in-ruby-code)
    * [Example 2: Invoking macro in puppet manifest](#example-2-invoking-macro-in-puppet-manifest)
    * [Example 3: Macro with parameters](#example-3-macro-with-parameters)
@@ -17,9 +17,8 @@
    * [Example 6: Invoking macro from macro](#example-6-invoking-macro-from-macro)
    * [Example 7: Using facts](#example-7-using-facts)
    * [Example 8: Building dependencies between parameters](#example-8-building-dependencies-between-parameters)
-4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+4. [Reference](#reference)
+5. [Limitations](#limitations)
 
 ##<a id="overview"></a>Overview
 
@@ -208,14 +207,4 @@ Here, list the classes, types, providers, facts, etc contained in your module. T
 
 ##Limitations
 
-* currently there is no possiblity to define macro in puppet manifests, I
-  believe, however, it may quire easilly be implemented (it shall use puppet's
-  lambdas feature of the future parser)
-
-##Development
-
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-##Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+* Currently there is no possiblity to define macro in puppet manifests, that is we only can define macro using ruby and use it in ruby or puppet. I believe this functionality may implemented as an additional parser function (call it `macro`) and it should work with the help of puppet lambdas, which are available in future parser.
