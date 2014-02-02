@@ -10,6 +10,7 @@
 2. [Module Description](#module-description)
 3. [Usage](#usage)
    * [Example 1: Declaring simple options](#example-1-declaring-simple-options)
+   * [Example 2: Separating declaration from validation](#example-2-separating-declaration-from-validation)
 4. [Reference](#reference)
    * [Declarators](#declarators)
    * [API Reference](#api-reference)
