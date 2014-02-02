@@ -1,352 +1,263 @@
-#ptomulik-macro
+#Oval - Options Validator
 
-[![Build Status](https://travis-ci.org/ptomulik/puppet-macro.png?branch=master)](https://travis-ci.org/ptomulik/puppet-macro)
-[![Coverage Status](https://coveralls.io/repos/ptomulik/puppet-macro/badge.png)](https://coveralls.io/r/ptomulik/puppet-macro)
-[![Code Climate](https://codeclimate.com/github/ptomulik/puppet-macro.png)](https://codeclimate.com/github/ptomulik/puppet-macro)
+[![Build Status](https://travis-ci.org/ptomulik/rubygems-oval.png?branch=master)](https://travis-ci.org/ptomulik/rubygems-oval)
+[![Coverage Status](https://coveralls.io/options_validator/ptomulik/rubygems-oval/badge.png)](https://coveralls.io/r/ptomulik/rubygems-oval)
+[![Code Climate](https://codeclimate.com/github/ptomulik/rubygems-oval.png)](https://codeclimate.com/github/ptomulik/rubygems-oval)
 
 ####<a id="table-of-contents"></a>Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
 3. [Usage](#usage)
-   * [Example 1: Defining macro in ruby code](#example-1-defining-macro-in-ruby-code)
-   * [Example 2: Invoking macro in puppet manifest](#example-2-invoking-macro-in-puppet-manifest)
-   * [Example 3: Macro with parameters](#example-3-macro-with-parameters)
-   * [Example 4: Variable number of parameters](#example-4-variable-number-of-parameters)
-   * [Example 5: Default parameters](#example-5-default-parameters)
-   * [Example 6: Invoking macro from macro](#example-6-invoking-macro-from-macro)
-   * [Example 7: Using variables](#example-7-using-variables)
-   * [Example 8: Building dependencies between parameters](#example-8-building-dependencies-between-parameters)
+   * [Example 1: Declaring simple options](#example-1-declaring-simple-options)
 4. [Reference](#reference)
-   * [Function Reference](#function-reference)
+   * [Declarators](#declarators)
    * [API Reference](#api-reference)
 5. [Limitations](#limitations)
 
 ##<a id="overview"></a>Overview
 
-Puppet parser macros.
+Validate option hashes when passed to methods.
 
 [[Table of Contents](#table-of-contents)]
 
 ##<a id="module-description"></a>Module Description
 
-With this functionality module developers may define named macros and evaluate
-them in manifests. This works similarly to parser
-[functions](http://docs.puppetlabs.com/guides/custom_functions.html) but
-implementing a macro is a little bit easier. Also, macros may use
-"hierarchical" names in `foo::bar::geez` form, so a module developer may easily
-establish one-to-one correspondence between macro names and class/define
-parameters.
+Using hashes to pass options to methods is a very common ruby practice. With **Oval** method authors may restrict callers to pass only declared options that meet requirements described in a hash declaration.
 
-The main reason for this module being developed is exemplified in
-[Example 8](#example-8-building-dependencies-between-parameters).
+The shape of acceptable hashes is described by a simple grammar. The validation is then carried out by a recursive-descent parser that matches the actual values provided by caller against [declarators](#declarators) that comprise the hash declaration.
+
+A declaration consists of terminal and non-terminal declarators. Non-terminal declarators are created by methods of `Oval` module which have names starting with `ov_` prefix. All other values (such as `:symbol`, `'string'`, `nil`, or `Class`) are terminals. Terminals use `==` operator to match the values provided by caller. Non-teminal use its own logic introducing more elaborate matching criteria (see for example [ov_collection](#ov_collection)).
+
+**Oval** raises **Oval::DeclError** if the declaration is not well-formed, that is if the description of options shape is erronrneous. This is raised from the point of declaration. Other, more common exception is the **Oval::ValueError** which is raised everytime validation fails. This one is raised from within a method which takes the options as an argument.
 
 [[Table of Contents](#table-of-contents)]
 
 ##<a id="usage"></a>Usage
 
-###<a id="example-1-defining-macro-in-ruby-code"></a>Example 1: Defining macro in ruby code
+The usage is basically a two-step procedure. The first step is to declare options shape. This would create a validator object. The second step is to validate options within a method using the previously constructed validator. For simple hashes the entire construction may fit to a single line. Let's start with such a simple example.
 
-To define a macro named **foo::bar** in a module write a file
-named *lib/puppet/parser/macros/foo/bar.rb*:
+###<a id="example-1-declaring-simple-options"></a>Example 1: Declaring Simple Options
+
+The method `foo` in the following code accepts only `{}` and `{:foo => value}`
+as `options`, where `value` is arbitrary:
 
 ```ruby
-# lib/puppet/parser/macros/foo/bar.rb
-Puppet::Parser::Macros.newmacro 'foo::bar' do
-  'macro foo::bar'
+# Options validator
+require 'oval'
+class C
+  extend Oval
+  def self.foo(ops = {})
+    ov_options[ :foo => ov_anything ].validate(ops, 'ops')
+  end
 end
 ```
 
-The above macro simply returns the `'macro foo::bar'` string.
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-2-invoking-macro-in-puppet-manifest"></a>Example 2: invoking macro in puppet-manifest
-
-Nothing simpler that:
-
-```puppet
-$foo_bar = determine('foo::bar')
-notify { foo_bar: message => "determine('foo::bar') -> ${foo_bar}" }
-```
-
-If you don't need the value returned by macro, then the you may invoke macro as
-a statement:
-
-```puppet
-invoke('foo::bar')
-```
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-3-macro-with-parameters"></a>Example 3: macro with parameters
-
-Let's define macro `sum` which adds two integers:
+What does it do? Just try it out:
 
 ```ruby
-# lib/puppet/parser/macros/sum2.rb
-Puppet::Parser::Macros.newmacro 'sum2' do |x,y|
-  Integer(x) + Integer(y)
+C.foo # should pass
+C.foo :foo => 10 # should pass
+C.foo :foo => 10, :bar => 20 # Oval::ValueError "Invalid option :bar for ops. Allowed options are :foo"
+```
+
+Options are declared with [ov_xxx declarators](#declarators). The [ov_options](#ov_options) method should always be at the top level. Then all the allowed options should be listed inside of `[]` square brackets. Keys may be any values convertible to strings (i.e. a key given in declaration must `respond_to? :to_s`). Values are declared recursivelly using [ov_xxx declarators](#declarators) or terminal declarators (any other ruby values).
+
+In [Example 1](#example-1-declaring-simple-options) we have declared options inside of a method for simplicity. This isn't an optimal technique. Usually options' declaration remains same for the entire lifetime of an application, so it is unnecessary to recreate the declaration each time function is called. In other words, we should move the declaration outside of the method, convert it to a singleton and only validate options inside of a function. For that purpose, t
+he [Example 1](#example-1-declaring-simple-options) could be modified to the following form
+
+###<a id="example-2-separating-declaration-from-validation"></a>Example 2: Separating declaration from validation
+
+In this example we separate options declaration from the validation to reduce costs related to options declaration:
+
+```ruby
+# Options validator
+require 'oval'
+class C
+  extend Oval
+  # create a singleton declaration ov
+  def self.ov
+    @ov ||= ov_options[ :foo => ov_anything ]
+  end
+  # use ov to validate ops
+  def self.foo(ops = {})
+    ov.validate(ops, 'ops')
+  end
 end
-```
-
-Now you may use it with:
-
-```puppet
-$sum = determine('sum2', 1, 2)
-notify { sum: message => "determine('sum2',1,2) -> ${sum}" }
-```
-
-You may use **lambda** instead of a `do`..`end` block to enable strict arity
-checking, for example:
-
-```ruby
-# lib/puppet/parser/macros/sum2.rb
-Puppet::Parser::Macros.newmacro 'sum2', &lambda { |x,y|
-  Integer(x) + Integer(y)
-}
-```
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-4-variable-number-of-parameters"></a>Example 4: Variable number of parameters
-
-Let's redefine our `sum` from [Example 3](#example-3-macro-with-parameters) to accept arbitrary number of parameters:
-
-```ruby
-# lib/puppet/parser/macros/sum.rb
-Puppet::Parser::Macros.newmacro 'sum', &lambda { |*args|
-  args.map{|x| Integer(x)}.reduce(0,:+)
-}
-```
-
-Now you may use it with:
-
-```puppet
-$zero = determine('sum')
-$one = determine('sum',1)
-$three = determine('sum',1,2)
-notify { zero: message => "determine('sum') -> ${zero}" }
-notify { one: message => "determine('sum',1) -> ${one}" }
-notify { three: message => "determine('sum',1,2) -> ${three}" }
-```
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-5-default-parameters"></a>Example 5: Default parameters
-
-Default parameters work only with ruby **1.9+**. If you don't care about
-compatibility with ruby **1.8**, you may define a macro with default parameters
-in the usual way:
-```ruby
-# lib/puppet/parser/macros/puppet/config/content.rb
-Puppet::Parser::Macros.newmacro 'puppet::config::content', &lambda {|file='/etc/puppet/puppet.conf'|
-  File.read(file)
-}
-```
-
-Now you may use it with:
-```puppet
-$content = determine('puppet::config::content')
-notify { content: message => $content }
-```
-or
-```puppet
-$content = determine('puppet::config::content','/usr/local/etc/puppet/puppet.conf')
-notify { content: message => $content }
-```
-
-If you need the same for ruby *1.8*, here is a workaround (note that the
-calling function, that is [determine](#determine), will check the
-minimum arity, so we only check the maximum):
-
-```ruby
-# lib/puppet/parser/macros/puppet/config/content.rb
-Puppet::Parser::Macros.newmacro 'puppet::config::content', &lambda {|*args|
-  if args.size > 1
-    raise Puppet::ParseError, "Wrong number of arguments (#{args.size+1} for maximum 2)"
-  end
-  args << '/etc/puppet/puppet.conf' if args.size < 1
-  File.read(args[0])
-}
-```
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-6-invoking-macro-from-macro"></a>Example 6: Invoking macro from macro
-
-```ruby
-# lib/puppet/parser/macros/bar.rb
-Puppet::Parser::Macros.newmacro 'bar', &lambda {
-  function_determine(['foo::bar'])
-}
-```
-then in puppet
-```puppet
-$bar = determine('bar')
-notify { bar: message => "determine('bar') -> ${bar}" }
-```
-
-The above puppet code would print
-```console
-Notice: determine('bar') -> macro foo::bar
-```
-that is the result of macro `foo::bar` defined in
-[Example 1](#example-1-defining-macro-in-ruby-code).
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-7-using-variables"></a>Example 7: Using variables
-
-You may access puppet variables, for example `$::osfamily` fact.  The following
-example determines default location of apache configs for operating system
-running on slave:
-
-```ruby
-# lib/puppet/parser/macros/apache/conf_dir.rb
-Puppet::Parser::Macros.newmacro 'apache::conf_dir', &lambda { 
-  case os = lookupvar("::osfamily")
-  when /FreeBSD/; '/usr/local/etc/apache22'
-  when /Debian/; '/usr/etc/apache2'
-  else
-    raise Puppet::Error, "unsupported osfamily #{os.inspect}"
-  end
-}
-```
-
-```puppet
-$apache_conf_dir = determine('apache::conf_dir')
-notify { apache_conf_dir: message => "determine('apache::conf_dir') -> ${apache_conf_dir}" }
-```
-
-[[Table of Contents](#table-of-contents)]
-
-###<a id="example-8-building-dependencies-between-parameters"></a>Example 8: Building dependencies between parameters
-
-Macros may be used to inter-depend parameters of defined types or classes. In
-other words, if one parameter is altered by user, others should be adjusted
-automatically, unless user specify them explicitly. For example, we may have a
-defined type `foo` with two parameters `$a` and `$b` and we want `$b` to depend
-on `$a`.  So, we may define macros `'foo::a'` and `'foo::b'`, and `foo::b` may
-accep value of `$a` as an argument:
-
-```ruby
-# lib/puppet/parser/macros/foo/a.rb
-Puppet::Parser::Macros.newmacro 'foo::a', &lambda {|a|
-  (a.empty? or a.equal?(:undef)) ? 'default a' : a
-}
-```
-
-```ruby
-# lib/puppet/parser/macros/foo/b.rb
-Puppet::Parser::Macros.newmacro 'foo::b', &lambda { |b, a|
-  (b.empty? or b.equal?(:undef)) ? "default b for a=#{a.inspect}" : b
-}
-```
-
-Then, if we split `foo` into actual implementation (let say `foo_impl`) and
-a wraper (name it `foo`), the job is done:
-
-```puppet
-# manifests/foo.pp
-define testmodule::foo_impl($a, $b) {
-  notify{$title: message => "${title}: a=\'${a}\', b=\'${b}\'"}
-}
-define testmodule::foo($a = undef, $b = undef)
-{
-  $_a = determine('foo::a', $a)
-  $_b = determine('foo::b', $b, $_a)
-  testmodule::foo_impl{"$title":
-    a => $_a,
-    b => $_b
-  }
-}
-```
-
-Now, the following manifest 
-```console
-puppet apply --modulepath $(pwd) <<!
-testmodule::foo {defaults: }
-testmodule::foo {custom_a: a => 'custom a' }
-testmodule::foo {custom_b: b => 'custom b' }
-testmodule::foo {custom_a_and_b: a => 'custom a', b => 'custom b' }
-testmodule::foo {other: }
-Testmodule::Foo[other] { a => 'other default a' }
-!
-```
-would output these lines:
-```console
-Notice: defaults: a='default a', b='default b for a="default a"'
-Notice: custom_a: a='custom a', b='default b for a="custom a"'
-Notice: custom_b: a='default a', b='custom b'
-Notice: custom_a_and_b: a='custom a', b='custom b'
-Notice: other: a='other default a', b='default b for a="other default a"'
 ```
 
 [[Table of Contents](#table-of-contents)]
 
 ##<a id="reference"></a>Reference
 
-###<a id="function-reference"></a>Function reference
+###<a id="declarators"></a>Declarators
 
-####<a id="index-of-functions"></a>Index of functions:
+A declaration of options consists entirely of what we call here **declarators**. The [ov_options](#ov_options) should be used as a root of every declaration (starting symbol in grammar terms). It accepts a Hash of the form **{optname => optdecl, ...}** as an argument. The **optname** is an option name, and **optdecl** is a declarator restricting the options's value. Each option name (key) must be convertible to a `String`. Option value declarators are non-terminal declarators (defined later in this section) or terminals (any other ruby values). The simple declaration
 
-* [determine](#determine)
-* [invoke](#invoke)
+```ruby
+ov_options[ :foo => :bar ]
+```
 
-####<a id="determine"></a>determine
-Determine value of a macro.
+uses only terminals inside of **ov_options** and literarly permits only the `{:foo => :bar}` or the empty hash `{}` as options (and nothing else). This is how terminal declarators (`:foo` and `:bar` in this example) work. More freedom may be introduced with non-terminal declarators, for example:
 
-This function ivokes a macro defined with `Puppet::Parser::Macros.newmacro`
-method and returns it's value. The function takes macro name as first
-argument and macro parameters as the rest of arguments. The number of
-arguments provided by user is validated against the macro's arity.
+```ruby
+ov_options[ :foo => ov_anything ]
+```
 
-*Example*:
+defines an option `:foo` which accepts any value. In what follows, we'll document all the core non-terminal declarators implemented in **Oval**.
 
-Let say, you have defined the following macro in
-*puppet/parser/macros/sum.rb*:
+####<a id="ov\_anything"></a>ov\_anything
 
-    # puppet/parser/macros/sum.rb
-    Puppet::Parser::Macros.newmacro 'sum' do |x,y|
-      Integer(x) + Integer(y)
-    end
+- Declaration
 
-You may then invoke the macro from puppet as follows:
+  ```ruby
+  ov_anything
+  ```
 
-    $three = determine('sum',1,2) # -> 3
+  or
+  
+  ```ruby
+  ov_anything[]
+  ```
+  
+- Validation - permits any value
+- Example
 
-- *Type*: rvalue
+  ```ruby
+  ov = ov_options[ :bar => ov_anything ]
+  def foo(ops = {})
+    ov.validate(ops, 'ops')
+  end
+  ```
 
-[[Index of functions](#index-of-functions)|[Table of Contents](#table-of-contents)]
 
-####<a id="invoke"></a>invoke
-Invoke macro as a statement.
+####<a id="ov\_collection"></a>ov\_collection
 
-This function ivokes a macro defined with `Puppet::Parser::Macros.newmacro`
-method and returns nil (that is it doesn't return any value to puppet).
-The function takes macro name as first argument and macro parameters as the
-rest of arguments. The number of arguments provided by user is validated
-against the macro's arity.
+- Declaration
 
-*Example*:
+  ```ruby
+  ov_collection[ class_decl, item_decl ]
+  ```
 
-Let say, you have defined the following macro in
-*puppet/parser/macros/print.rb*:
+- Validation - permits only collections of type **class_decl** with items matching **item_decl** declaration
+- Allowed values for **class\_decl** are:
+  - `Hash` or `Array` or any subclass of `Hash` or `Array`,
+  - `ov_subclass_of[klass]` where **klass** is `Hash` or `Array` or a subclass of any of them.
+- Allowed values for **item_decl**:
+  - if **class\_decl** is `Array`-like, then any value is allowed as **item\_decl**,
+  - if **class\_decl** is `Hash`-like, then **item\_decl** should be a one-element Hash in form **{ key\_decl => val\_decl }**.
+- Example
 
-    # puppet/parser/macros/print.rb
-    Puppet::Parser::Macros.newmacro 'print', &lambda{ |msg|
-      print msg
-    }
+  ```ruby
+  ov = ov_options[
+    :bar => ov_collection[ Hash, { instance_of[Symbol] => anything } ],
+    :geez => ov_collection [ Array, instance_of[String] ]
+  ]
+  def foo(ops = {})
+    ov.validate(ops, 'ops')
+  end
+  ```
 
-You may then invoke the macro from puppet as follows:
+####<a id="ov\_instance\_of"></a>ov\_instance\_of
 
-    invoke('print',"hello world!\n")
+- Declaration
 
-- *Type*: statement
+  ```ruby
+  ov_instance_of[klass]
+  ```
+  
+- Validation - permits only instances of a given class **klass**
+- Allowed values for **klass** - only class names, for example `String`, `Hash`, etc.
+- Example
 
-[[Index of functions](#index-of-functions)|[Table of Contents](#table-of-contents)]
+  ```ruby
+  ov = ov_options[ :bar => ov_instance_of[String] ]
+  def foo(ops = {})
+    ov.validate(ops,'ops')
+  end
+  ```
 
+####<a id="ov\_kind\_of"></a>ov\_kind\_of                                       
+
+- Declaration
+
+  ```ruby
+  ov_kind_of[klass]
+  ```
+  
+- Validation - permits only values that are a kind of given class **klass**
+- Allowed values for **klass** - only class names, for example `String`, `Hash`, etc.
+- Example
+
+  ```ruby
+  ov = ov_options[ :bar => ov_kind_of[Numeric] ]
+  def foo(ops = {})
+    ov.validate(ops,'ops')
+  end
+  ```
+  
+####<a id="ov\_one\_of"></a>ov\_one\_of   
+
+- Declaration
+
+  ```ruby
+  ov_one_of[decl1,decl2,...]
+  ```
+  
+- Validation - permits only values matching one of declarations `decl`, `decl2`, ...
+- Example
+
+  ```ruby
+  ov = ov_options[ 
+    :bar => ov_one_of[ ov_instance_of[String], ov_kind_of[Numeric], nil ]
+  ]
+  def foo(ops = {})
+    ov.validate(ops,'ops')
+  end
+  ```
+  
+####<a id="ov\_options"></a>ov\_options       
+
+- Declaration
+
+  ```ruby
+  ov_options[ optkey_decl1 => optval_decl1, ... ]
+  ```
+  
+- Validation - permits only declared options and their values.
+- Allowed values for `optkey_declN` - anything that is convertible to string (namely, anything that responds to `to_s` method).
+- Example:
+
+  ```ruby
+  ov = ov_options[ 
+    :bar => ov_anything,
+    :geez => ov_instance_of[String],
+    # ...
+  ]
+  def foo(ops = {})
+    ov.validate(ops,'ops')
+  end 
+  ```
+  
+####<a id="ov\_subclass\_of"></a>ov\_subclass\_of                               
+
+- Declaration
+
+  ```ruby
+  ov_subclass_of[klass]
+  ```
+  
+- Validation - permits only subclasses of **klass**
+- Allowed values for **klass** - only class names, for example `String`, `Hash`, etc.
+- Example
+
+  ```ruby
+  ov = ov_options[ :bar => ov_subclass_of[Numeric] ]
+  def foo(ops = {})
+    ov.validate(ops,'ops')
+  end
+  ```
+  
 ###<a id="api-reference"></a>API Reference
 
 API reference may be generated with
@@ -361,14 +272,5 @@ under ruby >= 1.9.
 [[Table of Contents](#table-of-contents)]
 
 ##Limitations
-
-* Currently there is no possibility to define macro in puppet manifests, that is
-  we only can define macro using ruby and use it in ruby or puppet. I believe
-  this functionality may implemented as an additional parser function (call it
-  `macro`) and it should work with the help of puppet lambdas, which are
-  available in future parser.
-* Currently there is no way to store and auto-generate documentation for macros.
-  It should work similarly as for functions but its not implemented at the
-  moment. This may be added in future versions.
 
 [[Table of Contents](#table-of-contents)]
