@@ -1,10 +1,31 @@
-scons-tool-swigpy
-=================
+scons-tool-gcov
+===================
 
-SCons_ tool to generate Python modules using Swig_.
+Integrate gcov_ into your SCons_ based project.
 
-Usage example
--------------
+Overview
+--------
+
+gcov_ is a tool you can use in conjuction with gcc_ (or clang_) to test code
+coverage in your programs. It helps discover where your optimization efforts
+will best affect your code.
+
+gcov_ uses two files for profiling, see `gcov files`_.  The names of these
+files are derived from the original *object* file by substituting the file
+suffix with either ``.gcno``, or ``.gcda``. The ``.gcno`` notes file is
+generated when the source file is compiled. The ``.gcda`` count data file is
+generated when a program containing object files is executed. A separate
+``.gcda`` file is created for each object file.
+
+Tasks accomplished by **scons-tool-gcov** are two-fold. First, it helps to
+include the above gcov files in project's dependency tree. Builders that depend
+on coverage data (for example gcov report builders or test runners) may be
+executed in correct order. This also helps to clean-up coverage data when the
+project gets cleaned up. The second task is to generate gcov reports by running
+gcov program.
+
+Installation
+------------
 
 Git-based projects
 ^^^^^^^^^^^^^^^^^^
@@ -15,46 +36,29 @@ Git-based projects
       touch README.rst
       git init
 
-#. Add **scons-tool-swigpy** as submodule::
+#. Add **scons-tool-gcov** as submodule::
 
-      git submodule add git://github.com/ptomulik/scons-tool-swigpy.git site_scons/site_tools/swigpy
+      git submodule add git://github.com/ptomulik/scons-tool-gcov.git site_scons/site_tools/gcov
 
-#. Create some source files, for example ``src/hello.hpp`` and
-   ``src/hello.cpp``:
+Usage
+-----
 
-   .. code-block:: cpp
-
-      // src/hello.hpp
-      #ifndef HELLO_HPP
-      #define HELLO_HPP
-      void hello();
-      #endif
+#. Create some source files, for example ``src/test.hpp``:
 
    .. code-block:: cpp
 
-      // src/hello.cpp
-      #include "hello.hpp"
-      #include <iostream>
-      void hello() { std::cout << "Hello" << std::endl; }
-
-#. Create swig interface file ``src/hello.i``
-
-    .. code-block:: swig
-
-       // src/hello.i
-       %module hello;
-       %{
-       #include "hello.hpp"
-       %}
-       %include "hello.hpp"
+      // src/test.hpp
+      /**
+       * @brief Test class
+       */
+       class TestClass { };
 
 #. Write ``SConstruct`` file:
 
    .. code-block:: python
 
-
       # SConstruct
-      env = Environment(tools = [ 'default', 'swigpy' ])
+      env = Environment(tools = [ 'doxyfile', 'doxygen'])
       SConscript('src/SConscript', exports=['env'], variant_dir='build', duplicate=0)
 
 #. Write ``src/SConscript``:
@@ -63,127 +67,36 @@ Git-based projects
 
       # src/SConscript
       Import(['env'])
-      env.Append( SWIGPY_CPPPATH = '.' )
-      env.Append( SWIGPY_LIBPATH = '.' )
-      env.Append( SWIGPY_SWIGFLAGS = ['-c++'] )
-      env.SharedLibrary( 'hello', ['hello.cpp'] )
-      env.SwigPyModule( 'hello', SWIGPY_LIBS = 'hello' )
+      doxyfile = env.Doxyfile( INPUT = '.', RECURSIVE = True)
+      env.Doxygen(doxyfile)
 
 #. Try it out::
 
       scons
 
-   This shall create a library **build/libhello.so** and all the files that
-   comprise its python wrapper::
-
-      ptomulik@tea:$ ls build/
-      hello.os  hello.pyc  hello_wrap.cc  libhello.so
-      hello.py  _hello.so  hello_wrap.os
-
-
-#. Test the generated wrapper::
-
-      cd build
-      LD_LIBRARY_PATH='.'
-      python
-      >>> import hello
-      >>> hello.hello()
-
-Details
--------
-
 Module description
-^^^^^^^^^^^^^^^^^^
-
-The module provides a ``SwigPyModule()`` builder which generates python module
-based on a swig interface ``*.i`` file::
-
-    SwigPyModule(modname, **overrides)
-
-The **modname** is a name of the module being generated, for example ``'foo'``
-or ``'foo.bar'`` (note, it's neither the source file name nor target file
-name). The **overrides** are used overwrite construction variables such as
-``SWIGFLAGS`` or ``CFLAGS``.
-
-**Example 1**:
-
-The following code expects a ``foo.i`` interface file to be present and
-generates python module defined by this file.
-
-.. code-block:: python
-
-   SwigPyModule('foo')
-
-**Example 2**:
-
-The following code expects a ``foo/bar.i`` interface file to be present
-and generates python module defined by this file undef ``foo`` subdirectory.
-
-.. code-block:: python
-
-   env.SwigPyModule('foo.bar')
+------------------
 
 Construction variables
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Construction variables used by ``SwigPyModule`` are summarized in the following
-table. Note that there are two group of variables. The first group are the well
-known construction variables. The second group are the variables prefixed with
-``SWIGPY_``. The ``SWIGPY_xxx`` variables overwrite the well known variables
-when generating python bindings.
-
-========================= =============================================
-Variable                   Default
-========================= =============================================
-SWIG
-SWIGVERSION
-SWIGFLAGS
-SWIGDIRECTORSUFFIX
-SWIGCFILESUFFIX
-SWIGCXXFILESUFFIX
-SWIGPATH
-SWIGINCPREFIX
-SWIGINCSUFFIX
-SWIGCOM
-CPPPATH
-SHLIBPREFIX
-CFLAGS
-CXXFLAGS
-LIBS
-LIBPATH
-LDFLAGS
-SWIGPY_SWIG
-SWIGPY_SWIGVERSION
-SWIGPY_SWIGFLAGS          ``[-python', '-builtin']``
-SWIGPY_SWIGDIRECTORSUFFIX
-SWIGPY_SWIGCFILESUFFIX
-SWIGPY_SWIGCXXFILESUFFIX
-SWIGPY_SWIGPATH
-SWIGPY_SWIGINCPREFIX
-SWIGPY_SWIGINCSUFFIX
-SWIGPY_SWIGCOM
-SWIGPY_CPPPATH            ``[sysconfig.get_python_inc]``
-SWIGPY_SHLIBPREFIX        ``'_'``
-SWIGPY_CFLAGS
-SWIGPY_CXXFLAGS
-SWIGPY_LIBS
-SWIGPY_LIBPATH
-SWIGPY_LDFLAGS
-SWIGPY_M2SWIGFILE         ``lambda parts: path.join(*parts) + '.i'``
-SWIGPY_M2CFILE            ``lambda parts: path.join(*parts)``
-SWIGPY_M2SHLIBFILE        ``lambda parts: path.join(*parts)``
-========================= =============================================
-
-The **SWIGPY_M2SWIGFILE** lambda determines the name of swig interface (source
-file). The **SWIGPY_M2CFILE** determines the name of **C** or **C++** wrapper
-file (without the suffix) being generated with **swig**. The
-**SWIGPY_M2SHLIBFILE** determines the name of shared library that will contain
-the wrapper binary code after compilation (without prefix and suffix). The
-**parts** provided to any of these macros are the parts of **modname**, that is
-they're result of ``modname.split('.')``.
-
-.. _SCons: http://scons.org
-.. _Swig: http://swig.org
+============================== ================================================================================
+ Option                         Description
+============================== ================================================================================
+ GCOV                            Path to gcov_ program.
+ GCOVCOM                         Command used to run gcov_ program.
+ GCOVCOMSTR                      String to be displayed when running gcov_.
+ GCOVFLAGS                       Additional flags to gcov_ program.
+ GCOVDEP_DISABLE                 Disable gcov dependency injector.
+ GCOVDEP_SOURCE_SUFFIXES         List of source file suffixes for which dependency injector should be enabled.
+ GCOVDEP_EXCLUDE                 Files which should be ignored by dependency injector.
+ GCOVDEP_EXCLUDE_GCNO            ``*.gcno`` files which should be ignored by dependency injector.
+ GCOVDEP_EXCLUDE_GCDA            ``*.gcda`` files which should be ignored by dependency injector.
+ GCOVDEP_EXCLUDE_OBJECT          Object files which should not inject their ``*.gcno``'s into dependency tree.
+ GCOVDEP_NOCLEAN                 List of gcov files which shouldn't be cleaned up.
+ GCOVDEP_OBJECT_BUILDERS         List of object builders which generate ``*.gcno`` files.
+ GCOVDEP_RUNNERS                 List of program runners which generate ``*.gcda`` files.
+============================== ================================================================================
 
 LICENSE
 -------
@@ -207,5 +120,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
+
+.. <!-- Links -->
+.. _SCons: http://scons.org
+.. _gcov: http://gcc.gnu.org/onlinedocs/gcc/Gcov.html
+.. _gcc: http://gcc.gnu.org/
+.. _clang: http://clang.llvm.org/
+.. _gcov files: http://gcc.gnu.org/onlinedocs/gcc/Gcov-Data-Files.html#Gcov-Data-Files
 
 .. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
