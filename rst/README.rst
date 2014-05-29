@@ -29,4 +29,4 @@ There is a bunch of environment variables which affect CUDA drivers, see `the do
 OpenCL based libraries
 ^^^^^^^^^^^^^^^^^^^^^^
 
-  * `VexCL <https://github.com/ddemidov/vexcl>`_ vector expression template library for OpenCL/CUDA. Created for ease of GPGPU development with C++. Many useful things including vector expressions for `scattered data interpolation with multilevel B-Splines <https://github.com/ddemidov/vexcl#mba>`_. Note that `Boost.Numeric.Odeint <www.boost.org/libs/numeric/odeint/doc/html/index.html>`_ (ODE integrators in C++) supports OpenCL via `VexCL <https://github.com/ddemidov/vexcl>`_.
+* `VexCL <https://github.com/ddemidov/vexcl>`_ vector expression template library for OpenCL/CUDA. Created for ease of GPGPU development with C++. Many useful things including vector expressions for `scattered data interpolation with multilevel B-Splines <https://github.com/ddemidov/vexcl#mba>`_. Note that `Boost.Numeric.Odeint <www.boost.org/libs/numeric/odeint/doc/html/index.html>`_ (ODE integrators in C++) supports OpenCL via `VexCL <https://github.com/ddemidov/vexcl>`_.
