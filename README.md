@@ -27,9 +27,10 @@ Facter types/providers simplify gathering data from specific sources. An
 example of such a data is a list of packages available for installation. This
 information may be represented in a predefined format, but we must first obtain
 it from a specific sources such as apt, yum, zypper, freebsd ports, etc.. Each
-of these commands (backends) needs to be invoked in a specific manner, and the
-output needs a command-specific parser. The variety of backends leads to the
-idea of data provider object responsible for data acquisition and unification.
+of these commands (backends) needs to be invoked in a specific manner, and we
+need a command-specific parser to interpret its output. The variety of backends
+leads to the idea of data provider object responsible for data acquisition and
+unification.
 
 Facter types and providers are quite similar to puppet resource types and
 providers. We have a specific DSL to implement new types and providers and a
