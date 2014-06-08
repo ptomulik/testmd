@@ -45,16 +45,28 @@ The data retrieval (aspect 1.) involves the following steps:
    may define one or more such a queries. The queries are categorized into
    *types*, and the parameters that define the query are specific to a given
    type.
-2. *Validating* the *query* to prevent user's mistakes.
-3. *Munging* the query:
+2. *Validating the query* to prevent user's mistakes.
+3. *Munging the query*:
   - provider-specific munging which involves:
-    - fact-provider-specific munging customizable by user.
-4. *Merging* all user-defined queries *of a given type* to retrieve data
-   required by multiple facts with a single call to the backend command (if
-   possible).
+    - fact-and-provider-specific munging customizable by user.
+4. *Merging* user-defined queries *of a given type* to retrieve data required
+   by multiple facts with a single call to the backend command (if possible).
 5. *Preparing command line string* used to invoke the backend command.
 6. *Invoking* the command.
 7. *Parsing* command output and caching the parsed results.
+
+The result extraction (aspect 2.) involves the following steps:
+
+1. Defining a *filter* to extract particular information from the prefetched
+   results.
+2. *Munging the filter*:
+   - provider-specific munging, which involves:
+     - fact-and-provider-specific munging customizable by user.
+3. *Filtering the prefetched results* to return only what's required by the
+   user.
+4. *Postprocessing the results*:
+   - provider-specific postprocessing, which involves:
+     - fact-and-provider-specific munging customizable by user.
 
 This module defines a DSL to implement new types and providers and a recipe to
 use them. The DSL allows one to define/customize the following aspects of data
