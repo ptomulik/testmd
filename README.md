@@ -35,7 +35,22 @@ unification.
 There are two top-level aspects of data retrieval:
 
 - retrieving/prefetching  data from a backend command,
+    given provider,
 - extracting particular information from prefetched data.
+
+The data retrieval involves the following steps:
+
+- defining queries in a backend-independent language; the queries are
+  categorized into types,
+- query validation to prevent user's mistakes,
+- munging the query:
+  - provider-specific munging which involves:
+    - fact-provider-specific munging customizable by user,
+- merging all user-defined queries of given type to retrieve data required by
+  multiple facts with a single command invocation,
+- preparing command line string used to invoke the command,
+- invoking the command,
+- parsing command output,
 
 This module defines a DSL to implement new types and providers and a recipe to
 use them. The DSL allows one to define/customize the following aspects of data
