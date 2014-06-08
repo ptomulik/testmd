@@ -8,6 +8,7 @@
 
 1. [Overview](#overview)
 2. [Module Description](#module-description)
+   * [Introduction](#introduction)
 3. [Usage](#usage)
    * [Example 1: Define new type](#example-1-define-new-type)
 4. [Reference](#reference)
@@ -22,6 +23,8 @@ Pluggable facter types and providers.
 [[Table of Contents](#table-of-contents)]
 
 ##<a id="module-description"></a>Module Description
+
+###<a id="introduction"></a>Introduction
 
 Facter types/providers simplify gathering data from different sources. An
 example of such a data is a list of packages available for installation. This
@@ -68,22 +71,6 @@ The result extraction (aspect 2.) involves the following steps:
    - provider-specific postprocessing, which involves:
      - fact-and-provider-specific postprocessing customizable by user.
 
-This module defines a DSL to implement new types and providers and a recipe to
-use them. The DSL allows one to define/customize the following aspects of data
-retrieval:
-
-- defining queries,
-- validating queries,
-- munging queries,
-  - provider specific munging of the query,
-  - fact-specific munging of the query,
-- merging queries into one collective query,
-- preparing command used to perform the merged query,
-- invoking command to prefetch information requested in queries,
-- parsing command output,
-- caching the parsed result,
-- retrieving the cached result (filtering),
-- 
 
 [[Table of Contents](#table-of-contents)]
 
