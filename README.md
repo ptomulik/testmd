@@ -32,13 +32,31 @@ need a command-specific parser to interpret its output. The variety of backends
 leads to the idea of data provider object responsible for data acquisition and
 unification.
 
-Facter types and providers are quite similar to puppet resource types and
-providers. We have a specific DSL to implement new types and providers and a
-recipe to use them. The sole difference, however, is that whereas the puppet
-types manage particular resources, the facter types just retrieve data.
+There are two top-level aspects of data retrieval:
 
+- retrieving/prefetching  data from a backend command,
+- extracting particular information from prefetched data.
+
+This module defines a DSL to implement new types and providers and a recipe to
+use them. The DSL allows one to define/customize the following aspects of data
+retrieval:
+
+- defining queries,
+- validating queries,
+- munging queries,
+  - provider specific munging of the query,
+  - fact-specific munging of the query,
+- merging queries into one collective query,
+- preparing command used to perform the merged query,
+- invoking command to prefetch information requested in queries,
+- parsing command output,
+- caching the parsed result,
+- retrieving the cached result (filtering),
+- 
 
 [[Table of Contents](#table-of-contents)]
+
+###<a id="validating-query">
 
 ##<a id="usage"></a>Usage
 
