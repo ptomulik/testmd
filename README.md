@@ -41,18 +41,19 @@ identified:
 
 The data retrieval (aspect 1.) involves the following steps: 
 
-1. Defining a query in a backend-independent DSL. We assume, that each fact may
-   define one or more such a queries. The queries are categorized into types,
-   and the parameters that define the query are specific to the query type.
-2. Validating the query to prevent user's mistakes.
-3. Munging the query:
+1. Defining a *query* in a backend-independent DSL. We assume, that each fact
+   may define one or more such a queries. The queries are categorized into
+   types, and the parameters that define the query are specific to the query
+   type.
+2. *Validating* the *query* to prevent user's mistakes.
+3. *Munging* the query:
   - provider-specific munging which involves:
     - fact-provider-specific munging customizable by user.
-4. Merging all user-defined queries *of a given type* to retrieve data required
-   by multiple facts with a single command invocation.
-5. Preparing command line string used to invoke the command,
-6. invoking the command,
-7. parsing command output,
+4. *Merging* all user-defined queries *of a given type* to retrieve data
+   required by multiple facts with a single command (if possible).
+5. *Preparing command line string* used to invoke the backend command.
+6. *Invoking* the command.
+7. *Parsing* command output.
 
 This module defines a DSL to implement new types and providers and a recipe to
 use them. The DSL allows one to define/customize the following aspects of data
