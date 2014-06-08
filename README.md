@@ -43,7 +43,7 @@ The data retrieval (aspect 1.) involves the following steps:
 
 1. Defining a *query* in a backend-independent DSL. We assume, that each fact
    may define one or more such a queries. The queries are categorized into
-   types, and the parameters that define the query are specific to the query
+   *types*, and the parameters that define the query are specific to the query
    type.
 2. *Validating* the *query* to prevent user's mistakes.
 3. *Munging* the query:
