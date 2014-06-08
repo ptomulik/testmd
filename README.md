@@ -34,9 +34,8 @@ unification.
 
 There are two top-level aspects of data retrieval:
 
-- retrieving/prefetching  data from a backend command,
-    given provider,
-- extracting particular information from prefetched data.
+- retrieving/prefetching data from a backend command and caching it,
+- extracting particular information from cache.
 
 The data retrieval involves the following steps:
 
