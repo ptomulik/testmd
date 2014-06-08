@@ -43,8 +43,8 @@ The data retrieval (aspect 1.) involves the following steps:
 
 1. Defining a *query* in a backend-independent DSL. We assume, that each fact
    may define one or more such a queries. The queries are categorized into
-   *types*, and the parameters that define the query are specific to a given
-   type.
+   *types*, and the parameters that comprise the query are specific to the
+   given type.
 2. *Validating the query* to prevent user's mistakes.
 3. *Munging the query*:
   - provider-specific munging which involves:
@@ -66,7 +66,7 @@ The result extraction (aspect 2.) involves the following steps:
    user.
 4. *Postprocessing the results*:
    - provider-specific postprocessing, which involves:
-     - fact-and-provider-specific munging customizable by user.
+     - fact-and-provider-specific postprocessing customizable by user.
 
 This module defines a DSL to implement new types and providers and a recipe to
 use them. The DSL allows one to define/customize the following aspects of data
