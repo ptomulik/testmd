@@ -32,7 +32,7 @@ need a command-specific parser to interpret its output. The variety of backends
 leads to the idea of data provider object responsible for data acquisition and
 unification.
 
-There are two top-level aspects of data retrieval:
+We've identified the following top-level aspects of data retrieval:
 
 - retrieving/prefetching data from a backend command and caching it,
 - extracting particular information from cache.
