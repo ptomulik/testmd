@@ -54,7 +54,7 @@ The data retrieval (aspect 1.) involves the following steps:
    possible).
 5. *Preparing command line string* used to invoke the backend command.
 6. *Invoking* the command.
-7. *Parsing* command output.
+7. *Parsing* command output and caching the parsed results.
 
 This module defines a DSL to implement new types and providers and a recipe to
 use them. The DSL allows one to define/customize the following aspects of data
