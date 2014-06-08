@@ -30,8 +30,10 @@ it from a specific sources such as apt, yum, zypper, freebsd ports, etc.. Each
 of these commands (backends) needs to be invoked in a specific manner, and we
 need a command-specific parser to interpret its output. The variety of backends
 leads to the idea of data provider object responsible for data acquisition and
-unification. In general the following top-level aspects of information
-acquisition may be identified: 
+unification.
+
+In general, the following top-level aspects of information acquisition may be
+identified: 
 
 1. Retrieving (prefetching) data from a backend command.
 2. Extracting particular information from the results prefetched in 1..
