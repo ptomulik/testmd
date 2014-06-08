@@ -33,8 +33,8 @@ leads to the idea of data provider object responsible for data acquisition and
 unification. In general the following top-level aspects of information
 acquisition may be identified: 
 
-- retrieving/prefetching data from a backend command and caching it,
-- extracting particular information from cache.
+1. Retrieving (prefetching) data from a backend command.
+2. Extracting particular information from the results prefetched in 1..
 
 The data retrieval involves the following steps:
 
