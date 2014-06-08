@@ -17,36 +17,38 @@
 
 ##<a id="overview"></a>Overview
 
-Facter types and providers. 
+Pluggable facter types and providers. 
 
 [[Table of Contents](#table-of-contents)]
 
 ##<a id="module-description"></a>Module Description
 
-Facter types/providers gather data from different sources. An example is a list
-of packages available for installation. This information may be represented in
-a standardized way, but we must first obtain it from a specific sources such
-as apt, yum, zypper, freebsd ports, etc..  The variety of backends leads to the
-idea of data provider object responsible for data acquisition and unification.
+Facter types/providers simplify gathering data from specific sources. An
+example of such a data type is a list of packages available for installation,
+which is provided by package management tools specific to target operating
+systems. This information may be represented in a standardized way, but we must
+first obtain it from a specific sources such as apt, yum, zypper, freebsd
+ports, etc..  The variety of backends leads to the idea of data provider object
+responsible for data acquisition and unification.
 
 Facter types and providers are quite similar to puppet resource types and
 providers. We have a specific DSL to implement new types and providers and a
 recipe to use them. The sole difference, however, is that whereas the puppet
 types manage particular resources, the facter types just retrieve data.
 
-                                                                                                     
-[[Table of Contents](#table-of-contents)]                                                            
-                                                                                                     
-##<a id="usage"></a>Usage                                                                            
-                                                                                                     
-###<a id="example-1-define-new-type"></a>Example 1: Define new type                                  
-                                                                                                     
-In this example we define new type named ``package``. Create a file                                  
-``lib/facter/type/package.rb`` with the following content                                            
-                                                                                                     
-```ruby                                                                                              
-require 'facter/type'                                                                                
-Facter::Type.newtype 'package' do                                                                    
+
+[[Table of Contents](#table-of-contents)]
+
+##<a id="usage"></a>Usage
+
+###<a id="example-1-define-new-type"></a>Example 1: Define new type
+
+In this example we define new type named ``package``. Create a file
+``lib/facter/type/package.rb`` with the following content
+
+```ruby
+require 'facter/type'
+Facter::Type.newtype 'package' do
   # code for your new 'package' class goes here.
 end
 ```
