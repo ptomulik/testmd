@@ -25,7 +25,7 @@ Pluggable facter types and providers.
 
 Facter types/providers simplify gathering data from different sources. An
 example of such a data is a list of packages available for installation. This
-information may be represented in a prescribed form, but we must first obtain
+information may be represented in a common form, but we must first obtain
 it from a specific sources such as apt, yum, zypper, freebsd ports, etc.. Each
 of these commands (backends) needs to be invoked in a specific manner, and we
 need a command-specific parser to interpret its output. The variety of backends
