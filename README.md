@@ -32,21 +32,22 @@ idea of data provider object responsible for data acquisition and unification.
 Facter types and providers are quite similar to puppet resource types and
 providers. We have a specific DSL to implement new types and providers and a
 recipe to use them. The sole difference, however, is that whereas the puppet
-types are manage particular resources, the facter types just retrieve data.
+types manage particular resources, the facter types just retrieve data.
 
-
-[[Table of Contents](#table-of-contents)]
-
-##<a id="usage"></a>Usage
-
-###<a id="example-1-define-new-type"></a>Example 1: Define new type
-
-In this example we define new type named ``package``. Create a file
-``lib/facter/type/package.rb`` with the following content
-
-```ruby
-require 'facter/type'
-Facter::Type.newtype 'package' do
+                                                                                                     
+[[Table of Contents](#table-of-contents)]                                                            
+                                                                                                     
+##<a id="usage"></a>Usage                                                                            
+                                                                                                     
+###<a id="example-1-define-new-type"></a>Example 1: Define new type                                  
+                                                                                                     
+In this example we define new type named ``package``. Create a file                                  
+``lib/facter/type/package.rb`` with the following content                                            
+                                                                                                     
+```ruby                                                                                              
+require 'facter/type'                                                                                
+Facter::Type.newtype 'package' do                                                                    
+  # code for your new 'package' class goes here.
 end
 ```
 
