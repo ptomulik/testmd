@@ -41,10 +41,9 @@ identified:
 1. Retrieving (prefetching) data from a backend command.
 2. Extracting particular information from the results prefetched in 1..
 
-
 The data retrieval (aspect 1.) involves the following steps: 
 
-1. Defining a *query* in a backend-independent DSL. We assume, that each fact
+1. *Defining a query* in a backend-independent DSL. We assume, that each fact
    may define one or more such a queries. The queries are categorized into
    *types*, and the parameters that comprise the query are specific to the
    given type.
