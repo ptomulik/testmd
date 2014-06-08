@@ -43,10 +43,10 @@ identified:
 
 The data retrieval (aspect 1.) involves the following steps: 
 
-1. *Defining a query* in a backend-independent DSL. We assume, that each fact
-   may define one or more such a queries. The queries are categorized into
-   *types*, and the parameters that comprise the query are specific to the
-   given type.
+1. *Defining a query* in a provider-independent (but type-specific) DSL. We
+   assume, that each fact may define one or more such a queries. The queries
+   are categorized into *types*, and the parameters that comprise the query are
+   specific to the given type.
 2. *Validating the query* to prevent user's mistakes.
 3. *Munging the query*:
   - provider-specific munging which involves:
