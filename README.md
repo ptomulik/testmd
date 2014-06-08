@@ -24,11 +24,11 @@ Pluggable facter types and providers.
 ##<a id="module-description"></a>Module Description
 
 Facter types/providers simplify gathering data from specific sources. An
-example of such a data is a list of packages available for installation, which
-is provided by package management tools. This information may be represented in
-a predefined format, but we must first obtain it from a specific sources such
-as apt, yum, zypper, freebsd ports, etc..  The variety of backends leads to the
-idea of data provider object responsible for data acquisition and unification.
+example of such a data is a list of packages available for installation. This
+information may be represented in a predefined format, but we must first obtain
+it from a specific sources such as apt, yum, zypper, freebsd ports, etc..  The
+variety of backends leads to the idea of data provider object responsible for
+data acquisition and unification.
 
 Facter types and providers are quite similar to puppet resource types and
 providers. We have a specific DSL to implement new types and providers and a
