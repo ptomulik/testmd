@@ -36,7 +36,7 @@ Here is list of libraries that may be useful for OpenCL programming:
 
   Many useful things including vector expressions for `scattered data
   interpolation with multilevel B-Splines <https://github.com/ddemidov/vexcl#mba>`_.
-  Note that `Boost.Numeric.Odeint <www.boost.org/libs/numeric/odeint/doc/html/index.html>`_                                                                                   
+  Note that `Boost.Numeric.Odeint <www.boost.org/libs/numeric/odeint/doc/html/index.html>`_
   (ODE integrators in C++) supports OpenCL via `VexCL <https://github.com/ddemidov/vexcl>`_.
 
 * `Boost.Compute <http://kylelutz.github.io/compute/>`_. Not yet an official
@@ -150,9 +150,9 @@ It's being developed by `Fraunhofer SCAI <http://www.scai.fraunhofer.de/en.html>
 `customers <http://www.mpcci.de/reference-projects/mpcci-customers.html>`_
 from several engineering fields have used the MpCCI solutions.
 
-MpCCI software seems to be closed-source, distributed as object code under
-`scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
-It's **not** free. There are three types of the license:
+MpCCI software is a be **closed-source**, **non-free**, distributed as object
+code under a `scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
+There are three types of the license:
 
 - commercial (12 months),
 - research (12 months),
