@@ -236,10 +236,10 @@ define possible schedules of data exchange between subsystems. For transient
 problems with strong interactions (e.g. FSI with incompressible fluid),
 **iterative coupling algorithms** (V-3.4.4) are proposed. Gauss-Jacobi and
 Gauss-Seidel schemas are presented. According to (V-3.4.4.4) the iterative
-coupling is not supported by ADAMS.
+coupling is not supported by ADAMS. According to (VI-14.1.1) ADAMS supports
+iterative coupling :).
 
 It seems, that waveform-relaxation algorithms could be constructed using
 iterative coupling schemes with non-matching time steps (V-3.4.7). It's not
 sure, however, if the two techniques can be mixed (three actually: we also need
 subcycling, V-3.4.6).
-
