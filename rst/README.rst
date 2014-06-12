@@ -177,3 +177,11 @@ Types of coupling:
 - *weak coupling*: each problem is solved separately and some variables are
   exchanged and inserted into the equations of the other problem; this **is**
   the MpCCI approach,
+
+Aspects of data exchange:
+
+- *association*: each point and/or element is linked to a partner in the other
+  system; the process of finding partners is called *neighborhood search*. 
+- *interpolation*: the quantities must be transferred to the associated partner
+  on the other mesh; different mesh geometries, data distributions and the
+  conservation of fluxes must be considered here.
