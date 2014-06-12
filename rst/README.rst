@@ -189,7 +189,7 @@ Aspects of data exchange in MpCCI:
 
 The basic structure is shown in `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_ (User Manual, V-1.1).
 
-Physical domains:
+Physical domains (User Manual, V-3.1):
 
 - Solid mechanics (FEM),
 - Fluid mechanics (CFD),
@@ -200,4 +200,25 @@ Physical domains:
 - Heat radiation,
 - Electromagnetism,
 - **Multibody dynamics**.
+
+Coupling process:
+
+- initialization
+- iteration
+- finalization
+
+During the iteration, which also consists of several time steps in a transient
+problem, the data is exchanged several times. [..] The data is also not
+associated with certain time steps or iterations. The possible coupling
+algorithms are mainly determined by the capabilities of the simulation codes
+and the corresponding code adapters.
+
+Send and receive operations can appear at different states of the computation:
+
+- at the beginning of each time step,
+- at the end of each time step,
+- before or after an iteration step,
+- on direct demand of the user.
+
+Coupling Algorithms:
 
