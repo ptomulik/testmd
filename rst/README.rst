@@ -169,3 +169,11 @@ Components:
 - GUI (to define coupling setup and to start simulation),
 - Coupling Server (environment handling, communication between codes,
   **neighborhood computation** and **interpolation**),
+
+Types of coupling:
+
+- *strong coupling*: all governing equations of a coupled problem are combined
+  in a large system; this **is not** an MpCCI approach,
+- *weak coupling*: each problem is solved separately and some variables are
+  exchanged and inserted into the equations of the other problem; this **is**
+  the MpCCI approach,
