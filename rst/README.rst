@@ -161,7 +161,7 @@ simulation codes. Direct communication between coupled codes is implemented by
 providing **adapters** for commercial codes. The adapters use existing APIs of
 the simulation tools. The list of supported tools may be found in the
 `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
-(see Release Notes, 5.2).
+(Release Notes, II-5.2).
 
 Components:
 
@@ -170,7 +170,7 @@ Components:
 - Coupling Server (environment handling, communication between codes,
   **neighborhood computation** and **interpolation**),
 
-Types of coupling:
+Types of coupling in general:
 
 - **strong coupling**: all governing equations of a coupled problem are
   combined in a large system; this **is not** an MpCCI approach,
@@ -178,7 +178,7 @@ Types of coupling:
   exchanged and inserted into the equations of the other problem; this **is**
   the MpCCI approach,
 
-Aspects of data exchange:
+Aspects of data exchange in MpCCI:
 
 - **association**: each point and/or element is linked to a partner in the
   other system; the process of finding partners is called *neighborhood
@@ -187,7 +187,7 @@ Aspects of data exchange:
   partner on the other mesh; different mesh geometries, data distributions and
   the conservation of fluxes must be considered here.
 
-The basic structure is shown in `user manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_ (Chap V-1.1).
+The basic structure is shown in `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_ (User Manual, V-1.1).
 
 Physical domains:
 
@@ -200,3 +200,4 @@ Physical domains:
 - Heat radiation,
 - Electromagnetism,
 - **Multibody dynamics**.
+
