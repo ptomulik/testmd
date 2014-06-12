@@ -152,13 +152,8 @@ from several engineering fields have used the MpCCI solutions.
 
 MpCCI software is a **closed-source**, **non-free** solution. It's distributed
 as object code under a `scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
-There are three types of the license:
-
-- commercial (12 months),
-- research (12 months),
-- evaluation (30 days).
-
-Current version is **4.3**. 
+There are three types of the license: commercial (12 months), research (12
+months), evaluation (30 days). Current version is **4.3**. 
 
 *MpCCI Coupling Environment* is the standard for simulation code coupling. It
 provides an application independent interface for the coupling of different
