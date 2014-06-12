@@ -231,14 +231,14 @@ Types of problems and coupling algorithms:
 - **transient** problems: two general cases - both codes send and receive data
   (cycle), or one code only sends while the other only receives.
 
-Coupling algorithms `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
-(User Manual, V-3.4) define possible schedules of data exchange between
-subsystems. For transient problems with strong interactions (e.g. FSI with
-incompressible fluid), **iterative coupling algorithms** (V-3.4.4) are
-proposed. Gauss-Jacobi and Gauss-Seidel schemas are presented. According to
-(V-3.4.4.4) the iterative coupling is not supported by ADAMS.
+Coupling algorithms (`User Manual<http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_, V-3.4)
+define possible schedules of data exchange between subsystems. For transient
+problems with strong interactions (e.g. FSI with incompressible fluid),
+**iterative coupling algorithms** (V-3.4.4) are proposed. Gauss-Jacobi and
+Gauss-Seidel schemas are presented. According to (V-3.4.4.4) the iterative
+coupling is not supported by ADAMS.
 
 It seems, that waveform-relaxation algorithms could be constructed using
-iterative coupling schemes and non-matching time steps (V-3.4.7). It's not sure,
-however, if the two techniques can be mixed (three actually: add subcycling,
-V-3.4.6).
+iterative coupling schemes with non-matching time steps (V-3.4.7). It's not
+sure, however, if the two techniques can be mixed (three actually: we also need
+subcycling, V-3.4.6).
