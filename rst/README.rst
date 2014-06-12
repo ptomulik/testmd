@@ -163,7 +163,14 @@ Current version is **4.3**.
 *MpCCI Coupling Environment* is the standard for simulation code coupling. It
 provides an application independent interface for the coupling of different
 simulation codes. Direct communication between coupled codes is implemented by
-providing **adapters** for commercial codes. They use existing APIs of the
-simulation tools. List of supported tools may be found in the
+providing **adapters** for commercial codes. The adapters use existing APIs of
+the simulation tools. The list of supported tools may be found in the
 `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
-(see Release Notes).
+(see Release Notes, 5.2).
+
+Components:
+
+- Code Adapter,
+- GUI (to define coupling setup and to start simulation),
+- Coupling Server (environment handling, communication between codes,
+  **neighborhood computation** and **interpolation**),
