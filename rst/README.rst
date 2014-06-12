@@ -157,3 +157,13 @@ There are three types of the license:
 - commercial (12 months),
 - research (12 months),
 - evaluation (30 days).
+
+Current version is **4.3**. 
+
+*MpCCI Coupling Environment* is the standard for simulation code coupling. It
+provides an application independent interface for the coupling of different
+simulation codes.
+
+Direct communication between coupled codes is implemented by providing
+**adapters** for commercial codes. They use existing APIs of the simulation
+tools.
