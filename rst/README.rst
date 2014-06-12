@@ -242,4 +242,6 @@ iterative coupling :).
 It seems, that waveform-relaxation algorithms could be constructed using
 iterative coupling schemes with non-matching time steps (V-3.4.7). It's not
 sure, however, if the two techniques can be mixed (three actually: we also need
-subcycling, V-3.4.6).
+subcycling, V-3.4.6). The waveform-Newton algorithm does not seem to fit to the
+MpCCI framework.
+
