@@ -1,111 +1,159 @@
-#ptomulik-facter\_types
+NOTES
+=====
 
-[![Build Status](https://travis-ci.org/ptomulik/facter-types.png?branch=master)](https://travis-ci.org/ptomulik/facter-types)
-[![Coverage Status](https://coveralls.io/repox/ptomulik/facter-types/badge.png)](https://coveralls.io/r/ptomulik/facter-types)
-[![Code Climate](https://codeclimate.com/github/ptomulik/facter-types.png)](https://codeclimate.com/github/ptomulik/facter-types)
+This is a board with yellow sticks. Whenever I find an information I think it
+may be usefull in near future, I put it here.
 
-####<a id="table-of-contents"></a>Table of Contents
+CONTENTS
+--------
 
-1. [Overview](#overview)
-2. [Module Description](#module-description)
-   * [Introduction](#introduction)
-3. [Usage](#usage)
-   * [Example 1: Define new type](#example-1-define-new-type)
-4. [Reference](#reference)
-   * [Function Reference](#function-reference)
-   * [API Reference](#api-reference)
-5. [Limitations](#limitations)
+1. `GPU related notes`_
+2. `OpenCL based libraries`_
+3. `MPI notes`_
+4. `FMI notes`_
+5. `MpCCI notes`_
 
-##<a id="overview"></a>Overview
+.. _GPU related notes:
+GPU related notes
+^^^^^^^^^^^^^^^^^
 
-Pluggable facter types and providers. 
+* How to hide some CUDA devices from an application? Use ``CUDA_VISIBLE_DEVICES``,
+  see `this article <https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-control-gpu-visibility-cuda_visible_devices/>`_
+  and `this blog post <http://acceleware.com/blog/cudavisibledevices-masking-gpus>`_.
 
-[[Table of Contents](#table-of-contents)]
+* CUDA Environment variables. There is a bunch of environment variables which
+  affect CUDA drivers, see `the documentation
+  <http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#env-vars>`_.
 
-##<a id="module-description"></a>Module Description
+.. _OpenCL based libraries:
+OpenCL based libraries
+^^^^^^^^^^^^^^^^^^^^^^
 
-###<a id="introduction"></a>Introduction
+Here is list of libraries that may be useful for OpenCL programming:
 
-Facter types/providers simplify gathering data from different sources. An
-example of such a data is a list of packages available for installation. This
-information may be represented in a common form, but we must first obtain
-it from a specific sources such as apt, yum, zypper, freebsd ports, etc.. Each
-of these commands (backends) needs to be invoked in a specific manner, and we
-need a command-specific parser to interpret its output. The variety of backends
-leads to the idea of data provider object responsible for data acquisition and
-unification.
+* `VexCL <https://github.com/ddemidov/vexcl>`_ vector expression template
+  library for OpenCL/CUDA. Created for ease of GPGPU development with C++.
 
-In general, the following top-level aspects of information acquisition may be
-identified: 
+  Many useful things including vector expressions for `scattered data
+  interpolation with multilevel B-Splines <https://github.com/ddemidov/vexcl#mba>`_.
+  Note that `Boost.Numeric.Odeint <www.boost.org/libs/numeric/odeint/doc/html/index.html>`_                                                                                   
+  (ODE integrators in C++) supports OpenCL via `VexCL <https://github.com/ddemidov/vexcl>`_.
 
-1. Retrieving (prefetching) data from a backend command.
-2. Extracting particular information from the results prefetched in 1..
+* `Boost.Compute <http://kylelutz.github.io/compute/>`_. Not yet an official
+  boost library. Provides C++ interface to multi-core CPU and GPGPU computing
+  platforms. Header only.
 
-The data retrieval (aspect 1.) involves the following steps: 
+.. _MPI notes:
+MPI notes
+^^^^^^^^^
 
-1. *Defining a query* in a provider-independent (but type-specific) DSL. We
-   assume, that each fact may define one or more such a queries. The queries
-   are categorized into *types*, and the parameters that comprise the query are
-   specific to the given type.
-2. *Validating the query* to prevent user's mistakes.
-3. *Munging the query*:
-  - provider-specific munging which involves:
-    - fact-and-provider-specific munging customizable by user.
-4. *Merging* user-defined queries *of a given type* to retrieve data required
-   by multiple facts with a single call to the backend command (if possible).
-5. *Preparing command line string* used to invoke the backend command.
-6. *Invoking* the command.
-7. *Parsing* command output and caching the parsed results.
+Compilation should be performed with ``mpicc`` or ``mpic++``. Regarding
+OpenMPI, these executables are **not** just shell scripts, but normal ELF
+executables. So, it's not feasible to replace them with standard compilers +
+extra flags (which are unknown).
 
-The result extraction (aspect 2.) involves the following steps:
+Once compiled, a distributed MPI program is started with ``mpirun``. It accepts
+a configuration file which defines the  list of nodes to run the job on. You
+may scale your application easily by just modifying the list of nodes.
 
-1. Defining a *filter* to extract particular information from the prefetched
-   results.
-2. *Munging the filter*:
-   - provider-specific munging, which involves:
-     - fact-and-provider-specific munging customizable by user.
-3. *Filtering the prefetched results* to return only what's required by the
-   user.
-4. *Postprocessing the results*:
-   - provider-specific postprocessing, which involves:
-     - fact-and-provider-specific postprocessing customizable by user.
+The minimal skeleton for an MPI program is the following
+
+.. code-block:: c
+
+  #include <mpi.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  int main(int argc, char** argv) {
+    // Initialize the MPI environment. The two arguments to MPI Init are not
+    // currently used by MPI implementations, but are there in case future
+    // implementations might need the arguments.
+    MPI_Init(NULL, NULL);
+
+    // Get the number of processes
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+    // Get the rank of the process
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    // ...
+
+    // Finalize the MPI environment. No more MPI calls can be made after this
+    MPI_Finalize();
+  }
+
+The `mpirun` starts multiple instances of the program. Each one receives
+different rank (the ``world_rank``) in a "global" communicator called
+``MPI_COMM_WORLD``.
+
+An MPI program creates one or more communicators. Each communicator defines a
+group of one or more processes that can communicate. There is always one
+communicator, the ``MPI_COMM_WORLD`` which is available just after
+``MPI_Init()`` and contains all the processes started by ``mpirun``, but 
+obviously you can create custom communicators containing only subgroups of the
+available processes.
+
+BTL stands for Byte Transfer Layer, and BML is a BTL Management Layer. BTL
+represents available communication mechanisms, for example loopback, TCP,
+infiniband.
+
+You may configure many parameters via MCA parameters. For example, you may
+instruct MPI to use only a subset of available BTL mechanisms (for example
+loopback and infiniband).
+
+.. code-block:: sh
+
+    ptomulik@node00:$ mpirun -mca btl self,openib -n4 -hostfile host_file ./mpi_hello_world
 
 
-[[Table of Contents](#table-of-contents)]
+.. _FMI notes:
+FMI notes
+^^^^^^^^^
 
-###<a id="validating-query">
+`FMI <https://www.fmi-standard.org/>`_ stands for Functional Mockup Interface.
+The standard is being implemented by serveral vendors of engineering tools to
+support cosimulation.
 
-##<a id="usage"></a>Usage
+The **FMI 1.0** has the following limitations, which render it not suitable to
+implement the waveform-Newton algorithm:
 
-###<a id="example-1-define-new-type"></a>Example 1: Define new type
+- it does not support waveforms, i.e. it assumes that the subsystems and
+  master exchange only the values *u(tc_i)* and *y(tc_i)* (subsystems' inputs
+  and outputs) at single time point, as an option it may also exchange
+  derivatives, but this is not a big deal for us;
+- it assumes that the whole system consists of submodules (in-out blocks)
+  connected directly one to each other; there seems to be no natural way to
+  introduce constraints equations; generally the kinematical constraints can't
+  be effectively expressed by input-output connections,
+- it assumes particular form of data to be sent (variables, derivatives); for
+  waveform-based co-simulations a more effective ways may be used, for example
+  B-spline coefficients to describe trajectory over *tc_i*, *tc_{i+1}*.
 
-In this example we define new type named ``package``. Create a file
-``lib/facter/type/package.rb`` with the following content
+For the representation of waveforms we probably could use existing standard to
+define inputs and outputs such that they would represent waveforms, but the
+waveforms had to be of constant size (constant number of representative
+points). The other downside is that the interpretation of inputs and outputs
+would be unclear and inconsistent with the current standard terminology.
 
-```ruby
-require 'facter/type'
-Facter::Type.newtype 'package' do
-  # code for your new 'package' class goes here.
-end
-```
+The *FMI 2.0* doesn't seem to have these issues addressed (I still have to
+investigate this).
 
-[[Table of Contents](#table-of-contents)]
+.. _MpCCI notes:
+MpCCI notes
+^^^^^^^^^^^
 
-##<a id="reference"></a>Reference
+`MpCCI <http://www.mpcci.de/>`_ stands for Mesh-based Code Coupling Interface.
+It's being developed by `Fraunhofer SCAI <http://www.scai.fraunhofer.de/en.html>`_ 
+(Fraunhofer Institute for Algorithms and Scientific Computing). Lot of 
+`customers <http://www.mpcci.de/reference-projects/mpcci-customers.html>`_
+from several engineering fields have used the MpCCI solutions.
 
-###<a id="api-reference"></a>API Reference
+MpCCI software seems to be closed-source, distributed as object code under
+`scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
+It's **not** free. There are three types of the license:
 
-API reference may be generated with
-
-```console
-bundle exec rake yard
-```
-
-The generated documentation goes to `doc/` directory. Note that this works only
-under ruby >= 1.9.
-
-[[Table of Contents](#table-of-contents)]
-
-##Limitations
-
-[[Table of Contents](#table-of-contents)]
+- commercial (12 months),
+- research (12 months),
+- evaluation (30 days).
