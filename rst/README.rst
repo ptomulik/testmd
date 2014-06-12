@@ -161,7 +161,7 @@ simulation codes. Direct communication between coupled codes is implemented by
 providing **adapters** for commercial codes. The adapters use existing APIs of
 the simulation tools. The list of supported tools may be found in the
 `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
-(Release Notes, II-5.2).
+(Release Notes, II-5.2). **MSC Adams is supported** on 64-bit platforms.
 
 Components:
 
@@ -173,10 +173,11 @@ Components:
 Types of coupling in general:
 
 - **strong coupling**: all governing equations of a coupled problem are
-  combined in a large system; this **is not** an MpCCI approach,
+  combined in a large system; this **is not** the basic MpCCI approach,
+  but may be achieved in an iterative coupling scenario,
 - **weak coupling**: each problem is solved separately and some variables are
   exchanged and inserted into the equations of the other problem; this **is**
-  the MpCCI approach,
+  the basic MpCCI approach,
 
 Aspects of data exchange in MpCCI:
 
@@ -200,27 +201,6 @@ Physical domains (User Manual, V-3.1):
 - Heat radiation,
 - Electromagnetism,
 - **Multibody dynamics**.
-
-Coupling process:
-
-- initialization
-- iteration
-- finalization
-
-During the iteration, which also consists of several time steps in a transient
-problem, the data is exchanged several times. [..] The data is also not
-associated with certain time steps or iterations. The possible coupling
-algorithms are mainly determined by the capabilities of the simulation codes
-and the corresponding code adapters.
-
-Send and receive operations can appear at different states of the computation:
-
-- at the beginning of each time step,
-- at the end of each time step,
-- before or after an iteration step,
-- on direct demand of the user.
-
-*The data to be sent is first stored by MpCCI, i.e. it may be received later by the other code. MpCCI can store several sets of data, which are then sent to the other code depending on the synchronization point set by the code.*
 
 Coupling process:
 
