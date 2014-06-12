@@ -1,8 +1,8 @@
-TES
+NOTES
 =====
 
-This is my yellow-stick board. Whenever I find an information I think it may be
-useful in near future, I put it here.
+This is my "yellow-stick board". Whenever I find an information I think it may
+be useful in near future, I put it here.
 
 CONTENTS
 --------
@@ -162,8 +162,8 @@ Current version is **4.3**.
 
 *MpCCI Coupling Environment* is the standard for simulation code coupling. It
 provides an application independent interface for the coupling of different
-simulation codes.
-
-Direct communication between coupled codes is implemented by providing
-**adapters** for commercial codes. They use existing APIs of the simulation
-tools.
+simulation codes. Direct communication between coupled codes is implemented by
+providing **adapters** for commercial codes. They use existing APIs of the
+simulation tools. List of supported tools may be found in the
+`manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
+(see Release Notes).
