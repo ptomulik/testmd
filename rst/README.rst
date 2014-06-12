@@ -150,8 +150,8 @@ It's being developed by `Fraunhofer SCAI <http://www.scai.fraunhofer.de/en.html>
 `customers <http://www.mpcci.de/reference-projects/mpcci-customers.html>`_
 from several engineering fields have used the MpCCI solutions.
 
-MpCCI software is a be **closed-source**, **non-free**, distributed as object
-code under a `scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
+MpCCI software is a **closed-source**, **non-free** solution. It's distributed
+as object code under a `scapos EULA license <http://www.mpcci.de/fileadmin/mpcci/download/LicenseAgreements/MpCCI-20110302-scapos-End-User-License-Agreement.pdf>`_.
 There are three types of the license:
 
 - commercial (12 months),
