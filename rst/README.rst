@@ -186,3 +186,17 @@ Aspects of data exchange:
 - **interpolation**: the quantities must be transferred to the associated
   partner on the other mesh; different mesh geometries, data distributions and
   the conservation of fluxes must be considered here.
+
+The basic structure is shown in `user manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_ (Chap V-1.1).
+
+Physical domains:
+
+- Solid mechanics (FEM),
+- Fluid mechanics (CFD),
+- Acoustics,
+- Fluid pipe systems,
+- Solid heat transfer,
+- Fluid heat transfer,
+- Heat radiation,
+- Electromagnetism,
+- **Multibody dynamics**.
