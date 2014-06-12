@@ -220,5 +220,12 @@ Send and receive operations can appear at different states of the computation:
 - before or after an iteration step,
 - on direct demand of the user.
 
+.. note::
+
+    The data to be sent is first stored by MpCCI, i.e. it may be received later
+    by the other code. MpCCI can store several sets of data, which are then
+    sent to the other code depending on the synchronization point set by the
+    code.
+
 Coupling Algorithms:
 
