@@ -222,5 +222,43 @@ Send and receive operations can appear at different states of the computation:
 
 *The data to be sent is first stored by MpCCI, i.e. it may be received later by the other code. MpCCI can store several sets of data, which are then sent to the other code depending on the synchronization point set by the code.*
 
-Coupling Algorithms:
+Coupling process:
 
+- initialization,
+- iteration,
+- finalization.
+
+During the iteration, which also consists of several time steps in a transient
+problem, the data is exchanged several times. [..] The data is also not
+associated with certain time steps or iterations. The possible coupling
+algorithms are mainly determined by the capabilities of the simulation codes
+and the corresponding code adapters.Send and receive operations can appear at
+different states of the computation:
+
+- at the beginning of each time step,
+- at the end of each time step,
+- before or after an iteration step,
+- on direct demand of the user.
+
+The data to be sent is first stored by MpCCI, i.e. it may be received later by
+the other code. MpCCI can **store several sets of data**, which are then sent
+to the other code depending on the synchronization point set by the code.
+
+Types of problems and coupling algorithms:
+
+- **stationary** problems: the coupling algorithm does not have a big influence
+  on the solution,
+- **transient** problems: two general cases - both codes send and receive data
+  (cycle), or one code only sends while the other only receives.
+
+Coupling algorithms `manual <http://www.mpcci.de/fileadmin/mpcci/download/MpCCI-4.3.0/doc/pdf/MpCCIdoc.pdf>`_
+(User Manual, V-3.4) define possible schedules of data exchange between
+subsystems. For transient problems with strong interactions (e.g. FSI with
+incompressible fluid), **iterative coupling algorithms** (V-3.4.4) are
+proposed. Gauss-Jacobi and Gauss-Seidel schemas are presented. According to
+(V-3.4.4.4) the iterative coupling is not supported by ADAMS.
+
+It seems, that waveform-relaxation algorithms could be constructed using
+iterative coupling schemes and non-matching time steps (V-3.4.7). It's not sure,
+however, if the two techniques can be mixed (three actually: add subcycling,
+V-3.4.6).
