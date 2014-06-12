@@ -1,8 +1,8 @@
-NOTES
+TES
 =====
 
-This is a board with yellow sticks. Whenever I find an information I think it
-may be usefull in near future, I put it here.
+This is my yellow-stick board. Whenever I find an information I think it may be
+useful in near future, I put it here.
 
 CONTENTS
 --------
