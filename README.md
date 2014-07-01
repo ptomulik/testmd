@@ -1,8 +1,7 @@
 TML
 ===
 
-.. image:: https://travis-ci.org/ptomulik/tml.svg?branch=master
-          :target: https://travis-ci.org/ptomulik/tml
+.. image:: https://travis-ci.org/ptomulik/tml.svg?branch=master :target: https://travis-ci.org/ptomulik/tml
 
 Template Metaprogramming Library
 
