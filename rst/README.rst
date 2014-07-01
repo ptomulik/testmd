@@ -209,6 +209,9 @@ Runtime Algorithms
 Metafunctions
 ^^^^^^^^^^^^^
 
+Note, TML does not define numbered metafunctions (for example ``apply1``). Only
+the unnumbered ones are available.
+
 Type Selection
 ``````````````
 
@@ -219,8 +222,6 @@ Type Selection
 
 Invocation
 ``````````
-
-Note, TML does not define metafunctions with in form foo*n*.
 
 - [x] apply,
 - [x] apply_sequence (new),
@@ -237,9 +238,94 @@ Composing and Argument Binding
 - [x] arg,
 - [x] protect
 
+Arithmetic Operations
+`````````````````````
+
+- [ ] plus,
+- [ ] minus,
+- [ ] times,
+- [ ] divides,
+- [ ] modulus,
+- [ ] negate.
+
+Comparisons
+```````````
+
+- [ ] less,
+- [ ] less_equal,
+- [ ] greater,
+- [ ] greater_equal,
+- [ ] equal_to,
+- [ ] not_equal_to.
+
+Logical Operations
+``````````````````
+
+- [ ] and\_,
+- [x] or\_,
+- [ ] not\_.
+
+Bitwise Operations
+``````````````````
+
+- [ ] bitand\_,
+- [ ] bitor\_,
+- [ ] bitxor\_,
+- [ ] shift_left,
+- [ ] shift_right.
+
+Trivial
+```````
+
+- [ ] first,
+- [ ] second,
+- [ ] base.
+
+String Operations
+`````````````````
+
+- [ ] c_str.
+
+SFINAE support
+``````````````
+
+This is new content w.r.t MPL.
+
+- [x] enable_if,
+- [x] enable_if_c,
+- [x] enable_if_type.
+
+Miscellaneous
+`````````````
+
+- [x] identity,
+- [ ] always,
+- [ ] inherit,
+- [ ] inherit_linearly,
+- [ ] numeric_cast,
+- [ ] min,
+- [ ] max,
+- [ ] sizeof\_.
+
 Data Types
 ^^^^^^^^^^
 
+Numeric
+```````
+
+- [x] bool\_,
+- [x] int\_,
+- [x] long\_,
+- [x] size_t\_,
+- [x] integral_c,
+- [x] char\_.
+
+Miscellaneous
+`````````````
+
+- [ ] pair,
+- [x] empty_base,
+- [x] void\_.
 
 Supported compilers
 -------------------
