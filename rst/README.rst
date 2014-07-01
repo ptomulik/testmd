@@ -28,12 +28,17 @@ Sequences
 ^^^^^^^^^
 
 The TML introduces new sequence classes called ``sequence`` and
-``lsequence_c``. The ``sequence`` class models what I call "Variadic Template 
+``sequence_c``. The ``sequence`` class models what I call "Variadic Template 
 Sequence". The concept of "Template Sequence" makes an explicit assumption,
 that the sequence has form of instantiation ``X<a0,...a{n-1}>`` of some
 template ``X`` and ``a0,...,a{n-1}`` are then the elements of the sequence.
 A "Variadic Template Sequence" is a Template Sequence with ``X`` being a
 variadic template.
+
+At the moment I'm focussed on these "Variadic Template Sequences", so there
+is no default implementation of the Intrinsic Methods, and no support for
+well-known MPL sequences such as ``vector`` or ``list``.
+
 
 Classes
 ```````
@@ -119,15 +124,118 @@ Intrinsic Metafunctions
 +--------------------+--------+------+-------+-----+-----+--------+----------+
 
 
-
 Iterators
 ^^^^^^^^^
+
+"Template Sequences" are accompanied with "Template Sequence Iterators". All
+the iterator metafunctions are implemented for these iterators, that is:
+
+- [x] advance,
+- [x] distance,
+- [x] next.
+- [x] prior,
+- [x] deref,
+- [x] iterator_category.
+
+Note that there is no support for other iterators, especially no default
+implementation of the above metafunctions.
 
 Algorithms
 ^^^^^^^^^^
 
+Algorithms currently are missing. They will be added systematically.
+
+Inserters
+`````````
+
+- [ ] back_inserter,
+- [ ] front_inserter,
+- [ ] inserter.
+
+Iteration Algorighmts
+`````````````````````
+
+- [ ] fold,
+- [ ] iter_fold,
+- [ ] reverse_fold,
+- [ ] reverse_iter_fold,
+- [ ] accumulate.
+
+Querying Algorithms
+```````````````````
+
+- [ ] find,
+- [ ] find_if,
+- [ ] contains,
+- [ ] count,
+- [ ] count_if,
+- [ ] lower_bound,
+- [ ] upper_bound,
+- [ ] min_element,
+- [ ] max_element,
+- [ ] equal.
+
+Transformation Algorithms
+`````````````````````````
+
+- [ ] copy,
+- [ ] copy_if,
+- [ ] transform,
+- [ ] replace,
+- [ ] replace_if,
+- [ ] remove,
+- [ ] remove_if,
+- [ ] unique,
+- [ ] partition,
+- [ ] stable_partition,
+- [ ] sort,
+- [ ] reverse,
+- [ ] reverse_copy,
+- [ ] reverse_copy_if,
+- [ ] reverse_transform,
+- [ ] reverse_replace,
+- [ ] reverse_replace_if,
+- [ ] reverse_remove,
+- [ ] reverse_remove_if,
+- [ ] reverse_unique,
+- [ ] reverse_partition,
+- [ ] reverse_stable_partition.
+
+Runtime Algorithms
+``````````````````
+
+- [ ] for_each.
+
 Metafunctions
 ^^^^^^^^^^^^^
+
+Type Selection
+``````````````
+
+- [x] if\_
+- [x] if_c
+- [ ] eval_if
+- [ ] eval_if_c
+
+Invocation
+``````````
+
+Note, TML does not define metafunctions with in form foo*n*.
+
+- [x] apply,
+- [x] apply_sequence (new),
+- [x] apply_wrap,
+- [ ] unpack_args.
+
+Composing and Argument Binding
+``````````````````````````````
+
+- [x] Placeholders,
+- [x] lambda,
+- [x] bind,
+- [x] quote,
+- [x] arg,
+- [x] protect
 
 Data Types
 ^^^^^^^^^^
