@@ -34,8 +34,8 @@ that you already have ``openssh`` server and ``git`` installed and user
 
       # cp /home/bkp3com/.ssh/id_rsa.pub /srv/tftp/bkp3com_rsa.pub
 
-#. Do the following for each switch to be backed-up (``my-server`` is the tftp
-   server where the public key is available)::
+#. Prepare your switch with the following commands (``my-server`` is the server
+   where the public key is available, should be IP or FQDN)::
 
       tftp my-server get bkp3com_rsa.pub
 
