@@ -70,5 +70,8 @@ you have to perform these steps:
 
       quit
     
-   You may just copy-paste the above commands to your switch shell (just
-   replace ``my-server`` with your server name).
+   The above commands are prepared to be copy-pasted to your switch shell (so
+   they contain also ``YES/NO`` responses to some questions that switch may
+   optionally ask, and if it does not ask, these responses are treated as
+   errors, but they are is harmless). Don't forget to replace ``my-server``
+   with your server name before pasting the code to the terminal.
