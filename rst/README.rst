@@ -26,7 +26,7 @@ well as the switches need to be prepared for this method to work smoothly. I ass
 that you already have ``openssh`` server and ``git`` installed and user
 ``bkp3com`` is created. The remaining steps are following:
 
-#. Generate ssh key-pair for the new user (also on backup server)::
+#. Generate ssh key-pair for the ``bkp3com`` user (on backup server)::
 
       # su - bkp3com -c 'ssh-keygen'
 
