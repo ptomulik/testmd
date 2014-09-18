@@ -4,11 +4,13 @@ bkp3com
 Simple script to auto-backup configuration of the old 3com switches.
 Currently supported models are:
 
-- 4210 (3CR17334-91) - tested with *3Com OS V3.01.12s168* firmware,
+- 4210 (3CR17334-91) - tested with ``3Com OS V3.01.12s168`` firmware,
 
 
-Requirements
+Dependencies
 ------------
+
+The following tools are required for the scripts to run
 
 - ``sftp``,
 - ``git``
@@ -19,4 +21,61 @@ Preparations
 3com 4210
 ^^^^^^^^^
 
--
+The old 4210 switches are backed up by "sftp get" method. Your backup server as
+well as the switches need to be prepared for this method to work smoothly. In
+short, you have to:
+
+#. Install ``git`` if it's not already installed::
+
+      # yum install git
+   
+   or (Debian)::
+
+      # apt-get install git
+
+#. Create user which will perform all the actions on backup server::
+
+      # useradd -m -c '3com auto-backup' bkp3com;
+
+#. Generate ssh key-pair for the new user (also on backup server)::
+
+      # su - bkp3com -c 'ssh-keygen'
+
+#. Put the generated public key to a tftp server, for example::
+
+      # cp /home/bkp3com/.ssh/id_rsa.pub /srv/tftp/bkp3com_rsa.pub
+
+#. Do the following for each switch to be backed-up (``my-server`` is the tftp
+   server where the public key is available)::
+
+      tftp my-server get bkp3com_rsa.pub
+
+      system-view
+        public-key local create rsa
+        NO
+
+        public-key local create dsa
+        NO
+
+        public-key peer bkp3com import sshkey bkp3com_rsa.pub
+        NO
+
+        local-user bkp3com
+          service-type ssh level 3
+        quit
+
+        ssh user bkp3com service-type sftp
+        ssh user bkp3com authentication-type publickey
+        ssh user bkp3com assign publickey bkp3com
+        sftp server enable
+
+      quit
+      delete bkp3com_rsa.pub
+      YES
+      save
+      YES
+
+      quit
+    
+   You may just copy-paste the above commands to your switch shell (just
+   replace ``my-server`` with your server name).
