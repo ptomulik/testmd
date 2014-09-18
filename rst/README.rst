@@ -55,7 +55,7 @@ Initial configuration
       su - bkp3com
       ssh-keygen
 
-   For convenience the private key should not be password protectd.
+   For convenience the private key should not be password protected.
 
 #. Create ``.gitconfig`` for user ``bkp3com``::
 
@@ -65,7 +65,8 @@ Initial configuration
         name = 3com auto-backup
         email = admin@example.com
 
-#. Perform necessary **preparations** for your switches.
+#. Perform necessary **Preparations** for your switches (see the section
+   **Preparations** below).
 #. Write a cron job (etc. ``/etc/cron.daily/bkp3com`` to run backup scripts
    with appropriate options).
 
