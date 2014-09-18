@@ -22,16 +22,9 @@ Preparations
 ^^^^^^^^^
 
 The old 4210 switches are backed up by "sftp get" method. Your backup server as
-well as the switches need to be prepared for this method to work smoothly. In
-short, you have to:
-
-#. Install ``git`` if it's not already installed::
-
-      # yum install git
-   
-   or (Debian)::
-
-      # apt-get install git
+well as the switches need to be prepared for this method to work smoothly. I assume
+that you already have ``openssh`` server and ``git`` installed. So, in short,
+you have to perform these steps:
 
 #. Create user which will perform all the actions on backup server::
 
