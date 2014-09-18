@@ -75,3 +75,12 @@ you have to perform these steps:
    optionally ask, and if it does not ask, these responses are treated as
    errors, but they are is harmless). Don't forget to replace ``my-server``
    with your server name before pasting the code to the terminal.
+
+#. Add the public key of the new switch to the ``.ssh/known_hosts`` of
+   ``bkp3com`` user. The most straightforward method is to just connect
+   to your switch via sftp (``switch-01`` is the IP or DNS name of your switch)::
+
+      # su - bkp3com;
+      # echo "quit" | sftp switch-01
+
+   Answer ``yes`` to the question posed by ``sftp``.
