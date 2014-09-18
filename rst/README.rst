@@ -4,6 +4,18 @@ bkp3com
 Simple script to auto-backup configuration of the old 3com switches.
 Currently supported models are:
 
+How does it work
+----------------
+
+The hardware setup consists of a **backup server** and one or more
+**switches**. The backup server runs backup scripts periodically, and the
+scripts download current configuration from switches. The configuration is
+stored in a git repository on server. Each script commits last changes
+at the end of its job.
+
+Supported devices
+-----------------
+
 - 4210 (3CR17334-91) - tested with ``3Com OS V3.01.12s168`` firmware,
 
 
@@ -15,6 +27,40 @@ The following tools are required for the scripts to run
 - ``sftp``,
 - ``git``
 
+Initial configuration
+---------------------
+
+#. Install dependencies
+#. Create user named ``bkp3com``, with shell access and home directory
+   (``/home/bkp3com`` in our examples)::
+
+      useradd -m -c '3com auto-backup'
+
+#. Generate SSH keys for ``bkp3com``::
+
+      su - bkp3com
+      ssh-keygen
+
+#. Create ``.gitconfig`` for user ``bkp3com``::
+
+      su - bkp3com
+      cat > ~/.gitconfig
+      [user]
+        name = 3com auto-backup
+        email = admin@example.com
+
+#. Perform necessary **preparations** for your switches.
+#. Write a cron job (etc. ``/etc/cron.daily/bkp3com`` to run backup scripts
+   with appropriate options).
+
+3com 4210
+^^^^^^^^^
+
+See::
+
+    bkp3com-4210 -h
+
+
 Preparations
 ------------
 
@@ -23,12 +69,8 @@ Preparations
 
 The old 4210 switches are backed up by "sftp get" method. Your backup server as
 well as the switches need to be prepared for this method to work smoothly. I assume
-that you already have ``openssh`` server and ``git`` installed and user
-``bkp3com`` is created. The remaining steps are following:
-
-#. Generate ssh key-pair for the ``bkp3com`` user (on backup server)::
-
-      # su - bkp3com -c 'ssh-keygen'
+that you already have installed ``ssh`` and ``git``, user ``bkp3com`` is
+created and it has ssh keys generated. The remaining steps are following:
 
 #. Put the generated public key to a tftp server, for example::
 
