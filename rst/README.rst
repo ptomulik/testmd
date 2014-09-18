@@ -31,16 +31,31 @@ The following tools are required for the scripts to run
 Initial configuration
 ---------------------
 
-#. Install dependencies
+#. Install dependencies, for example::
+
+      apt-get install openssh-client git
+
+#. Clone this repository and enter it::
+
+      git clone https://github.com/ptomulik/bkp3com
+      cd bkp3com/
+
+#. Copy content of ``scripts`` directory to a directory within your ``$PATH``,
+   for example::
+
+      cp -r scripts/* /usr/local/bin/
+
 #. Create user named ``bkp3com``, with shell access and home directory
    (``/home/bkp3com`` in our examples)::
 
-      useradd -m -c '3com auto-backup'
+      useradd -m -c '3com auto-backup' bkp3com
 
 #. Generate SSH keys for ``bkp3com``::
 
       su - bkp3com
       ssh-keygen
+
+   For convenience the private key should not be password protectd.
 
 #. Create ``.gitconfig`` for user ``bkp3com``::
 
@@ -54,13 +69,40 @@ Initial configuration
 #. Write a cron job (etc. ``/etc/cron.daily/bkp3com`` to run backup scripts
    with appropriate options).
 
+Usage
+-----
+
 3com 4210
 ^^^^^^^^^
 
-See::
+To trigger backup, you have to run ``bkp3com-4210``, see::
 
     bkp3com-4210 -h
 
+At minimum you have to provide a list of switches to be backed up, for example::
+
+    bkp3com-4210 sw-01 sw-02
+
+The names ``sw-01`` and ``sw-02`` should be a host names of switches, such that
+the server is able to resolve ``sw-01`` and ``sw-02`` to their corresponding IP
+addresses.
+
+If you have a group of switches in one domain, you may define the domain via
+``-d`` option::
+
+    bkp3com-4210 -d mgmt.example.com sw-01 sw-02
+
+By default, the output is stored in a git repository under ``$HOME/bkp3com``.
+The repository is created if it does not exist. Custom repository path may
+be provided via ``-r`` option, e.g.::
+
+    bkp3com-4210 -r /home/bkp3com/daily -d mgmt.example.com sw-01 sw-02
+
+The configuration for switches is stored in subdirectories named after the
+switch names, in our last example::
+
+    /home/bkp3com/daily/sw-01/
+    /home/bkp3com/daily/sw-02/
 
 Preparations
 ------------
