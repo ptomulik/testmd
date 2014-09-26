@@ -11,8 +11,7 @@ I found this extension useful in the following scenario. My users send me spam
 samples, and I have to resubmit it to McAfee. According to their article
 `Best Practices - Submitting spam samples to McAfee`_, the samples should be
 included as attachments into **new** messages. The emails with samples should
-originate from an address known to McAfee to be a customer's address (e.g.
-``admin@example.com``).
+originate from a customer address (e.g. *admin@example.com*) known to McAfee.
 
 So, this is basically job for a tool such as **Resubmit** add-on. Having an
 IMAP folder, where I collect the samples forwarded by my users, the
