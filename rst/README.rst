@@ -58,8 +58,8 @@ is to use the filter.
 #. Compose the message template. Open new message, define the recipient
    address, write some content and save as template.
 
-    .. image:: images/resubmit-compose-template.png
-       :align: center
+   .. image:: images/resubmit-compose-template.png
+      :align: center
 
 #. Create new filter. Go to *Tools*|*Filter*, create a new filter, name it for
    example *Process User Reported Spam*.
