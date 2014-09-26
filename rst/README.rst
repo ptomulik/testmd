@@ -19,10 +19,11 @@ Motivation
 ----------
 
 I wrote this extension for the following specific scenario. My users send me
-spam samples and I have to resubmit it to McAfee. According to their article
-`Best Practices - Submitting spam samples to McAfee`_, the samples should be
-included as attachments into **new** messages. The emails with samples should
-originate from a customer address (e.g. *admin@example.com*) known to McAfee.
+spam samples (missed spam and false positives) and I have to resubmit it to
+McAfee. According to their article `Best Practices - Submitting spam samples to
+McAfee`_, the samples should be included as attachments into **new** messages.
+The emails with samples should originate from a customer address (e.g.
+*admin@example.com*) known to McAfee.
 
 So, this is basically job for a tool such as **Resubmit** add-on.
 
