@@ -83,7 +83,7 @@ is to use the filter.
    .. image:: images/resubmit-batchwin.png
      :align: center
 
-That should be easy!
+This should be easy!
 
 Configuration
 -------------
