@@ -48,6 +48,39 @@ Later (Template)** opens every **new** message in a compose window and lets you
 inspect it, modify, send, save, queue or do with it whatever the compose window
 allows to.
 
+Configuration
+-------------
+
+After installation, the **Resubmit** extension should appear in your extensions
+list.
+
+..image:: images/resubmit-addon-list.png
+
+Usage
+-----
+
+Debugging
+---------
+
+License
+-------
+
+Resubmit - a Thunderbird extension to re-submit attached messages.
+
+Copyright (C) 2014  Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409
 .. _Mail Merge: https://addons.mozilla.org/thunderbird/addon/mail-merge/ 
