@@ -8,7 +8,7 @@ senders to a single recipient (opposite to `Mail Merge`_).
 Overwiev
 --------
 
-Having an (IMAP) folder, where I collect spam samples forwarded to me by my
+Having an (IMAP) folder, where I collect certain messages forwarded to me by my
 users, the **Resubmit** tool unpacks all attached messages (spam samples, for
 example) from emails in the folder, for each spam sample composes a **New**
 message with the spam sample attached to it and sends it to the specified
