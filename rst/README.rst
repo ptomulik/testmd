@@ -75,9 +75,6 @@ is to use the filter.
    .. image:: images/resubmit-filter-dialog.png
      :align: center
    
-   Most common situation is to apply the filter actions to emails from certain
-   (IMAP) folder.
-
 #. Apply the filter, e.g. *Tools* | *Apply filters to selected messages*.
 
    .. image:: images/resubmit-batchwin.png
