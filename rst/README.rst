@@ -129,8 +129,10 @@ running the configuration dialog, go to the Thunderbird's settings editor
 (*Edit* | *Preferences* | *Advanced* | *Settings editor*) and adjust the
 following preferences::
 
-   extensions.resubmit.debug.enable 
+   extensions.resubmit.debug.enable
    extensions.resubmit.debug.level
+
+The possible values of debugging level are ``1`` to ``7``.
 
 If you need early debugging, run the **Thunderbird** from CLI as follows::
 
