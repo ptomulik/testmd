@@ -38,7 +38,8 @@ custom filters for resubmission. The filter actions are:
 Each action uses a template message which defines all the details of the
 **new** message to be sent. Specifically, it contains sender and recipient
 addresses, subject and content. The filter action just appends an attachment
-(spam sample) to the template and submits it in this form. 
+(extracted from the source message) to the template and submits it in this
+form. 
 
 The **Resubmit - Send Now (Template)** action wraps an extracted attachment
 with template message and sends it to a destination address(es) specified in
