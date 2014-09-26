@@ -14,6 +14,9 @@ example) from emails in the folder, for each spam sample composes a **New**
 message with the spam sample attached to it and sends it to the specified
 destination.
 
+Motivation
+----------
+
 I found this extension useful in the following scenario. My users send me spam
 samples and I have to resubmit it to McAfee. According to their article
 `Best Practices - Submitting spam samples to McAfee`_, the samples should be
