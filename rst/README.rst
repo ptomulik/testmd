@@ -8,17 +8,18 @@ senders to a single recipient (opposite to `Mail Merge`_).
 Overwiev
 --------
 
-Having a bunch of messages forwarded to me by my users, the **Resubmit** tool
-extracts all attached messages from emails in the folder, then for each
-extracted attachment it composes a **new** message with the extracted
-attachment attached to it and sends it to the specified recipient(s). It's
-particularly useful as a tool for spam sample resubmission.
+Having a bunch of messages forwarded to you by your users, the **Resubmit**
+tool extracts all attached messages from emails in the folder, then for each
+extracted message it composes a **new** message with the extracted
+message attached to it and sends the **new** message  to the specified
+recipient(s). It's particularly useful as a tool for supervised spam sample
+resubmission.
 
 Motivation
 ----------
 
-I found this extension useful in the following scenario. My users send me spam
-samples and I have to resubmit it to McAfee. According to their article
+I wrote this extension for the following specific scenario. My users send me
+spam samples and I have to resubmit it to McAfee. According to their article
 `Best Practices - Submitting spam samples to McAfee`_, the samples should be
 included as attachments into **new** messages. The emails with samples should
 originate from a customer address (e.g. *admin@example.com*) known to McAfee.
