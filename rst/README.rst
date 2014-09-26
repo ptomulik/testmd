@@ -24,9 +24,9 @@ labs. According to their article `Best Practices - Submitting spam samples to
 McAfee`_, the samples should be included as attachments into **new** messages.
 The emails with samples should originate from a customer address (e.g.
 *admin@example.com*) known to McAfee. I receive about ten samples daily and
-it's quite boring and backbreaking task to save all attached samples and submit
-them manually. So, this is basically job for a tool such as **Resubmit**
-add-on.
+it's quite boring and backbreaking task to extract all the received attachments
+and re-submit them manually. So, this is basically job for a tool such as
+**Resubmit** add-on.
 
 More details
 ------------
