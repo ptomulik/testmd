@@ -41,6 +41,13 @@ Specifically, the template contains sender and recipient addresses, subject and
 content. The **Resubmit**'s filter action then just appends an attachment (spam
 sample) to the template and submits it with the sample attached.
 
+The **Resubmit - Send Now (Template)** action wraps an extracted attachment
+with template message and sends it to a destination address(es) specified in
+the template. The **Resubmit - Send Later (Template)** does the similar, but
+queues the composed **new** message to be sent later. The **Resubmit - Send
+Later (Template)** opens every **new** message in compose window (so you may
+inspect it, modify and send, save, queue or do whatever you wish).
+
 
 .. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409
 .. _Mail Merge: https://addons.mozilla.org/thunderbird/addon/mail-merge/ 
