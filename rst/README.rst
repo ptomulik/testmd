@@ -44,9 +44,9 @@ The **Resubmit - Send Now (Template)** action wraps an extracted attachment
 with template message and sends it to a destination address(es) specified in
 the template. The **Resubmit - Send Later (Template)** does the similar, but
 queues the composed **new** message to be sent later. The **Resubmit - Send
-Later (Template)** opens every **new** message in compose window (so you may
-inspect it, modify and send, save, queue or do with it whatever the compose
-window allows).
+Later (Template)** opens every **new** message in a compose window and lets you
+inspect it, modify, send, save, queue or do with it whatever the compose window
+allows to.
 
 
 .. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409
