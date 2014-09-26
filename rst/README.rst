@@ -42,10 +42,10 @@ addresses, subject and content. The filter action just appends an attachment
 form. 
 
 The **Resubmit - Send Now (Template)** action wraps an extracted attachment
-with template message and sends it to a destination address(es) specified in
-the template. The **Resubmit - Send Later (Template)** does the similar, but
-queues the composed **new** message to be sent later. The **Resubmit - Send
-Later (Template)** opens every **new** message in a compose window and lets you
+with template message and sends it to recipient(s) specified in the template.
+The **Resubmit - Send Later (Template)** does the similar, but queues the
+composed **new** message to be sent later. The **Resubmit - Send Later
+(Template)** opens every **new** message in a compose window and lets you
 inspect it, modify, send, save, queue or do with it whatever the compose window
 allows to.
 
