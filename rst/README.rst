@@ -8,10 +8,11 @@ senders to a single recipient (opposite to `Mail Merge`_).
 Overwiev
 --------
 
-Having an (IMAP) folder, where I collect spam samples forwarded by my users,
-the **Resubmit** tool unpacks all attached messages (spam samples, for example)
-from emails in the folder, for each spam sample composes a **New** message with
-the spam sample attached to it and sends it to the specified destination.
+Having an (IMAP) folder, where I collect spam samples forwarded to me by my
+users, the **Resubmit** tool unpacks all attached messages (spam samples, for
+example) from emails in the folder, for each spam sample composes a **New**
+message with the spam sample attached to it and sends it to the specified
+destination.
 
 I found this extension useful in the following scenario. My users send me spam
 samples and I have to resubmit it to McAfee. According to their article
