@@ -7,17 +7,18 @@ tested) to massivelly re-submit emails forwarded to you by users.
 Overwiev
 --------
 
+Having an IMAP folder, where I collect the samples forwarded by my users, the
+**Resubmit** tool unpacks all attached messages (spam samples) from emails
+herein, for each spam sapmle composes a **New** message with the spam sample
+attached to it and sends it to the specified destination.
+
 I found this extension useful in the following scenario. My users send me spam
-samples, and I have to resubmit it to McAfee. According to their article
+samples and I have to resubmit it to McAfee. According to their article
 `Best Practices - Submitting spam samples to McAfee`_, the samples should be
 included as attachments into **new** messages. The emails with samples should
 originate from a customer address (e.g. *admin@example.com*) known to McAfee.
 
-So, this is basically job for a tool such as **Resubmit** add-on. Having an
-IMAP folder, where I collect the samples forwarded by my users, the
-**Resubmit** tool unpacks all attached messages (spam samples) from emails
-herein, for each spam sapmle composes a **New** message with the spam sample
-attached to it and sends it to the specified destination.
+So, this is basically job for a tool such as **Resubmit** add-on.
 
 More details
 ------------
