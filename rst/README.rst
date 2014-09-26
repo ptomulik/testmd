@@ -1,10 +1,11 @@
 Resubmit
 ========
 
-Simple Thunderbird add-on for massive every-day re-submission of attached
-messages forwarded to you by your users. This gathers and sends messages from
-multiple senders to a specified set of recipients (opposite to `Mail Merge`_,
-which sends from single sender to a possibly-large list of recipients).
+Simple Thunderbird add-on for massive every-day re-submission of messages
+forwarded to you by your users to a predefined recipient(s). This gathers and
+sends messages from multiple senders to a specified set of recipients (opposite
+to `Mail Merge`_, which sends from single sender to a possibly-large list of
+recipients).
 
 Overwiev
 --------
