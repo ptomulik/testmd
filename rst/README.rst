@@ -62,8 +62,8 @@ is to use the filter.
    .. image:: images/resubmit-compose-template.png
       :align: center
 
-#. Create new filter. Go to *Tools*|*Filter*, create a new filter, name it for
-   example *Process User Reported Spam*.
+#. Create new filter. Go to *Tools* | *Filter*, create a new filter, name it
+   for example *Process User Reported Spam*.
 
    .. image:: images/resubmit-filter-list.png
       :align: center
@@ -72,7 +72,7 @@ is to use the filter.
    example **Resubmit - Send Now (Template)**. Most common situation is to
    apply the filter actions to emails from certain (IMAP) folder.
 
-#. Apply the filter, e.g. *Tools*|*Apply filters to selected messages*.
+#. Apply the filter, e.g. *Tools* | *Apply filters to selected messages*.
 
 That should be easy!
 
@@ -118,8 +118,8 @@ Debugging
 
 If you need to change debugging options for **Resubmit** but have problems with
 running the configuration dialog, go to the Thunderbird's settings editor 
-(*Edit*|*Preferences*|*Advanced*|*Settings editor*) and adjust the following
-preferences::
+(*Edit* | *Preferences* | *Advanced* | *Settings editor*) and adjust the
+following preferences::
 
    extensions.resubmit.debug.enable 
    extensions.resubmit.debug.level
