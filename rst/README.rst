@@ -7,11 +7,12 @@ multiple senders.
 Overwiev
 --------
 
-Having a bunch of messages forwarded to you by your users, the **Resubmit**
-tool extracts all attached messages from these emails, then for each extracted
-message it composes a **new** message with the extracted message attached to it
-and sends the **new** message  to the specified recipient(s). It's particularly
-useful as a tool for supervised spam sample resubmission.
+This tool is designated for network/mail administrators. Having a bunch of
+messages forwarded to you by your users, the **Resubmit** tool extracts all
+attached messages from these emails, then for each extracted message it
+composes a **new** message with the extracted message attached to it and sends
+the **new** message  to the specified recipient(s). It's particularly useful as
+a tool for supervised spam sample resubmission.
 
 Motivation
 ----------
