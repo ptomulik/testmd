@@ -1,8 +1,8 @@
 Resubmit
 ========
 
-Simple add-on to Thunderbird (and possibly other Gecko mail clients - not
-tested) to massivelly re-submit emails forwarded to you by users.
+Simple add-on to Thunderbird to massivelly re-submit attached messages
+forwarded to you by users.
 
 Overwiev
 --------
