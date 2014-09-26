@@ -7,8 +7,8 @@ tested) to massivelly re-submit emails forwarded to you by users.
 Overwiev
 --------
 
-Having an IMAP folder, where I collect the samples forwarded by my users, the
-**Resubmit** tool unpacks all attached messages (spam samples) from emails
+Having an (IMAP) folder, where I collect spam samples forwarded by my users,
+the **Resubmit** tool unpacks all attached messages (spam samples) from emails
 herein, for each spam sapmle composes a **New** message with the spam sample
 attached to it and sends it to the specified destination.
 
