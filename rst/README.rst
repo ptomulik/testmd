@@ -26,9 +26,9 @@ More details
 The extension adds three filter actions, which you may use to configure custom
 Thunderbird filters to resubmit spam samples. The filter actions are:
 
-  - **Resubmit - Send Now (Template)**,
-  - **Resubmit - Send Later (Template)**, and
-  - **Resubmit - Compose (Template)**.
+- **Resubmit - Send Now (Template)**,
+- **Resubmit - Send Later (Template)**, and
+- **Resubmit - Compose (Template)**.
 
 Each action uses a template message. The template message defines all details
 of the wrapping message to be submitted to the spam centre. Specifically, the
@@ -37,4 +37,4 @@ template contains sender and recipiend addresses, subject and content. The
 the template and submits it with the sample attached.
 
 
-.. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409                            
+.. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409
