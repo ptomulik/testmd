@@ -2,7 +2,8 @@ Resubmit
 ========
 
 Simple Thunderbird add-on for massive re-submission of attached messages
-forwarded to you by your users.
+forwarded to you by your users. This gathers and sends messages from multiple
+senders to a single recipient (opposite to `Mail Merge`_).
 
 Overwiev
 --------
@@ -38,3 +39,4 @@ the template and submits it with the sample attached.
 
 
 .. _Best Practices - Submitting spam samples to McAfee: https://community.mcafee.com/docs/DOC-1409
+.. _Mail Merge: https://addons.mozilla.org/thunderbird/addon/mail-merge/ 
