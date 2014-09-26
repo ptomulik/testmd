@@ -10,9 +10,9 @@ Overwiev
 
 Having an (IMAP) folder, where I collect certain messages forwarded to me by my
 users, the **Resubmit** tool extracts all attached messages (spam samples, for
-example) from emails in the folder, for each extracted attachment it composes a
-**new** message with the attachment attached to the **new** message and sends
-it to the specified destination.
+example) from emails in the folder, then for each extracted attachment it
+composes a **new** message with the extracted attachment attached to it and
+sends it to the specified recipient(s). 
 
 Motivation
 ----------
