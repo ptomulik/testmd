@@ -1,15 +1,15 @@
 Resubmit
 ========
 
-Simple add-on to Thunderbird to massivelly re-submit attached messages
-forwarded to you by users.
+Simple Thunderbird add-on for massive re-submission of attached messages
+forwarded to you by your users.
 
 Overwiev
 --------
 
 Having an (IMAP) folder, where I collect spam samples forwarded by my users,
 the **Resubmit** tool unpacks all attached messages (spam samples) from emails
-herein, for each spam sapmle composes a **New** message with the spam sample
+herein, for each spam sample composes a **New** message with the spam sample
 attached to it and sends it to the specified destination.
 
 I found this extension useful in the following scenario. My users send me spam
