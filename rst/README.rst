@@ -37,9 +37,8 @@ custom Thunderbird filters to resubmit spam samples. The filter actions are:
 
 Each action uses a template message. The template message defines all details
 of the **new** wrapping message. Specifically, it contains sender and recipient
-addresses, subject and content. The **Resubmit**'s filter action then just
-appends an attachment (spam sample) to the template and submits it with the
-sample attached.
+addresses, subject and content. The filter action just appends an attachment
+(spam sample) to the template and submits it with the sample attached.
 
 The **Resubmit - Send Now (Template)** action wraps an extracted attachment
 with template message and sends it to a destination address(es) specified in
