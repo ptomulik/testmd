@@ -69,7 +69,8 @@ is to use the filter.
      :align: center
 
    configure the filter conditions and add one of the **Resubmit** actions, for
-   example **Resubmit - Send Now (Template)**.
+   example **Resubmit - Send Now (Template)**. Choose the previously saved
+   template.
 
    .. image:: images/resubmit-filter-dialog.png
      :align: center
