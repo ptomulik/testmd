@@ -104,9 +104,9 @@ The current configuration dialog provides two tabs:
 In the **Filter actions** tab you may configure particular filter actions
 implemented by **Resubmit**. For each filter action there are basically two
 settings - ``Enable ...`` check-box and ``Max.  no. of ....`` text field. The
-*Enable ...*  enables or disables the action. If you disable a filter action,
-it will not appear in the list of available filter actions when creating mail
-filters. The *Max. no. of ...* defines the maximum number of messages being
+``Enable ...`` check-box enables or disables the action. If you disable a
+certain action, it will be unavailable for selection when creating mail
+filters. The ``Max. no. of ...`` defines the maximum number of messages being
 sent concurrently or (in case of **Compose** action) maximum number of compose
 windows being opened simultaneously. 
 
