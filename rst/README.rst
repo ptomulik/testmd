@@ -19,10 +19,10 @@ Motivation
 
 The following was a motivating use case for the **Resubmit** add-on.
 
-My users send me spam samples (missed spam and false positives) and I
-have to resubmit it to McAfee. According to their article `Best Practices -
-Submitting spam samples to McAfee`_, the samples should be included as
-attachments into **new** messages. The emails with samples should originate
+My users send me spam/ham samples (missed spam and false positives), and I'm
+supposed to resubmit them to McAfee labs. According to their article `Best
+Practices - Submitting spam samples to McAfee`_, the samples should be included
+as attachments into **new** messages. The emails with samples should originate
 from a customer address (e.g. *admin@example.com*) known to McAfee.
 
 So, this is basically job for a tool such as **Resubmit** add-on.
