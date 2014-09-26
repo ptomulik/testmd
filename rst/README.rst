@@ -79,6 +79,9 @@ is to use the filter.
 
 #. Apply the filter, e.g. *Tools* | *Apply filters to selected messages*.
 
+   .. image:: images/resubmit-batchwin.png
+     :align: center
+
 That should be easy!
 
 Configuration
