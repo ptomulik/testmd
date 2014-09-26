@@ -60,17 +60,22 @@ is to use the filter.
    address, write some content and save as template.
 
    .. image:: images/resubmit-compose-template.png
-      :align: center
+     :align: center
 
 #. Create new filter. Go to *Tools* | *Filter*, create a new filter, name it
    for example *Process User Reported Spam*.
 
    .. image:: images/resubmit-filter-list.png
-      :align: center
+     :align: center
 
    configure the filter conditions and add one of the **Resubmit** actions, for
-   example **Resubmit - Send Now (Template)**. Most common situation is to
-   apply the filter actions to emails from certain (IMAP) folder.
+   example **Resubmit - Send Now (Template)**.
+
+   .. image:: images/resubmit-filter-dialog.png
+     :align: center
+   
+   Most common situation is to apply the filter actions to emails from certain
+   (IMAP) folder.
 
 #. Apply the filter, e.g. *Tools* | *Apply filters to selected messages*.
 
@@ -85,7 +90,7 @@ you need to tune the functionality of **Resubmit**, click on the *configure*
 on the addon item and adjust necessary options.
 
 .. image:: images/resubmit-addon-list.png
-   :align: center
+  :align: center
 
 The current configuration dialog provides two tabs:
 
@@ -99,9 +104,9 @@ not appear in the list of available filter actions when creating mail filters.
 .. image:: images/resubmit-cfgdialog-actions.png
   :align: center
 
-For each filter action there are basically two settings - *Enable ...* checkbox and *Max.
-no. of ....* text field. The *Enable ...*  enables or disables the action. The
-*Max. no. of ...* defines the maximum number of messages being sent
+For each filter action there are basically two settings - *Enable ...* checkbox
+and *Max.  no. of ....* text field. The *Enable ...*  enables or disables the
+action. The *Max. no. of ...* defines the maximum number of messages being sent
 concurrently or (in case of **Compose** action) maximum number of compose
 windows being opened simultaneously. 
 
