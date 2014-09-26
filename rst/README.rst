@@ -54,7 +54,8 @@ Configuration
 After installation, the **Resubmit** extension should appear in your extensions
 list.
 
-..image:: images/resubmit-addon-list.png
+.. image:: images/resubmit-addon-list.png
+  :align: center
 
 Usage
 -----
