@@ -17,7 +17,8 @@ a tool for supervised spam/ham sample resubmission.
 Motivation
 ----------
 
-I wrote this extension for the following specific scenario. My users send me
+I wrote this extension for the following specific scenario (however it's far
+more generic, and covers much broader list of use cases). My users send me
 spam samples (missed spam and false positives) and I have to resubmit it to
 McAfee. According to their article `Best Practices - Submitting spam samples to
 McAfee`_, the samples should be included as attachments into **new** messages.
