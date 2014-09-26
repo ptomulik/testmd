@@ -46,8 +46,8 @@ with template message and sends it to recipient(s) specified in the template.
 The **Resubmit - Send Later (Template)** does the similar, but queues the
 composed **new** message to be sent later. The **Resubmit - Send Later
 (Template)** opens every **new** message in a compose window and lets you
-inspect it, modify, send, save, queue or do with it whatever the compose window
-allows to.
+inspect it, modify, send, save, queue or do whatever the compose window allows
+to.
 
 Usage
 -----
