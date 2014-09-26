@@ -28,8 +28,8 @@ So, this is basically job for a tool such as **Resubmit** add-on.
 More details
 ------------
 
-The extension defines three new filter actions, which you may use to configure
-custom Thunderbird filters to resubmit spam samples. The filter actions are:
+The extension defines three new filter actions, which may be used to create
+custom filters for resubmission. The filter actions are:
 
 - **Resubmit - Send Now (Template)**,
 - **Resubmit - Send Later (Template)**, and
