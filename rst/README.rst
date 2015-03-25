@@ -29,7 +29,7 @@ Notes
    **inventory.odb**. My macros are not signed by trusted party so you probably
    have to change your macro safety settings to lower.
 
-    - **Tools | Options | Security | Macro Protection | Medium**
+- **Tools | Options | Security | Macro Protection | Medium**
 
 .. _LibreOffice Base: https://www.libreoffice.org/discover/base/
 .. _MySQL: http://www.mysql.com/
