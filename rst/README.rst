@@ -14,8 +14,8 @@ components
 - an on-disk repository where attachments and other files are stored. The
   `MySQL`_ database only keeps track on file locations and physically files are
   stored in this repository,
-- `LibreOffice Base`_ file named *inventory.odb* -- it's purpose is to provide
-  user interface to the MySQL                                                     
+- `LibreOffice Base`_ project named **inventory.odb** -- it's purpose is to
+  provide user interface to the MySQL.
 
 
 .. _LibreOffice Base: https://www.libreoffice.org/discover/base/
