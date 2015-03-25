@@ -1,6 +1,7 @@
 INVENTORY
 =========
 
+Simple stackholding utility.
 
 Overview
 --------
