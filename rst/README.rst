@@ -1,7 +1,7 @@
-yaul-packaging
-==============
+pkg-yaul
+========
 
-This projects helps with packaging and release process of the yaul_ library.
+This projects maintains the packaging and releasing process of yaul_ library.
 
 Branches
 --------
@@ -9,8 +9,10 @@ Branches
 The repository contains several separate branches for different purposes
 
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
-| *debian-debian/<release>*       | the Debian packaging for a <release> (e.g., sid or experimental)                                          |
+| Branch                          | Purpose                                                                                                   |
 +=================================+===========================================================================================================+
+| *debian-debian/<release>*       | the Debian packaging for a <release> (e.g., sid or experimental)                                          |
++---------------------------------+-----------------------------------------------------------------------------------------------------------+
 | *debian-upstream/<release>*     | the upstream sources for a release matching one of the above                                              |
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
 | *debian-security/<release>*     | security updates for a certain release                                                                    |
