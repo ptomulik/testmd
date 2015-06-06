@@ -28,8 +28,8 @@ The repository contains several separate branches for different purposes
 Tasks
 -----
 
-create soruce tarball
-`````````````````````
+Creating soruce tarball
+```````````````````````
 
 - Create tarball out of upstream's ``yaul-0.1.0`` tag
 
@@ -49,8 +49,22 @@ The script requires an access to temporary directory (usually ``/tmp``, see
 ``mktemp(1)``) where it clones the upstream repository and manipulates files.
 
 
-Start packaging for a new debian release
+Creating soruce tarball for Debian packaging tools
+``````````````````````````````````````````````````
+.. code:: shell
+
+    git checkout default
+    ./scripts/create-tarball yaul-0.1.0
+    mv ../yaul-0.1.0.tar.gz ../yaul_0.1.0.orig.tar.gz
+
+Preparing support for new Debian release
 ````````````````````````````````````````
+
+- Prepare initial ``debian`` directory
+  .. code::
+        git checkout default
+        ./scripts/create-debian-release stretch 0.1.0
+
 
 - Prepare a source tarball
 
@@ -81,7 +95,8 @@ Start packaging for a new debian release
 
     git checkout debian-debian/stretch
     mkdir debian/
-    git show default:debian.template/gbp.conf | sed -e 's/@DEBIAN_RELEASE@/stretch/g' > debian/gbp.conf
+    git show default:debian.default/gbp.conf | sed -e 's/@DEBIAN_RELEASE@/stretch/g' > debian/gbp.conf
+    get show default:debian.default/compat > debian/compat
 
 .. <!--- dh_make -m -e ptomulik@meil.pw.edu.pl -p yaul_0.1.0 -->
 
