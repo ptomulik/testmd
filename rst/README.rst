@@ -82,13 +82,13 @@ Preparing support for new Debian release
     git checkout debian-upstream/stretch
     mv gitignore.debian-upstream .gitignore
     git add .gitignore
-    git commit -m 'added gitignore'
+    git commit -m 'added .gitignore'
 
     git checkout debian-debian/stretch
     mv gitignore.debian-packaging .gitignore
     mv debian.stretch debian
     git add .gitignore debian
-    git commit 'added .gitignore and debian/'
+    git commit -m 'added .gitignore and debian/'
 
 
 - prepare a source tarball::
