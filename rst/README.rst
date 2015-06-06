@@ -31,16 +31,12 @@ Tasks
 Creating soruce tarball
 ```````````````````````
 
-- Create tarball out of upstream's ``yaul-0.1.1`` tag
-
-.. code:: shell
+- Create tarball out of upstream's ``yaul-0.1.1`` tag::
 
     git checkout default
     ./scripts/create-tarball yaul-0.1.1
 
-- Create source tarball from most recent upstream commit
-
-.. code:: shell
+- Create source tarball from most recent upstream commit::
 
     git checkout default
     ./scripts/create-tarball master
@@ -51,11 +47,12 @@ The script requires an access to temporary directory (usually ``/tmp``, see
 
 Creating soruce tarball for Debian packaging tools
 ``````````````````````````````````````````````````
-.. code:: shell
+
+- Create normal source tarball and rename it appropriatelly::
 
     git checkout default
     ./scripts/create-tarball yaul-0.1.1
-    mv ../yaul-0.1.1.tar.gz ../yaul_0.1.1.orig.tar.gz
+    mv ../yaul-0.1.1.tar.gz ../yaul0.1_0.1.1.orig.tar.gz
 
 Preparing support for new Debian release
 ````````````````````````````````````````
@@ -67,11 +64,6 @@ Preparing support for new Debian release
 
   this shall create ``debian.stretch`` with the initial contents of ``debian``
   directory for stretch release.
-
-- Prepare a source tarball::
-
-    ./scripts/create-tarball yaul-0.1.1
-    mv ../yaul-0.1.1.tar.gz ../yaul_0.1.1.orig.tar.gz
 
 - create branch for upstream sources::
 
@@ -85,6 +77,19 @@ Preparing support for new Debian release
 
     git checkout -b debian-dfsg/stretch
     mv debian.stretch debian
+
+- prepare a source tarball::
+
+    ./scripts/create-tarball yaul-0.1.1
+    mv ../yaul-0.1.1.tar.gz ../yaul0.1_0.1.1.orig.tar.gz
+
+- import the source tarball::
+
+    gbp import-orig ../yaul0.1_0.1.1.orig.tar.gz
+
+- build the package::
+
+    gbp buildpackage
 
 
 Build package
