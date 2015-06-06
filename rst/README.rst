@@ -60,29 +60,24 @@ Creating soruce tarball for Debian packaging tools
 Preparing support for new Debian release
 ````````````````````````````````````````
 
-- Prepare initial ``debian`` directory
+- Prepare initial ``debian`` directory::
 
-  .. code::
-        git checkout default
-        ./scripts/create-debian-release stretch 0.1.0
+    git checkout default
+    ./scripts/create-debian-release stretch 0.1.0
 
+  this shall create ``debian.stretch`` with the initial contents of ``debian``
+  directory for stretch release.
 
-- Prepare a source tarball
-
-.. code:: shell
+- Prepare a source tarball::
 
     ./scripts/create-tarball yaul-0.1.0
     mv ../yaul-0.1.0.tar.gz ../yaul_0.1.0.orig.tar.gz
 
-- create branch for upstream sources
-
-.. code::
+- create branch for upstream sources::
 
     git checkout --orphan debian-upstream/stretch
 
-- create branches for debian packaging, and switch to ``debian-debian`` branch
-
-.. code::
+- create branches for debian packaging, and switch to ``debian-debian`` branch::
 
     git checkout -b debian-debian/stretch
     git checkout -b debian-security/stretch
@@ -90,7 +85,9 @@ Preparing support for new Debian release
     git checkout -b debian-dfsg/stretch
 
 
-- initialize ``debian/`` directory
+- initialize ``debian/`` directory::
+
+    mv debian.stretch debian
 
 .. code:: shell
 
