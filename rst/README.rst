@@ -77,16 +77,13 @@ Preparing support for new Debian release
 
     git checkout --orphan debian-upstream/stretch
 
-- create branches for debian packaging, and switch to ``debian-debian`` branch::
+- create branch for debian packaging::
 
     git checkout -b debian-debian/stretch
-    git checkout -b debian-security/stretch
-    git checkout -b debian-backports/stretch
+
+- switch to the packaging branch and initialize ``debian/`` directory::
+
     git checkout -b debian-dfsg/stretch
-
-
-- initialize ``debian/`` directory::
-
     mv debian.stretch debian
 
 .. code:: shell
