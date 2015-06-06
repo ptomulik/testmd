@@ -72,13 +72,9 @@ Preparing support for new Debian release
     mv gitignore.debian .gitignore
     git commit -m 'initial commit for debian/stretch packaging'
 
-- create branch for debian packaging::
+- create branch for debian packaging and rename the debian directory::
 
     git checkout -b debian-debian/stretch
-
-- switch to the packaging branch and initialize ``debian/`` directory::
-
-    git checkout -b debian-dfsg/stretch
     mv debian.stretch debian
 
 - prepare a source tarball::
