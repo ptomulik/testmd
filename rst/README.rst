@@ -65,17 +65,31 @@ Preparing support for new Debian release
   this shall create ``debian.stretch`` with the initial contents of ``debian``
   directory for stretch release.
 
-- create branch for upstream sources::
+- create branch for debian upstream::
 
     git checkout --orphan debian-upstream/stretch
     git rm -rf --cached .
-    mv gitignore.debian .gitignore
-    git commit -m 'initial commit for debian/stretch packaging'
+    git commit --allow-empty -m 'initial commit for debian-upstream/stretch'
 
-- create branch for debian packaging and rename the debian directory::
+- create branch for debian packaging::
 
     git checkout -b debian-debian/stretch
+    git commit --allow-empty -m 'initial commit for debian-debian/stretch'
+
+
+- put initial files to branches::
+
+    git checkout debian-upstream/stretch
+    mv gitignore.debian-upstream .gitignore
+    git add .gitignore
+    git commit -m 'added gitignore'
+
+    git checkout debian-debian/stretch
+    mv gitignore.debian-packaging .gitignore
     mv debian.stretch debian
+    git add .gitignore debian
+    git commit 'added .gitignore and debian/'
+
 
 - prepare a source tarball::
 
