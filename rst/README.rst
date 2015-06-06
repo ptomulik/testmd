@@ -8,7 +8,7 @@ Branches
 
 The repository contains several separate branches for different purposes
 
-+=================================+===========================================================================================================+
++---------------------------------+-----------------------------------------------------------------------------------------------------------+
 | ``debian-debian/<release>``       | the Debian packaging for a <release> (e.g., sid or experimental)                                          |
 +=================================+===========================================================================================================+
 | ``debian-upstream/<release>``   | the upstream sources for a release matching one of the above                                              |
