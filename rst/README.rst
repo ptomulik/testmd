@@ -9,15 +9,15 @@ Branches
 The repository contains several separate branches for different purposes
 
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
-| ``debian-debian/<release>``       | the Debian packaging for a <release> (e.g., sid or experimental)                                          |
+| *debian-debian/<release>*       | the Debian packaging for a <release> (e.g., sid or experimental)                                          |
 +=================================+===========================================================================================================+
-| ``debian-upstream/<release>``   | the upstream sources for a release matching one of the above                                              |
+| *debian-upstream/<release>*     | the upstream sources for a release matching one of the above                                              |
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
-| ``debian-security/<release>``   | security updates for a certain release                                                                    |
+| *debian-security/<release>*     | security updates for a certain release                                                                    |
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
-| ``debian-backports/<release>``  | backports to a certain release                                                                            |
+| *debian-backports/<release>*    | backports to a certain release                                                                            |
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
-| ``debian-dfsg/<release>``           | the dfsg clean upstream sources in case the cleanup is done via a Git merge from upstream to this branch. |
+| *debian-dfsg/<release>*         | the dfsg clean upstream sources in case the cleanup is done via a Git merge from upstream to this branch. |
 +---------------------------------+-----------------------------------------------------------------------------------------------------------+
 
 
@@ -84,3 +84,5 @@ New release
 
 
 .. _yaul: https://github.com/ptomulik/yaul
+
+.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
