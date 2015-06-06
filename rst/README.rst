@@ -61,6 +61,7 @@ Preparing support for new Debian release
 ````````````````````````````````````````
 
 - Prepare initial ``debian`` directory
+
   .. code::
         git checkout default
         ./scripts/create-debian-release stretch 0.1.0
