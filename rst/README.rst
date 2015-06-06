@@ -68,6 +68,9 @@ Preparing support for new Debian release
 - create branch for upstream sources::
 
     git checkout --orphan debian-upstream/stretch
+    git rm -rf --cached .
+    mv gitignore.debian .gitignore
+    git commit -m 'initial commit for debian/stretch packaging'
 
 - create branch for debian packaging::
 
