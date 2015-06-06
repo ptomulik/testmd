@@ -31,12 +31,12 @@ Tasks
 Creating soruce tarball
 ```````````````````````
 
-- Create tarball out of upstream's ``yaul-0.1.0`` tag
+- Create tarball out of upstream's ``yaul-0.1.1`` tag
 
 .. code:: shell
 
     git checkout default
-    ./scripts/create-tarball yaul-0.1.0
+    ./scripts/create-tarball yaul-0.1.1
 
 - Create source tarball from most recent upstream commit
 
@@ -54,8 +54,8 @@ Creating soruce tarball for Debian packaging tools
 .. code:: shell
 
     git checkout default
-    ./scripts/create-tarball yaul-0.1.0
-    mv ../yaul-0.1.0.tar.gz ../yaul_0.1.0.orig.tar.gz
+    ./scripts/create-tarball yaul-0.1.1
+    mv ../yaul-0.1.1.tar.gz ../yaul_0.1.1.orig.tar.gz
 
 Preparing support for new Debian release
 ````````````````````````````````````````
@@ -63,15 +63,15 @@ Preparing support for new Debian release
 - Prepare initial ``debian`` directory::
 
     git checkout default
-    ./scripts/create-debian-release stretch 0.1.0
+    ./scripts/create-debian-release stretch 0.1.1
 
   this shall create ``debian.stretch`` with the initial contents of ``debian``
   directory for stretch release.
 
 - Prepare a source tarball::
 
-    ./scripts/create-tarball yaul-0.1.0
-    mv ../yaul-0.1.0.tar.gz ../yaul_0.1.0.orig.tar.gz
+    ./scripts/create-tarball yaul-0.1.1
+    mv ../yaul-0.1.1.tar.gz ../yaul_0.1.1.orig.tar.gz
 
 - create branch for upstream sources::
 
@@ -85,19 +85,6 @@ Preparing support for new Debian release
 
     git checkout -b debian-dfsg/stretch
     mv debian.stretch debian
-
-.. code:: shell
-
-    git checkout debian-debian/stretch
-    mkdir debian/
-    git show default:debian.default/gbp.conf | sed -e 's/@DEBIAN_RELEASE@/stretch/g' > debian/gbp.conf
-    get show default:debian.default/compat > debian/compat
-
-.. <!--- dh_make -m -e ptomulik@meil.pw.edu.pl -p yaul_0.1.0 -->
-
-- put the following contents to debian/gbp.conf
-
-.. 
 
 
 Build package
