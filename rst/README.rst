@@ -93,11 +93,13 @@ Preparing support for new Debian release
 
 - prepare a source tarball::
 
+    git checkout default
     ./scripts/create-tarball yaul-0.1.1
     mv ../yaul-0.1.1.tar.gz ../yaul0.1_0.1.1.orig.tar.gz
 
 - import the source tarball::
 
+    git checkout debian-debian/stretch
     gbp import-orig ../yaul0.1_0.1.1.orig.tar.gz
 
 - build the package::
