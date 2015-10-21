@@ -1,173 +1,172 @@
-TML
-===
+scons-arguments
+===============
 
-.. image:: https://travis-ci.org/ptomulik/tml.svg?branch=master :target: https://travis-ci.org/ptomulik/tml
+[![Build Status](https://travis-ci.org/ptomulik/scons-arguments.png?branch=master)](https://travis-ci.org/ptomulik/scons-arguments)
 
-Template Metaprogramming Library
+Welcome to ``scons-arguments``.
 
-Overview
---------
+This scons extension enables one to easily define scons command-line variables
+and options. It provides a concept of "Argument" which correlates up to three
+entities:
 
-The TML library is a general-purpose C++ template metaprogramming library with
-compile-time algorithms, sequences and metafunctions. It's inspired by
-`Boost.MPL`_ and `tinympl`_. It tries to preserve the `Boost.MPL`_'s concepts
-and interfaces while adding few new concepts and features. The implementation
-of TML makes use of the C++11 features, resulting in smaller code base.
+- command line option (e.g. ``scons --prefix=/usr/bin``),
+- command line variable (e.g. ``scons PREFIX=/usr/bin``),
+- construction variable in SConscript (e.g. env['PREFIX']).
 
-Features
---------
+INSTALLATION
+------------
 
+There are two method for installation:
 
-Sequences
-^^^^^^^^^
+### Installation by simple copy
 
-The TML introduces new sequence classes called ``sequence`` and
-``lsequence_c``. The ``sequence`` class models what I call "Variadic Template 
-Sequence". The concept of "Template Sequence" makes an explicit assumption,
-that the sequence has form of instantiation ``X<a0,...a{n-1}>`` of some
-template ``X`` and ``a0,...,a{n-1}`` are then the elements of the sequence.
-A "Variadic Template Sequence" is a Template Sequence with ``X`` being a
-variadic template.
+Copy recursively the entire directory ``SConsArguments`` to your
+``site_scons/`` directory
 
-Classes
-```````
+    cp -r scons-arguments/SConsArguments your/projects/site_scons/
 
-[ ] vector
-[ ] list
-[ ] deque
-[ ] set
-[ ] map
-[ ] range_c
-[ ] vector_c
-[ ] list_c
-[ ] set_c
-[ ] string
-[x] sequence (new)
+### Installation as a submodule in git-based projects
 
-Views
-`````
+Add the repository as a submodule to your project
 
-[ ] empty_sequence
-[ ] filter_view
-[ ] iterator_range
-[ ] joint_view
-[ ] single_view
-[ ] transform_view
-[ ] zip_view
+```shell
+git submodule add git://github.com/ptomulik/scons-arguments.git 3rd/scons-arguments
+```
 
-Intrinsic Metafunctions
-```````````````````````
+In your `site_scons/site_init.py` add the following lines:
 
-+====================+========+======+=======+=====+=====+========+==========+
-|                    | vector | list | deque | set | map | string | sequence |
-+====================+========+======+=======+=====+=====+========+==========+
-| apply_sequence     |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| at                 |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| at_c               |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| back               |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| begin              |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| clear              |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| empty              |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| end                |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| erase              |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| erase_key          |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| front              |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| has_key            |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| insert             |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| insert_range       |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| is_sequence        |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| key_type           |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| order              |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| pop_back           |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| pop_front          |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| push_back          |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| push_front         |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| sequence_generator |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| sequence_tag       |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| size               |        |      |       |     |     |        |     +    |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
-| value_type         |        |      |       |     |     |        |          |
-+--------------------+--------+------+-------+-----+-----+--------+----------+
+```python
+# site_scons/site_init.py
+import sys
+sys.path.append(Dir('#3rd/scons-arguments').abspath)
+```
 
-
-
-Iterators
-^^^^^^^^^
-
-Algorithms
-^^^^^^^^^^
-
-Metafunctions
-^^^^^^^^^^^^^
-
-Data Types
-^^^^^^^^^^
-
-
-Supported compilers
--------------------
-
-Currently supported compilers:
-
-- gcc >= 4.7
-- clang >= 3.4
-
-I haven't tested with other compilers. Feedback is welcome.
-
-
-Generating reference manual
----------------------------
-
-.. code-block:: shell
-
-    (cd doc/ && doxygen)
-
-The generated documentation is written to ``doc/refman/html``.
-
-Running tests
+DOCUMENTATION
 -------------
 
-.. code-block:: shell
+### API documentation
 
-    bjam -a test example
+API documentation can be generated from the top level directory with the
+following command (see also requirements below)
 
-Using specific compiler (e.g. clang):
+```shell
+scons api-doc
+```
 
-.. code-block:: shell
+The generated documentation will be written to ``build/doc/api``.
 
-    bjam toolset=clang -a test example
+#### Requirements for api-doc
 
-License
+To generate API documentation, you may need following packages on your system:
+
+  * python-epydoc <http://epydoc.sourceforge.net/>
+  * python-docutils <http://pypi.python.org/pypi/docutils>
+  * python-pygments <http://pygments.org/>
+
+Note, that epydoc is no longer developed, last activities in the project date
+to 2008. The pip epydoc package 3.0.1 is not usable with current versions of
+python. Fortunately Debian package is patched to work with current python.
+Please use the ``python-epydoc`` package installed with apt-get.
+
+### User documentation
+
+User documentation can be generated from the top level directory with the
+following command (see also requirements below)
+
+```shell
+scons user-doc
+```
+The generated documentation is located in ``build/doc/user``.
+
+#### Requirements for user-doc
+
+To generate user's documentation, you'll need following packages on your
+system:
+
+  * docbook5-xml <http://www.oasis-open.org/docbook/xml/>
+  * xsltproc <ftp://xmlsoft.org/libxslt/>
+  * imagemagick <http://www.imagemagick.org/>
+
+You also must install locally the SCons docbook tool by Dirk Baechle:
+
+  * scons docbook tool <https://bitbucket.org/dirkbaechle/scons_docbook/>
+
+this is easily done by running the following bash script
+
+```
+bin/download-devel-deps.sh
+```
+
+from the top level directory.
+
+
+TESTING
 -------
 
-Copyright (C) 2014, Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+We provide unit tests and end-to-end tests.
 
-Distributed under the Boost Software License, Version 1.0.
-(See accompanying file LICENSE_1_0.txt or copy at
-`http://www.boost.org/LICENSE_1_0.txt <http://www.boost.org/LICENSE_1_0.txt>`_)
+### Running unit tests
 
-.. _Boost.MPL: http://www.boost.org/libs/mpl/doc/
-.. _tinympl: https://github.com/sbabbi/tinympl
+To run unit tests type
+
+```shell
+scons unit-test
+```
+
+### Requirements for unit tests
+
+  * python-unittest2 <https://pypi.python.org/pypi/unittest2>
+  * python-mock <https://pypi.python.org/pypi/mock>
+
+On Debian install them with:
+
+```shell
+apt-get install python-unittest2 python-mock
+```
+
+### Running end-to-end tests
+
+To run end-to-end tests, type
+
+```shell
+SCONS_EXTERNAL_TEST=1 python runtest.py -a
+```
+
+### Requirements for end-to-end tests
+
+  * SCons testing framework
+
+Download the SCons testing framework with:
+
+```shell
+./bin/download-test-framework.sh
+```
+
+or
+
+```shell
+./bin/download-deps.sh
+```
+
+LICENSE
+-------
+
+Copyright (c) 2015 by Pawel Tomulik
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE
