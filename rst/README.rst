@@ -34,9 +34,8 @@ is present in software repositories for easy/quick installation:
 
 - `python`_ version 2.7 (Windows users need to install 32-bit versions)
 - `scons`_ to drive compilation of TeX projects,
-- `texlive`_ to compile ``*.tex`` sources,
-- `bibtool`_ (optional) to perform automatized processing of **BibTeX**
-   databases,
+- `texlive`_ to compile TeX sources,
+- bibtool_ (optional) to perform automatized processing of **BibTeX** databases,
 - `bibclean`_ (optional) to sanity check **BibTeX** databases,
 - `jabref`_ to manage **BibTeX** databases,
 - `gnuplot`_ to generate plots from numerical data,
