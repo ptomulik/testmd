@@ -67,33 +67,38 @@ Plain users only needs *TO BUILD DOCUMENTS*.
 
 TO BUILD DOCUMENTS
 ``````````````````
-In addition 
-  - `SCons texas tool`_ (download it with ``python bin/downloads.py scons-texas``),
-  - `SCons dvipdfm tool`_ (download it with ``python bin/downloads.py scons-dvipdfm``),
-  - `SCons gnuplot tool`_ (download it with ``python bin/downloads.py scons-gnuplot``).
+
+Note, that all the following dependencies may be downloaded with single command::
+
+   python bin/downloads.py
+   
+Particular dependencies downloaded by the script are listed below
+
+- `SCons texas tool`_ (download it with ``python bin/downloads.py scons-texas``),
+- `SCons dvipdfm tool`_ (download it with ``python bin/downloads.py scons-dvipdfm``),
+- `SCons gnuplot tool`_ (download it with ``python bin/downloads.py scons-gnuplot``).
 
 TO RUN TESTS
 ````````````
 The following software is necessary to run tests
 
-  - `scons test framework`_ to run any test (download it with
-    ``python bin/downloads.py scons-test``),
+- `scons test framework`_ to run any test (download it with ``python bin/downloads.py scons-test``),
 
 Note: currently there are no test, but may be added in future.
 
 TO GENERATE API DOCUMENTATION
 `````````````````````````````
 
-  - `epydoc`_,
-  - `python-docutils`_,
-  - `python-pygments`_.
+- `epydoc`_,
+- `python-docutils`_,
+- `python-pygments`_.
 
 TO GENERATE USER DOCUMENTATION
 ``````````````````````````````
 
-  - `docbook-xml`_,
-  - `xsltproc`_,
-  - `SCons docbook tool`_ (download it with ``bin/download-docbook-tool.sh``).
+- `docbook-xml`_,
+- `xsltproc`_,
+- `SCons docbook tool`_ (download it with ``bin/download-docbook-tool.sh``).
 
 GENERATING DOCUMENTATION
 ------------------------
