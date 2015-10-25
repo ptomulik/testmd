@@ -32,7 +32,8 @@ INSTALLABLE PACKAGES
 The following software is usually available in form of installable packages and
 is present in software repositories for easy/quick installation:
 
-- `python`_ version 2.7 (Windows users need to install 32-bit versions)
+- `git`_ (optional) if you want to contribute to this repository,
+- `python`_ version 2.7 (Windows users need to install 32-bit versions),
 - `scons`_ to drive compilation of TeX projects,
 - `texlive`_ to compile TeX sources,
 - `bibtool`_ (optional) to perform automated processing of **BibTeX** databases,
