@@ -9,10 +9,10 @@ ZTMiR-LAB-QNX
    :target: https://ci.appveyor.com/project/ptomulik/ztmir-lab-qnx/branch/master
    :alt: Appveyor CI
     
-+----------+------------+
-|  travis  |  appveyor  |
-+----------+------------+
-| |travis| | |appveyor| |
-+----------+------------+
++------------+--------------+
+|   travis   |   appveyor   |
++------------+--------------+
+|  |travis|  |  |appveyor|  |
++------------+--------------+
 
 Didactic materials for QNX laboratory taken at ZTMiR.
