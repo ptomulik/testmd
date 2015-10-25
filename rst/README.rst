@@ -33,7 +33,7 @@ The following software is usually available in form of installable packages and
 is present in software repositories for easy/quick installation:
 
 - `git`_ (optional) if you want to contribute to this repository,
-- `python`_ version 2.7 (Windows users need to install 32-bit versions),
+- `python`_ version 2.7 is required by `scons`_ (Windows users need python 2.7 32-bit),
 - `scons`_ to drive compilation of TeX projects,
 - `texlive`_ to compile TeX sources,
 - `bibtool`_ (optional) to perform automated processing of **BibTeX** databases,
