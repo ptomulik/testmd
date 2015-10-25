@@ -10,7 +10,7 @@ ZTMiR-LAB-QNX
    :alt: Appveyor CI
     
 +-------------+--------------+
-| *Travis-CI* |  *Appveyor*  |
+|``Travis-CI``| ``Appveyor`` |
 +-------------+--------------+
 |  |travis|   |  |appveyor|  |
 +-------------+--------------+
