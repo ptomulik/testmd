@@ -254,6 +254,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 
 .. _ztmir: http://ztmir.meil.pw.edu.pl/
+.. _git: https://git-scm.com/
 .. _python: https://www.python.org/
 .. _scons: http://scons.org
 .. _texlive: http://texlive.org
