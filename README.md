@@ -1,157 +1,169 @@
-scons-arguments
-===============
+clxx - c++11 wrappers for OpenCL
+================================
 
-[![Build Status](https://travis-ci.org/ptomulik/scons-arguments.png?branch=master)](https://travis-ci.org/ptomulik/scons-arguments)
+.. image:: https://travis-ci.org/ptomulik/clxx.png?branch=master
+    :target: https://travis-ci.org/ptomulik/clxx
 
-Welcome to ``scons-arguments``.
+.. image:: https://coveralls.io/repos/ptomulik/clxx/badge.png?branch=master
+   :target: https://coveralls.io/r/ptomulik/clxx?branch=master
 
-This scons extension enables one to easily define scons command-line variables
-and options. It provides a concept of "Argument" which correlates up to three
-entities:
 
-- command line option (e.g. ``scons --prefix=/usr/bin``),
-- command line variable (e.g. ``scons PREFIX=/usr/bin``),
-- construction variable in SConscript (e.g. env['PREFIX']).
 
-INSTALLATION
+Welcome to the clxx development tree.
+
+START
+-----
+
+Start with cloning this repository (note: we use git submodules so we need
+``--recursive`` flag):
+
+.. code:: bash
+
+    git clone --recursive git://github.com/ptomulik/clxx.git
+
+REQUIREMENTS
 ------------
 
-There are two method for installation:
+To build the project
+`````````````````````
 
-### Installation by simple copy
+X. Boost libraries:
 
-Copy recursively the entire directory ``SConsArguments`` to your
-``site_scons/`` directory
-
-    cp -r scons-arguments/SConsArguments your/projects/site_scons/
-
-### Installation as a submodule in git-based projects
-
-Add the repository as a submodule to your project
-
-```shell
-git submodule add git://github.com/ptomulik/scons-arguments.git 3rd/scons-arguments
-```
-
-In your `site_scons/site_init.py` add the following lines:
-
-```python
-# site_scons/site_init.py
-import sys
-sys.path.append(Dir('#3rd/scons-arguments').abspath)
-```
-
-DOCUMENTATION
--------------
-
-### API documentation
-
-API documentation can be generated from the top level directory with the
-following command (see also requirements below)
-
-```shell
-scons api-doc
-```
-
-The generated documentation will be written to ``build/doc/api``.
-
-#### Requirements for api-doc
-
-To generate API documentation, you may need following packages on your system:
-
-  * python-epydoc <http://epydoc.sourceforge.net/>
-  * python-docutils <http://pypi.python.org/pypi/docutils>
-  * python-pygments <http://pygments.org/>
-
-Note, that epydoc is no longer developed, last activities in the project date
-to 2008. The pip epydoc package 3.0.1 is not usable with current versions of
-python. Fortunately Debian package is patched to work with current python.
-Please use the ``python-epydoc`` package installed with apt-get.
-
-### User documentation
-
-User documentation can be generated from the top level directory with the
-following command (see also requirements below)
-
-```shell
-scons user-doc
-```
-The generated documentation is located in ``build/doc/user``.
-
-#### Requirements for user-doc
-
-To generate user's documentation, you'll need following packages on your
-system:
-
-  * docbook5-xml <http://www.oasis-open.org/docbook/xml/>
-  * xsltproc <ftp://xmlsoft.org/libxslt/>
-  * imagemagick <http://www.imagemagick.org/>
-
-You also must install locally the SCons docbook tool by Dirk Baechle:
-
-  * scons docbook tool <https://bitbucket.org/dirkbaechle/scons_docbook/>
-
-this is easily done by running the following bash script
-
-```
-bin/download-devel-deps.sh
-```
-
-from the top level directory.
+- `Boost.Algorithm`_
+- `Boost.Serialization`_
+- `Boost.Bimap`_
+- `Boost.Core`_
+- `Boost.Config`_
+- `Boost.Smart Ptr`_
+- `Boost.Program Options`_
+- `Boost.Unordered`_
 
 
-TESTING
--------
+X. X11 client-side library (development):
 
-We provide unit tests and end-to-end tests.
+- `libx11-dev`_
 
-### Running unit tests
+To download some prerequisites
+``````````````````````````````
 
-To run unit tests type
+X. Python
 
-```shell
-scons unit-test
-```
+To build downloaded OpenCL ICD loader
+`````````````````````````````````````
 
-### Requirements for unit tests
+X. PCRE library (OpenCL build, containing pcre-config script)
 
-  * python-unittest2 <https://pypi.python.org/pypi/unittest2>
-  * python-mock <https://pypi.python.org/pypi/mock>
+X. OpenGL headers (OpenCL build, ``GL/gl.h`` etc)
 
-On Debian install them with:
+To build downloaded swig
+````````````````````````
 
-```shell
-apt-get install python-unittest2 python-mock
-```
+X. `bison_`
+X. yodl
 
-### Running end-to-end tests
+Installing dependencies on Debian
+`````````````````````````````````
 
-To run end-to-end tests, type
+Boost libraries::
 
-```shell
-SCONS_EXTERNAL_TEST=1 python runtest.py -a
-```
+    sudo apt-get install libboost-dev libboost-program-options-dev
 
-### Requirements for end-to-end tests
+or just::
 
-  * SCons testing framework
+    sudo apt-get install libboost-all-dev
 
-Download the SCons testing framework with:
+X11 libraries::
 
-```shell
-./bin/download-test-framework.sh
-```
+    sudo apt-get install libx11-dev
 
-or
+PCRE library::
 
-```shell
-./bin/download-deps.sh
-```
+    sudo apt-get install libpcre3-dev
+
+OpenGL headers::
+
+    sudo apt-get install mesa-common-dev
+
+Bison::
+
+    sudo apt-get install bison
+
+Yodl::
+
+    sudo apt-get install yodl
+
+HOWTO
+-----
+
+See files under ``HOWTO/`` directory to read about most common routines. There
+are several documents.
+
+For everyone:
+
+==================================== ===========================================
+           File                              Description
+==================================== ===========================================
+ `HOWTO/compile.rst`_                 compiling the sources
+==================================== ===========================================
+
+For clxx developers:
+
+==================================== ===========================================
+            File                              Description
+==================================== ===========================================
+ `HOWTO/create-source.rst`_           creating new source file
+------------------------------------ -------------------------------------------
+ `HOWTO/test.rst`_                    running tests
+==================================== ===========================================
+
+
+DIRECTORY STRUCTURE
+-------------------
+
+Top level source directory contains following subdirs:
+
+================= ==============================================================
+    Directory      Description
+================= ==============================================================
+ ``bin/``          contains mainainer scripts and additional utilities,
+----------------- --------------------------------------------------------------
+ ``build/``        this is main (default) variant directory, all the results of
+                   compilation go there; the directory is created by scons,
+----------------- --------------------------------------------------------------
+ ``HOWTO/``        several HOWTO documents are placed here,
+----------------- --------------------------------------------------------------
+ ``debian/``       debian packaging files (currently empty),
+----------------- --------------------------------------------------------------
+ ``rpm/``          rpm packaging files (currently empty)
+----------------- --------------------------------------------------------------
+ ``site_scons/``   extensions used by scons,
+----------------- --------------------------------------------------------------
+ ``src/``          main source tree with source files to be compiled,
+----------------- --------------------------------------------------------------
+ ``template/``     templates for source files,
+----------------- --------------------------------------------------------------
+ ``valgrind/``     configuration files for valgrind
+================= ==============================================================
+
+.. _HOWTO/compile.rst: HOWTO/compile.rst
+.. _HOWTO/create-source.rst: HOWTO/create-source.rst
+.. _HOWTO/test.rst: HOWTO/test.rst
+.. _libboost-dev: https://packages.debian.org/libboost-dev
+.. _libx11-dev: https://packages.debian.org/libx11-dev
+.. _Boost.Algorithm: http://www.boost.org/doc/libs/release/libs/algorithm/
+.. _Boost.Serialization: http://www.boost.org/doc/libs/release/libs/serialization/
+.. _Boost.Bimap: http://www.boost.org/doc/libs/release/libs/bimap/
+.. _Boost.Core: http://www.boost.org/doc/libs/release/libs/core/
+.. _Boost.Config: http://www.boost.org/doc/libs/release/libs/config/config.htm
+.. _Boost.Smart Ptr: http://www.boost.org/doc/libs/release/libs/smart_ptr/smart_ptr.htm
+.. _Boost.Program Options: http://www.boost.org/doc/libs/release/libs/program_options/
+.. _Boost.Unordered: http://www.boost.org/doc/libs/release/libs/unordered/
+.. _bison: https://www.gnu.org/software/bison/
 
 LICENSE
 -------
 
-Copyright (c) 2015 by Pawel Tomulik
+@COPYRIGHT@
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -170,3 +182,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
+
+.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
