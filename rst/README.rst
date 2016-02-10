@@ -46,22 +46,22 @@ X. X11 client-side library (development):
 To download some prerequisites
 ``````````````````````````````
 
-First of all, you need python to run ``bin/download-deps.py`` script. Then, you
-need following software for the packages being downloaded (and possibly
-compiled):
+Python_ is required to run ``bin/download-deps.py`` script. Then the following
+software is necessary for the particular packages being downloaded (and
+sometimes compiled):
 
-=================== ==========================================================
-      Package                           Requirements
-=================== ==========================================================
+=================== ========================================================== ========================================= =======================================
+      Package                      Common Prerequisites                                         Linux                                Windows
+=================== ========================================================== ========================================= =======================================
   cxxtest
-------------------- ----------------------------------------------------------
-  opencl-icd-ldr      c/c++ toolchain, make, cmake, autotools, libpcre, OpenGL
-                      headers (on Linux),
-------------------- ----------------------------------------------------------
+------------------- ---------------------------------------------------------- ----------------------------------------- ---------------------------------------
+  opencl-icd-ldr      c/c++ toolchain, make, cmake, autotools, libpcre,         libx11-dev
+                      OpenGL headers,
+------------------- ---------------------------------------------------------- ----------------------------------------- ---------------------------------------
   opencl-hdr
-------------------- ----------------------------------------------------------
+------------------- ---------------------------------------------------------- ----------------------------------------- ---------------------------------------
   swig                c/c++ toolchain, make, autotools, bison, yodl
-------------------- ----------------------------------------------------------
+------------------- ---------------------------------------------------------- ----------------------------------------- ---------------------------------------
   scons
 =================== ==========================================================
 
@@ -163,6 +163,7 @@ Top level source directory contains following subdirs:
 .. _Boost.Program Options: http://www.boost.org/doc/libs/release/libs/program_options/
 .. _Boost.Unordered: http://www.boost.org/doc/libs/release/libs/unordered/
 .. _bison: https://www.gnu.org/software/bison/
+.. _Python: https://www.python.org/
 
 LICENSE
 -------
