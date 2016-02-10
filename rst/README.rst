@@ -47,8 +47,7 @@ To download some prerequisites
 ``````````````````````````````
 
 Python_ is required to run ``bin/download-deps.py`` script. Then the following
-software is necessary for the particular packages being downloaded (and
-sometimes compiled):
+software is necessary for the particular packages to be downloaded and compiled
 
 =================== ========================================================== ========================================= =======================================
       Package                      Common Prerequisites                                         Linux                                Windows
@@ -63,7 +62,7 @@ sometimes compiled):
   swig                c/c++ toolchain, make, autotools, bison, yodl
 ------------------- ---------------------------------------------------------- ----------------------------------------- ---------------------------------------
   scons
-=================== ==========================================================
+=================== ========================================================== ========================================= =======================================
 
 Installing dependencies on Debian
 `````````````````````````````````
