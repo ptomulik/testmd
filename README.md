@@ -46,20 +46,24 @@ X. X11 client-side library (development):
 To download some prerequisites
 ``````````````````````````````
 
-X. Python
+First of all, you need python to run ``bin/download-deps.py`` script. Then, you
+need following software for the packages being downloaded (and possibly
+compiled):
 
-To build downloaded OpenCL ICD loader
-`````````````````````````````````````
-
-X. PCRE library (OpenCL build, containing pcre-config script)
-
-X. OpenGL headers (OpenCL build, ``GL/gl.h`` etc)
-
-To build downloaded swig
-````````````````````````
-
-X. `bison_`
-X. yodl
+=================== ==========================================================
+      Package                           Requirements
+=================== ==========================================================
+  cxxtest
+------------------- ----------------------------------------------------------
+  opencl-icd-ldr      c/c++ toolchain, make, cmake, autotools, libpcre, OpenGL
+                      headers (on Linux),
+------------------- ----------------------------------------------------------
+  opencl-hdr
+------------------- ----------------------------------------------------------
+  swig                c/c++ toolchain, make, autotools, bison, yodl
+------------------- ----------------------------------------------------------
+  scons
+=================== ==========================================================
 
 Installing dependencies on Debian
 `````````````````````````````````
