@@ -1,244 +1,173 @@
-ZTMiR-LAB-QNX
-=============
+clxx - c++11 wrappers for OpenCL
+================================
 
-.. |travis| image:: https://travis-ci.org/ptomulik/ztmir-lab-qnx.svg?branch=devel
-   :target: https://travis-ci.org/ptomulik/ztmir-lab-qnx
-   :alt: Travis CI
+.. image:: https://travis-ci.org/ptomulik/clxx.png?branch=master
+    :target: https://travis-ci.org/ptomulik/clxx
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/vmu22j1584ojt7c2/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/ptomulik/ztmir-lab-qnx/branch/master
-   :alt: Appveyor CI
-    
-+---------------+--------------+
-|   Travis-CI   |   Appveyor   |
-+===============+==============+
-|  |travis|     |  |appveyor|  |
-+---------------+--------------+
+.. image:: https://coveralls.io/repos/ptomulik/clxx/badge.png?branch=master
+   :target: https://coveralls.io/r/ptomulik/clxx?branch=master
 
-Repository of TeX documents developed in ztmir_
 
-.. contents:: Table of Contents
-    :depth: 3
 
-PREREQUISITES
--------------
+Welcome to the clxx development tree.
 
-The following software packages are required (or helpful) to build documents
-found in this repository.
+START
+-----
 
-INSTALLABLE PACKAGES
-^^^^^^^^^^^^^^^^^^^^
+Start with cloning this repository (note: we use git submodules so we need
+``--recursive`` flag):
 
-The following software is usually available in form of installable packages and
-is present in software repositories for easy/quick installation:
+.. code:: bash
 
-- `git`_ (optional) if you want to contribute to this repository,
-- `python`_ version 2.7 - as required by `scons`_ (Windows users need python 2.7 32-bit),
-- `scons`_ to drive compilation of TeX projects,
-- `texlive`_ to compile TeX sources,
-- `bibtool`_ (optional) to perform automated processing of **BibTeX** databases,
-- `bibclean`_ (optional) to sanity check **BibTeX** databases,
-- `jabref`_ to manage **BibTeX** databases,
-- `gnuplot`_ to generate plots from numerical data,
-- `tar`_ to generate tarballs with documents sources.
+    git clone --recursive git://github.com/ptomulik/clxx.git
 
-OTHER DEPENDENCIES
-^^^^^^^^^^^^^^^^^^
-Required sources which are not available in the form of installable packages
-may be downloaded with ``bin/download-deps.sh`` script::
+REQUIREMENTS
+------------
 
-    python bin/downloads.py
+To build the project
+`````````````````````
 
-The script downloads files to local project tree, it doesn't clutter any
-folders outside of this projects.
+X. Boost libraries:
 
-The downloaded files may be further deleted with::
+- `Boost.Algorithm`_
+- `Boost.Serialization`_
+- `Boost.Bimap`_
+- `Boost.Core`_
+- `Boost.Config`_
+- `Boost.Smart Ptr`_
+- `Boost.Program Options`_
+- `Boost.Unordered`_
 
-    python bin/downloads.py --clean
 
-By default the script downloads most recent versions of these packages directly
-from source repositories (git/hg).
+X. X11 client-side library (development):
 
-PER-TASK LIST OF REQUIRED PACKAGES
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- `libx11-dev`_
 
-The following particular tasks depend on the following particular packages.
-Plain users only needs *TO BUILD DOCUMENTS*.
-
-TO BUILD DOCUMENTS
-``````````````````
-
-Note, that all the following dependencies may be downloaded with single command::
-
-   python bin/downloads.py
-   
-Particular dependencies downloaded by the script are listed below
-
-- `SCons texas tool`_ (download it with ``python bin/downloads.py scons-texas``),
-- `SCons dvipdfm tool`_ (download it with ``python bin/downloads.py scons-dvipdfm``),
-- `SCons gnuplot tool`_ (download it with ``python bin/downloads.py scons-gnuplot``).
-
-TO RUN TESTS
-````````````
-The following software is necessary to run tests
-
-- `scons test framework`_ to run any test (download it with ``python bin/downloads.py scons-test``),
-
-Note: currently there are no test, but may be added in future.
-
-TO GENERATE API DOCUMENTATION
-`````````````````````````````
-
-- `epydoc`_,
-- `python-docutils`_,
-- `python-pygments`_.
-
-TO GENERATE USER DOCUMENTATION
+To download some prerequisites
 ``````````````````````````````
 
-- `docbook-xml`_,
-- `xsltproc`_,
-- `SCons docbook tool`_ (download it with ``bin/download-docbook-tool.sh``).
+First of all, you need python to run ``bin/download-deps.py`` script. Then, you
+need following software for the packages being downloaded (and possibly
+compiled):
 
-GENERATING DOCUMENTATION
-------------------------
+=================== ==========================================================
+      Package                           Requirements
+=================== ==========================================================
+  cxxtest
+------------------- ----------------------------------------------------------
+  opencl-icd-ldr      c/c++ toolchain, make, cmake, autotools, libpcre, OpenGL
+                      headers (on Linux),
+------------------- ----------------------------------------------------------
+  opencl-hdr
+------------------- ----------------------------------------------------------
+  swig                c/c++ toolchain, make, autotools, bison, yodl
+------------------- ----------------------------------------------------------
+  scons
+=================== ==========================================================
 
-Texfactory framework has an API documentation and user manual. The documentation
-may be generated as follows (see also `REQUIREMENTS`_).
+Installing dependencies on Debian
+`````````````````````````````````
 
-API DOCUMENTATION
-^^^^^^^^^^^^^^^^^
+Boost libraries::
 
-To generate API documentation, type::
+    sudo apt-get install libboost-dev libboost-program-options-dev
 
-    scons api-doc
+or just::
 
-The generated API documentation will be written to ``build/doc/api/``.
+    sudo apt-get install libboost-all-dev
 
-USER MANUAL
-^^^^^^^^^^^
+X11 libraries::
 
-To generate user manual, type::
+    sudo apt-get install libx11-dev
 
-    scons user-doc
+PCRE library::
 
-The generated documentation will be written to ``build/doc/user/``.
+    sudo apt-get install libpcre3-dev
+
+OpenGL headers::
+
+    sudo apt-get install mesa-common-dev
+
+Bison::
+
+    sudo apt-get install bison
+
+Yodl::
+
+    sudo apt-get install yodl
 
 HOWTO
 -----
 
-MANAGE BIBLIOGRAPHIC DATABASE
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Use jabref_ for that. Prefer single database. Use keywords to categorize
-bibliographic positions.
+See files under ``HOWTO/`` directory to read about most common routines. There
+are several documents.
 
-BUILD ALL DOCUMENTS
-^^^^^^^^^^^^^^^^^^^
+For everyone:
 
-This is done with single command::
+==================================== ===========================================
+           File                              Description
+==================================== ===========================================
+ `HOWTO/compile.rst`_                 compiling the sources
+==================================== ===========================================
 
-    ptomulik@tea:$ scons
+For clxx developers:
 
-Once you have multiple projects it may take a long time. On multi-processor
-machine you may run parallel build with::
+==================================== ===========================================
+            File                              Description
+==================================== ===========================================
+ `HOWTO/create-source.rst`_           creating new source file
+------------------------------------ -------------------------------------------
+ `HOWTO/test.rst`_                    running tests
+==================================== ===========================================
 
-    ptomulik@tea:$ scons -jN
 
-where ``N`` is number of jobs ran in parallel.
+DIRECTORY STRUCTURE
+-------------------
 
-To clean all produced files, invoke::
+Top level source directory contains following subdirs:
 
-    ptomulik@tea:$ scons -c
+================= ==============================================================
+    Directory      Description
+================= ==============================================================
+ ``bin/``          contains mainainer scripts and additional utilities,
+----------------- --------------------------------------------------------------
+ ``build/``        this is main (default) variant directory, all the results of
+                   compilation go there; the directory is created by scons,
+----------------- --------------------------------------------------------------
+ ``HOWTO/``        several HOWTO documents are placed here,
+----------------- --------------------------------------------------------------
+ ``debian/``       debian packaging files (currently empty),
+----------------- --------------------------------------------------------------
+ ``rpm/``          rpm packaging files (currently empty)
+----------------- --------------------------------------------------------------
+ ``site_scons/``   extensions used by scons,
+----------------- --------------------------------------------------------------
+ ``src/``          main source tree with source files to be compiled,
+----------------- --------------------------------------------------------------
+ ``template/``     templates for source files,
+----------------- --------------------------------------------------------------
+ ``valgrind/``     configuration files for valgrind
+================= ==============================================================
 
-BUILD SINGLE DOCUMENT
-^^^^^^^^^^^^^^^^^^^^^
-
-You have several choices. Let's say, you have to compile paper named
-``paper-96`` which has sources under ``src/latex/papers/paper-96`` and its
-build directory is ``build/latex/papers/paper-96``.
-
-#. Build, when you're within source or build directory (i.e. your cwd is ``src/latex/papers/paper-96`` or  ``build/latex/papers/paper-96``)::
-       
-    ptomulik@tea:$ scons -u # Build everything
-    ptomulik@tea:$ scons -u -c # Clean created files
-    ptomulik@tea:$ scons -u paper-96-dvi # Create dvi
-    ptomulik@tea:$ scons -u paper-96-pdf # Create dvi+pdf
-    ptomulik@tea:$ scons -u paper-96-tgz # Create tarball
-
-#. Build from top-level directory::
-
-    ptomulik@tea:$ scons paper-96 # Build everything for the paper
-    ptomulik@tea:$ scons -c paper-96 # Clean
-    ptomulik@tea:$ scons paper-96-dvi # Create dvi
-    ptomulik@tea:$ scons paper-96-pdf # Create dvi+pdf
-    ptomulik@tea:$ scons paper-96-tgz # Create tarball
-
-CREATE NEW PAPER PROJECT
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-To generate new paper project from template, type::
-
-    bin/newpaper <name>
-
-where name is a symbolic name of the paper (i.e. ``paper-96`` from previous
-examples). To see available options, type ``bin/newpaper -h``. Paper templates
-are stored under ``template/latex/papers``. You may create your own templates
-there, or in another directory (see the ``-i`` flag to ``bin/newpaper``). To
-select particular template, use the ``-t`` flag.
-
-EXTRACT BIBTEX ENTRIES FOR YOUR PAPER
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You may use jabref_'s function ``"Tools | New subdatabase based on aux file"`` or bibtool_::
-
-    ptomulik@tea:$ bibtool -x build/latex/papers/paper/paper.aux \
-                   -i path/to/common/database.bib \
-                   -o src/latex/papers/paper/paper.bib
-
-CREATE PAPER TEX DISTRIBUTION FOR PUBLISHER
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For sample paper called ``paper-96`` this is done with::
-
-    ptomulik@tea:$ scons paper-96-tgz
-
-This creates tarball file
-``build/latex/papers/paper-96/paper-96[-<version>].tar.gz``. The ``version``
-part of the name may be absent, if version in not specified in SConscript file.
-
-DIRECTORIES
------------
-
-  ======================  =======================================================
-  Directory               Description
-  ======================  =======================================================
-  ``bin/``                several tools and scripts for writers/developers,
-  ----------------------  -------------------------------------------------------
-  ``build/``              where the writings are compiled, the tree structure
-                          resembles that of ``src/``,
-  ----------------------  -------------------------------------------------------
-  ``share/``              files shared between local **TeX** projects, for
-                          example custom **TeX** styles or **BibTeX** databases,
-  ----------------------  -------------------------------------------------------
-  ``site_scons/``         local extensions for scons_,
-  ----------------------  -------------------------------------------------------
-  ``src/``                main source tree with source files to be compiled,
-  ----------------------  -------------------------------------------------------
-  ``template/``           templates for certain types of source files,
-  ----------------------  -------------------------------------------------------
-  ``test/``               end-to-end tests
-  ======================  =======================================================
+.. _HOWTO/compile.rst: HOWTO/compile.rst
+.. _HOWTO/create-source.rst: HOWTO/create-source.rst
+.. _HOWTO/test.rst: HOWTO/test.rst
+.. _libboost-dev: https://packages.debian.org/libboost-dev
+.. _libx11-dev: https://packages.debian.org/libx11-dev
+.. _Boost.Algorithm: http://www.boost.org/doc/libs/release/libs/algorithm/
+.. _Boost.Serialization: http://www.boost.org/doc/libs/release/libs/serialization/
+.. _Boost.Bimap: http://www.boost.org/doc/libs/release/libs/bimap/
+.. _Boost.Core: http://www.boost.org/doc/libs/release/libs/core/
+.. _Boost.Config: http://www.boost.org/doc/libs/release/libs/config/config.htm
+.. _Boost.Smart Ptr: http://www.boost.org/doc/libs/release/libs/smart_ptr/smart_ptr.htm
+.. _Boost.Program Options: http://www.boost.org/doc/libs/release/libs/program_options/
+.. _Boost.Unordered: http://www.boost.org/doc/libs/release/libs/unordered/
+.. _bison: https://www.gnu.org/software/bison/
 
 LICENSE
-=======
+-------
 
-**NOTE:** Sources and produces of ``TeX`` sub-projects found under the
-``src/`` directory and it subdirectories may be subject to their own licenses.
-Some papers may be an intellectual property of and shouldn't be copied nor
-redistributed without authors' permission. Please refer to their individual
-license files.
-
-Copyright (c) 2015 ZTMiR 
+@COPYRIGHT@
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -258,23 +187,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 
-.. _ztmir: http://ztmir.meil.pw.edu.pl/
-.. _git: https://git-scm.com/
-.. _python: https://www.python.org/
-.. _scons: http://scons.org
-.. _texlive: http://texlive.org
-.. _bibtool: http://www.gerd-neugebauer.de/software/TeX/BibTool/index.en.html
-.. _bibclean: http://www.math.utah.edu/pub/bibclean
-.. _jabref: http://jabref.sourceforge.net/
-.. _scons test framework: https://bitbucket.org/dirkbaechle/scons_test_framework
-.. _tar: http://www.gnu.org/software/tar/
-.. _epydoc: http://epydoc.sourceforge.net/
-.. _SCons docbook tool: https://bitbucket.org/dirkbaechle/scons_docbook/
-.. _SCons texas tool: https://github.com/ptomulik/scons-tool-texas/
-.. _SCons dvipdfm tool: https://github.com/ptomulik/scons-tool-dvipdfm/
-.. _SCons gnuplot tool: https://github.com/ptomulik/scons-tool-gnuplot/
-.. _python-docutils: http://pypi.python.org/pypi/docutils
-.. _python-pygments: http://pygments.org/
-.. _docbook-xml: http://www.oasis-open.org/docbook/xml/
-.. _xsltproc: http://xmlsoft.org/libxslt/
-.. _gnuplot: http://www.gnuplot.info/
+.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
