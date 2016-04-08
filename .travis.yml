@@ -1,0 +1,6 @@
+os:
+  - linux
+  - osx
+sudo: false
+script:
+  echo "OS: $TRAVIS_OS_NAME"
