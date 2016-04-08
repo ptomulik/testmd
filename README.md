@@ -1,8 +1,8 @@
 Test Markdown READMES
 =====================
 
-Drop README.md, README.rst, whatever, and see how it looks on github, before
-putting it to a real project.
+Drop README.md to md/, README.rst to rst/, etc, and see how it looks on github,
+before putting it to a real project.
 
 LICENSE
 -------
