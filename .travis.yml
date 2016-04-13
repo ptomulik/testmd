@@ -2,5 +2,11 @@ os:
   - linux
   - osx
 sudo: false
+before_script:
+  - dpkg -l python-pip
+  - which pip
+  - echo $PATH
+  - /usr/bin/pip --version
+  - /usr/local/bin/pip --version
 script:
   - echo "OS - $TRAVIS_OS_NAME"
