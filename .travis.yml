@@ -3,10 +3,10 @@ os:
   - osx
 sudo: false
 before_script:
-  - dpkg -l python-pip
-  - which pip
+  - which pip || echo "no pip"
   - echo $PATH
-  - /usr/bin/pip --version
-  - /usr/local/bin/pip --version
+  - test -f /usr/bin/pip && /usr/bin/pip --version
+  - test -f /usr/bin/pip && dpkg --search /usr/bin/pip
+  - test -f /usr/local/bin/pip && /usr/local/bin/pip --version
 script:
   - echo "OS - $TRAVIS_OS_NAME"
