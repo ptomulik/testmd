@@ -4,6 +4,7 @@ os:
 sudo: false
 before_script:
   - which pip || echo "no pip"
+  - which easy_install || echo "no easy_install"
   - echo $PATH
   - test -f /usr/bin/pip && /usr/bin/pip --version
   - test -f /usr/bin/pip && dpkg --search /usr/bin/pip
