@@ -250,6 +250,8 @@ documentation.
     fi
     ```
 
+    The script may also be [downloaded from github](https://raw.githubusercontent.com/ptomulik/puppet-portsng/master/.fixes/fix-hanging-pkgtools.sh)
+
 
 [[Table of Contents](#table-of-contents)]
 
