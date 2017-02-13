@@ -21,7 +21,7 @@
 This is an enchanced __ports__ provider for package resource (FreeBSD). The
 module requires ``port-maintenance-tools`` to be installed on agent.
 
-```SConscript
+```python
 env = Environment()
 env.Program("hello.cpp")
 ```
