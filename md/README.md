@@ -21,6 +21,10 @@
 This is an enchanced __ports__ provider for package resource (FreeBSD). The
 module requires ``port-maintenance-tools`` to be installed on agent.
 
+```scons
+env = Environment()
+env.Program("hello.cpp")
+```
 ##<a id="module-description"></a>Module Description
 
 The module re-implements puppet's __ports__ provider adding some new features
