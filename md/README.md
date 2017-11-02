@@ -31,7 +31,7 @@ The module is an alternative for puppet's built-int __ports__ provider.
 It provides additional features and is free of several issues found in the
 built-int __ports__ provider. For details see [remarks](#remarks).
 
-[[Table of Contents](#table-of-contents)]
+\[[Table of Contents](#table-of-contents)\]
 
 ## <a id="setup"></a>Setup
 
