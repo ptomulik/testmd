@@ -31,6 +31,8 @@ The module is an alternative for puppet's built-int __ports__ provider.
 It provides additional features and is free of several issues found in the
 built-int __ports__ provider. For details see [remarks](#remarks).
 
+[[Table of Contents](#table-of-contents)]
+
 ## <a id="setup"></a>Setup
 
 ### <a id="what-portsng-affects"></a>What portsng affects
@@ -295,9 +297,6 @@ warning:
 ```console
 Warning: Puppet::Type::Package::ProviderPorts: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
 ```
-
-[[Table of Contents](#table-of-contents)]
-
 
 [[Table of Contents](#table-of-contents)]
 
