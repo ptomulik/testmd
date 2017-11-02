@@ -18,104 +18,18 @@
 
 ## <a id="overview"></a>Overview
 
-This is an enchanced __ports__ provider for package resource (FreeBSD). The
-module requires ``port-maintenance-tools`` to be installed on agent.
+This is an enhanced __ports__ provider for package resource (FreeBSD).
+[FreeBSD Ports and Packages Collection](https://www.freebsd.org/ports/)
+offers a simple way for users and administrators to install applications.
+This __ports__ provider enables puppet to manage FreeBSD ports on agent system.
+
+The module requires ``port-maintenance-tools`` to be installed on agent.
 
 ## <a id="module-description"></a>Module Description
 
-The module re-implements puppet's __ports__ provider adding some new features
-to it and fixing several existing issues. The new features include:
-
-  * *install_options* - extra CLI flags passed to *portupgrade* when
-    installing, reinstalling and upgrading packages,
-  * *uninstall_options* - extra CLI flags passed to
-    [pkg_deinstall(1)](https://www.freebsd.org/cgi/man.cgi?query=pkg_deinstall&sektion=1)
-    (the ancient [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html)
-    toolstack) or [pkg delete](https://www.freebsd.org/cgi/man.cgi?query=pkg&sektion=8)
-    ([pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)) when
-    uninstalling packages,
-  * *package_settings* - configuration options for package, the ones you
-    usually set with ``make config``,
-  * works wit both the ancient
-    [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) and new
-    [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) package
-    databases,
-  * *upgradeable* (tested, the original puppet provider declared that it's
-    upgradeable, but it never worked for me),
-  * *portorigins* (instead of *portnames*) are used internally to identify
-    package instances,
-  * [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
-    is used to find installed packages (instead of *pkg_info*),
-  * [make search](http://www.freebsd.org/cgi/man.cgi?query=ports&sektion=7) is
-    used to find (not-installed) ports listed in puppet manifests,
-  * several issues resolved,
-
-The *package_settings* is simply an `{OPTION => value}` hash, with boolean
-values. The *portsng* provider ensures that package is compiled with prescribed
-*package_settings*. Normally you would set these options with *make config*
-command using ncurses-based frontend. Here, you can define *package_settings*
-in your puppet manifest. If a package is already installed and you change its
-*package_settings* in manifest file, the package gets rebuilt with new options
-and reinstalled.
-
-Instead of *portnames*, *portorigins* are used to identify *portsng* instances
-(see [FreeBSD ports collection and it's
-terminology](#freebsd-ports-collection-and-its-terminology)). This copes with
-several problems caused by portnames' ambiguity (see [FreeBSD ports collection
-and ambiguity of
-portnames](#freebsd-ports-collection-and-ambiguity-of-portnames)). You can now
-install and mainain ports that have common *portname* (but different
-portorigins). Examples of such packages include *mysql-client* or *ruby* (see
-below).
-
-The [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
-utility is used to find installed ports. It's better than using
-[pkg_info](http://www.freebsd.org/cgi/man.cgi?query=pkg_info&sektion=1) for
-several reasons. First, it is said to be faster, because it uses compiled
-version of ports INDEX file. Second, it works with both - the ancient
-[pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) database and the
-new [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) database,
-providing seamless interface to any of them. Third, it provides package names
-and their "out-of-date" statuses in a single call, so we don't need to
-separatelly check out-of-date status for installed packages. This version of
-*portsng* works with old *pkg* database as well as with *pkgng*, using
-*portversion*.
-
-[[Table of Contents](#table-of-contents)]
-
-#### <a id="freebsd-ports-collection-and-its-terminology"></a>FreeBSD ports collection and its terminology
-
-We use the following terminology when referring ports/packages:
-
-  * a string in form `'apache22'` or `'ruby'` is referred to as *portname*
-  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
-    as a *pkgname*
-  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
-    port *origin* or *portorigin*
-
-See [http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html](http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html)
-
-Port *origins* are used as primary identifiers for *portsng* instances. It's recommended to use *portorigins* instead of *portnames* as package names in manifest files.
-
-[[Table of Contents](#table-of-contents)]
-
-#### <a id="freebsd-ports-collection-and-ambiguity-of-portnames"></a>FreeBSD ports collection and ambiguity of portnames
-
-Using *portnames* (e.g. `apache22`) as package names in manifests is allowed.
-The *portname*s, however, are ambiguous, meaning that port search may find
-multiple ports matching the given *portname*. For example `'mysql-client'`
-package has three ports at the time of this writing  (2013-11-30):
-`mysql-client-5.1.71`, `mysql-client-5.5.33`, and `mysql-client-5.6.13` with
-origins `databases/mysql51-client`, `databases/mysql55-client` and
-`databases/mysql56-client` respectively. If none of these ports are installed
-and you use this ambiguous *portname* in your manifest, you'll se the following
-warning:
-
-```console
-Warning: Puppet::Type::Package::ProviderPorts: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
-```
-
-[[Table of Contents](#table-of-contents)]
+The module is an alternative for puppet's built-int __ports__ provider.
+It provides additional features and is free of several issues found in the
+built-int __ports__ provider. For details see [remarks](#remarks).
 
 ## <a id="setup"></a>Setup
 
@@ -279,6 +193,110 @@ documentation.
   method. But `query` handles only one package per name (in this case the last
   one from *portversion*'s list if chosen). This is an issue, which will not
   probably be fixed, so you're encouraged to use *portorigins*.
+
+## <a id="remarks"></a>Remarks
+
+### <a id="how-it-corresponds"></a> How it corresponds to the puppet's built-in __ports__ provider
+
+Main motivation for this module being developed was that the puppet's
+built-in __ports__ provider had several defects and missing features at time of
+this writing. By implementing it from scratch, I hoped (and, I think, managed)
+to provide all these missing features and to release a module free of all the
+bugs (and misconceptions) I found in the built-in one. So below is short
+description of what was achieved.
+
+The new features include:
+
+  * *install_options* - extra CLI flags passed to *portupgrade* when
+    installing, reinstalling and upgrading packages,
+  * *uninstall_options* - extra CLI flags passed to
+    [pkg_deinstall(1)](https://www.freebsd.org/cgi/man.cgi?query=pkg_deinstall&sektion=1)
+    (the ancient [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html)
+    toolstack) or [pkg delete](https://www.freebsd.org/cgi/man.cgi?query=pkg&sektion=8)
+    ([pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)) when
+    uninstalling packages,
+  * *package_settings* - configuration options for package, the ones you
+    usually set with ``make config``,
+  * works wit both the ancient
+    [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) and new
+    [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) package
+    databases,
+  * *upgradeable* (tested, the original puppet provider declared that it's
+    upgradeable, but it never worked for me),
+  * *portorigins* (instead of *portnames*) are used internally to identify
+    package instances,
+  * [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
+    is used to find installed packages (instead of *pkg_info*),
+  * [make search](http://www.freebsd.org/cgi/man.cgi?query=ports&sektion=7) is
+    used to find (not-installed) ports listed in puppet manifests,
+  * several issues resolved,
+
+The *package_settings* is simply an `{OPTION => value}` hash, with boolean
+values. The *portsng* provider ensures that package is compiled with prescribed
+*package_settings*. Normally you would set these options with *make config*
+command using ncurses-based frontend. Here, you can define *package_settings*
+in your puppet manifest. If a package is already installed and you change its
+*package_settings* in manifest file, the package gets rebuilt with new options
+and reinstalled.
+
+Instead of *portnames*, *portorigins* are used to identify *portsng* instances
+(see [FreeBSD ports collection and it's
+terminology](#freebsd-ports-collection-and-its-terminology)). This copes with
+several problems caused by portnames' ambiguity (see [FreeBSD ports collection
+and ambiguity of
+portnames](#freebsd-ports-collection-and-ambiguity-of-portnames)). You can now
+install and mainain ports that have common *portname* (but different
+portorigins). Examples of such packages include *mysql-client* or *ruby* (see
+below).
+
+The [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
+utility is used to find installed ports. It's better than using
+[pkg_info](http://www.freebsd.org/cgi/man.cgi?query=pkg_info&sektion=1) for
+several reasons. First, it is said to be faster, because it uses compiled
+version of ports INDEX file. Second, it works with both - the ancient
+[pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) database and the
+new [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) database,
+providing seamless interface to any of them. Third, it provides package names
+and their "out-of-date" statuses in a single call, so we don't need to
+separatelly check out-of-date status for installed packages. This version of
+*portsng* works with old *pkg* database as well as with *pkgng*, using
+*portversion*.
+
+[[Table of Contents](#table-of-contents)]
+
+#### <a id="freebsd-ports-collection-and-its-terminology"></a>FreeBSD ports collection and its terminology
+
+We use the following terminology when referring ports/packages:
+
+  * a string in form `'apache22'` or `'ruby'` is referred to as *portname*
+  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
+    as a *pkgname*
+  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
+    port *origin* or *portorigin*
+
+See [http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html](http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html)
+
+Port *origins* are used as primary identifiers for *portsng* instances. It's recommended to use *portorigins* instead of *portnames* as package names in manifest files.
+
+[[Table of Contents](#table-of-contents)]
+
+#### <a id="freebsd-ports-collection-and-ambiguity-of-portnames"></a>FreeBSD ports collection and ambiguity of portnames
+
+Using *portnames* (e.g. `apache22`) as package names in manifests is allowed.
+The *portname*s, however, are ambiguous, meaning that port search may find
+multiple ports matching the given *portname*. For example `'mysql-client'`
+package has three ports at the time of this writing  (2013-11-30):
+`mysql-client-5.1.71`, `mysql-client-5.5.33`, and `mysql-client-5.6.13` with
+origins `databases/mysql51-client`, `databases/mysql55-client` and
+`databases/mysql56-client` respectively. If none of these ports are installed
+and you use this ambiguous *portname* in your manifest, you'll se the following
+warning:
+
+```console
+Warning: Puppet::Type::Package::ProviderPorts: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
+```
+
+[[Table of Contents](#table-of-contents)]
 
 
 [[Table of Contents](#table-of-contents)]
