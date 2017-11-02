@@ -77,25 +77,27 @@ package { 'www/apache22':
 
 #### <a id="example-2---using-uninstall_options-to-cope-with-dependency-problems"></a> Example 2 - using *uninstall_options* to cope with dependency problems
 
-Sometimes freebsd package manager refuses to uninstall a package due to
-dependency problems that would appear after deinstallation. In such situations
-we may use the `uninstall_options` to instruct the provider to uninstall also
-all packages that depend on the package being uninstalled. When using ports
-with old *pkg* package manager one would write in its manifest:
-
-```puppet
-package { 'www/apache22':
-  ensure => absent,
-  uninstall_options => ['-r']
-}
-```
-
-For *pkgng* one has to write:
+Sometimes FreeBSD package manager refuses to uninstall a package due to
+dependency problems that would arise after deinstallation. In such situations
+we may use the ``uninstall_options`` to (recursively) uninstall all the
+packages dependant on the one being uninstalled. If [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)
+is used on FreeBSD as a package manager (default since 10.3), one has to write:
 
 ```puppet
 package { 'www/apache22':
   ensure => absent,
   uninstall_options => ['-R','-y']
+}
+```
+
+When still using ports with ancient
+[pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html)
+package manager one would write in its manifest:
+
+```puppet
+package { 'www/apache22':
+  ensure => absent,
+  uninstall_options => ['-r']
 }
 ```
 
