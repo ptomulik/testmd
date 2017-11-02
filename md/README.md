@@ -62,10 +62,9 @@ Below I just put some examples specific to new features of *portsng*.
 
 #### <a id="example-1---using-package_settings"></a>Example 1 - using *package_settings*
 
-``package_settings`` may be used to ensure that appropriate options are set for
-a port being compiled/installed. Normally you would set these with ``make config``.
-In the following example we ensure that www/apache22 is installed with SUEXEC
-enabled:
+Use ``package_settings`` to ensure that appropriate compilation options are set
+for a port. Normally you would set these with ``make config``. In the following
+example we ensure that ``www/apache22`` is installed with ``SUEXEC`` enabled:
 
 ```puppet
 package { 'www/apache22':
