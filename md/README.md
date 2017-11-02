@@ -62,7 +62,7 @@ Below I just put some examples specific to new features of *portsng*.
 
 #### <a id="example-1---using-package_settings"></a>Example 1 - using *package_settings*
 
-Use ``package_settings`` to ensure that appropriate compilation options are set
+Use *package_settings* to ensure that appropriate compilation options are set
 for a port. Normally you would set these with ``make config`` command. In the
 following example we ensure that ``www/apache22`` is installed with ``SUEXEC``
 enabled:
@@ -79,7 +79,7 @@ package { 'www/apache22':
 
 Sometimes, the FreeBSD package manager refuses to uninstall a package if there
 are other packages installed that depend on this one. In such situations we may
-use ``uninstall_options`` to (recursively) uninstall all the packages dependant
+use *uninstall_options* to (recursively) uninstall all the packages dependant
 on the one being uninstalled. If [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)
 is used on FreeBSD as a package manager (default since 10.3), one has to write:
 
@@ -106,9 +106,9 @@ package { 'www/apache22':
 #### <a id="example-3---using-install_options"></a>Example 3 - using *install_options*
 
 The new *portsng* provider implements *install_options* feature. The flags
-provided via *install_options* are passed to `portupgrade` command when
-installing, reinstalling or upgrading packages. With no *install_options*
-provided, sensible defaults are selected by *portsng* provider.
+provided via *install_options* are passed to [portupgrade](https://www.freebsd.org/cgi/man.cgi?query=portupgrade)
+command when installing, reinstalling or upgrading packages. With no
+*install_options* provided, sensible defaults are selected by *portsng* provider.
 
 Let's say we want to install precompiled package, if available (`-P` flag).
 Write the following manifest:
