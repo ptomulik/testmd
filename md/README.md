@@ -77,9 +77,9 @@ package { 'www/apache22':
 
 #### <a id="example-2---using-uninstall_options-to-cope-with-dependency-problems"></a> Example 2 - using *uninstall_options* to cope with dependency problems
 
-Sometimes FreeBSD package manager refuses to uninstall a package if there are
-other packages installed that depend on this one. In such situations we may use
-the ``uninstall_options`` to (recursively) uninstall all the packages dependant
+Sometimes, the FreeBSD package manager refuses to uninstall a package if there
+are other packages installed that depend on this one. In such situations we may
+use ``uninstall_options`` to (recursively) uninstall all the packages dependant
 on the one being uninstalled. If [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)
 is used on FreeBSD as a package manager (default since 10.3), one has to write:
 
