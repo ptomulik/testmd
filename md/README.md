@@ -21,7 +21,7 @@
 This is an enhanced __ports__ provider for package resource (FreeBSD).
 [FreeBSD Ports and Packages Collection](https://www.freebsd.org/ports/)
 offers a simple way for users and administrators to install applications.
-This __ports__ provider enables puppet to manage FreeBSD ports on agent OS.
+This provider enables puppet to manage FreeBSD ports on agent OS.
 
 The module requires ``port-maintenance-tools`` to be installed on agent.
 
