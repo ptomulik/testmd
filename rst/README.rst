@@ -109,7 +109,7 @@ The following SCons construction variables might be used to customize the
 
 +------------------------+---------------------------------------------------+
 |        Name            |                      Description                  |
-+========================+---------------------------------------------------+
++========================+===================================================+
 | CXXTESTGEN             | path to cxxtestgen python script; by default it   |
 |                        | is being searched for, first in $CXXTESTBINPATH   |
 |                        | then in ``env['ENV']['PATH']``.                   |
