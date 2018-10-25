@@ -9,6 +9,9 @@ scons-tool-cxxtestgen
     :target: https://travis-ci.org/ptomulik/scons-tool-cxxtestgen
     :alt: Travis CI build status
 
+.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-cxxtestgen?svg=true
+    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-cxxtestgen
+
 SCons_ tool for cxxtestgen_ command.
 
 Installation
@@ -97,6 +100,46 @@ Usage example
    .. code-block:: shell
 
       scons
+
+Construction variables used
+---------------------------
+
+The following SCons construction variables might be used to customize the
+**cxxtestgen** tool.
+
++------------------------+---------------------------------------------------+
+|        Name            |                      Description                  |
++========================+---------------------------------------------------+
+| CXXTESTGEN             | path to cxxtestgen python script; by default it   |
+|                        | is being searched for, first in $CXXTESTBINPATH   |
+|                        | then in ``env['ENV']['PATH']``.                   |
++------------------------+---------------------------------------------------+
+| CXXTESTGENPYTHON       | python interpreter to be used to run cxxtestgen;  |
+|                        | by default it is being chosen automatically;      |
+|                        | python3 is preferred, but if the cxxtestgen seems |
+|                        | to not support it, python2 is picked up; if       |
+|                        | neither python3 nor python2 are available in      |
+|                        | standard SCons search PATH, ``sys.executable``    |
+|                        | (the interpreter running SCons script) is used.   |
++------------------------+---------------------------------------------------+
+| CXXTESTINSTALLDIR      | root directory of custom cxxtest installation;    |
+|                        | defaults to ``#/cxxtest``, where ``#``  is the    |
+|                        | project's top-level directory.                    |
++------------------------+---------------------------------------------------+
+| CXXTESTBINPATH         | search path for cxxtest executables/scripts; by   |
+|                        | default it includes the following locations:      |
+|                        | - ``$CXXTESTINSTALLDIR/bin``,                     |
+|                        | - ``$CXXTESTINSTALLDIR/python/python3/scripts``,  |
+|                        | - ``$CXXTESTINSTALLDIR/python/scripts``           |
+|                        | in that order.                                    |
++------------------------+---------------------------------------------------+
+| CXXTESTGENFLAGS        | additional flags to be passed to cxxtestgen.      |
++------------------------+---------------------------------------------------+
+| CXXTESTGENSUFFIX       | suffix for files produced by cxxtestgen (.t.cpp). |
++------------------------+---------------------------------------------------+
+| CXXTESTGENSRCSUFFIX    | suffix of cxxtestgen's input files (.t.h).        |
++------------------------+---------------------------------------------------+
+
 
 LICENSE
 -------
