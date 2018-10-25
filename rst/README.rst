@@ -111,8 +111,8 @@ The following SCons construction variables might be used to customize the
 |        Name            |                      Description                  |
 +========================+===================================================+
 | CXXTESTGEN             | path to cxxtestgen python script; by default it   |
-|                        | is being searched for, first in $CXXTESTBINPATH   |
-|                        | then in ``env['ENV']['PATH']``.                   |
+|                        | will contain a result of search, first in         |
+|                        | ``$CXXTESTBINPATH``, then in SCons ``PATH``.      |
 +------------------------+---------------------------------------------------+
 | CXXTESTGENPYTHON       | python interpreter to be used to run cxxtestgen;  |
 |                        | by default it is being chosen automatically;      |
@@ -128,9 +128,11 @@ The following SCons construction variables might be used to customize the
 +------------------------+---------------------------------------------------+
 | CXXTESTBINPATH         | search path for cxxtest executables/scripts; by   |
 |                        | default it includes the following locations:      |
+|                        |                                                   |
 |                        | - ``$CXXTESTINSTALLDIR/bin``,                     |
 |                        | - ``$CXXTESTINSTALLDIR/python/python3/scripts``,  |
-|                        | - ``$CXXTESTINSTALLDIR/python/scripts``           |
+|                        | - ``$CXXTESTINSTALLDIR/python/scripts``,          |
+|                        |                                                   |
 |                        | in that order.                                    |
 +------------------------+---------------------------------------------------+
 | CXXTESTGENFLAGS        | additional flags to be passed to cxxtestgen.      |
