@@ -65,6 +65,15 @@ As a git submodule
 
       git submodule add git://github.com/ptomulik/scons-tool-cxxtestgen.git site_scons/site_tools/cxxtestgen
 
+#. For python 2.x, create ``__init__.py`` in ``site_tools`` directory:
+
+   .. code-block:: shell
+
+      touch site_scons/site_tools/__init__.py
+
+   this will allow to directly import ``site_tools.cxxtestgen`` (this may be
+   required by other tools).
+
 Usage example
 -------------
 
@@ -101,6 +110,17 @@ Usage example
 
       scons
 
+Builders
+--------
+
+- ``CxxTestGen([target], sources, **kw)`` - invokes ``cxxtestgetn ...``,
+- ``CxxTestGenPart([target], sources, **kw)`` - invokes ``cxxtestgen --part ...``,
+  this is used to generate ``*.t.cpp`` files which define tests but have no
+  ``main()``.
+- ``CxxTestGenRoot(target, **kw)`` - invokes ``cxxtestgen --root ...``, this
+  pseudo-builder generates the root ``*.t.cpp`` file that provides the
+  ``main()`` function, should be used in pair with ``CxxTestGenPart``.
+
 Construction variables used
 ---------------------------
 
@@ -110,22 +130,6 @@ The following SCons construction variables might be used to customize the
 +------------------------+---------------------------------------------------+
 |        Name            |                      Description                  |
 +========================+===================================================+
-| CXXTESTGEN             | path to cxxtestgen python script; by default it   |
-|                        | will contain a result of search, first in         |
-|                        | ``$CXXTESTBINPATH``, then in SCons ``PATH``.      |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENPYTHON       | python interpreter to be used to run cxxtestgen;  |
-|                        | by default it is being chosen automatically;      |
-|                        | python3 is preferred, but if the cxxtestgen seems |
-|                        | to not support it, python2 is picked up; if       |
-|                        | neither python3 nor python2 are available in      |
-|                        | standard SCons search PATH, ``sys.executable``    |
-|                        | (the interpreter running SCons script) is used.   |
-+------------------------+---------------------------------------------------+
-| CXXTESTINSTALLDIR      | root directory of custom cxxtest installation;    |
-|                        | defaults to ``#/cxxtest``, where ``#``  is the    |
-|                        | project's top-level directory.                    |
-+------------------------+---------------------------------------------------+
 | CXXTESTBINPATH         | search path for cxxtest executables/scripts; by   |
 |                        | default it includes the following locations:      |
 |                        |                                                   |
@@ -135,11 +139,31 @@ The following SCons construction variables might be used to customize the
 |                        |                                                   |
 |                        | in that order.                                    |
 +------------------------+---------------------------------------------------+
+| CXXTESTGEN             | path to cxxtestgen python script; by default it   |
+|                        | will contain a result of search, first in         |
+|                        | ``$CXXTESTBINPATH``, then in SCons ``PATH``.      |
++------------------------+---------------------------------------------------+
 | CXXTESTGENFLAGS        | additional flags to be passed to cxxtestgen.      |
++------------------------+---------------------------------------------------+
+| CXXTESTGENPYTHON       | python interpreter to be used to run cxxtestgen;  |
+|                        | by default it is being chosen automatically;      |
+|                        | python3 is preferred, but if the cxxtestgen seems |
+|                        | to not support it, python2 is picked up; if       |
+|                        | neither python3 nor python2 are available in      |
+|                        | standard SCons search PATH, ``sys.executable``    |
+|                        | (the interpreter running SCons script) is used.   |
++------------------------+---------------------------------------------------+
+| CXXTESTGENRUNNER       | name of the listener class for cxxtestgen (used   |
+|                        | as ``--runner=$CXXTESTGENRUNNER``); defaults to   |
+|                        | ``ErrorPrinter``.                                 |
 +------------------------+---------------------------------------------------+
 | CXXTESTGENSUFFIX       | suffix for files produced by cxxtestgen (.t.cpp). |
 +------------------------+---------------------------------------------------+
 | CXXTESTGENSRCSUFFIX    | suffix of cxxtestgen's input files (.t.h).        |
++------------------------+---------------------------------------------------+
+| CXXTESTINSTALLDIR      | root directory of custom cxxtest installation;    |
+|                        | defaults to ``#/cxxtest``, where ``#``  is the    |
+|                        | project's top-level directory.                    |
 +------------------------+---------------------------------------------------+
 
 
