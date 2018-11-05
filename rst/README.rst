@@ -93,23 +93,23 @@ loaded)::
     env = Environment(tools=['tex', 'dvipdfm'])
     env.DVIPDFM('foo.tex')
 
-CONSTRUCTION VARIABLES
+Construction variables
 ----------------------
 
 The following construction variables may be used to configure the ``DVIPDFM``
 builder:
 
-+==============================+==============================================+
-|        Variable              |                  Description                 |
-+==============================+==============================================+
-| ``DVIPDFM``                  | the ``dvipdfm`` executable                   |
-+------------------------------+----------------------------------------------+
-| ``DVIPDFMFLAGS``             | additional flags to ``dvipdfm``              |
-+------------------------------+----------------------------------------------+
-| ``DVIPDFMCOM``               | complete commandline for ``dvipdfm``         |
-+------------------------------+----------------------------------------------+
-| ``DVIPDFMSUFFIX``            | suffix for target files, by default ``.pdf`` |
-+==============================+==============================================+
+============================== ==============================================
+        Variable                                Description
+============================== ==============================================
+ ``DVIPDFM``                    the ``dvipdfm`` executable
+------------------------------ ----------------------------------------------
+ ``DVIPDFMFLAGS``               additional flags to ``dvipdfm``
+------------------------------ ----------------------------------------------
+ ``DVIPDFMCOM``                 complete commandline for ``dvipdfm``
+------------------------------ ----------------------------------------------
+ ``DVIPDFMSUFFIX``              suffix for target files, by default ``.pdf``
+============================== ==============================================
 
 
 LICENSE
