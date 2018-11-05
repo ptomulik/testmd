@@ -136,6 +136,8 @@ SOFTWARE
 
 .. _SCons: http://scons.org
 .. _SCons test framework: https://bitbucket.org/dirkbaechle/scons_test_framework
+.. _scons-tool-dvipdfm: https://github.com/ptomulik/scons-tool-dvipdfm
+.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader
 .. _mercurial: http://mercurial.selenic.com/
 .. _dvipdfm: http://gaspra.kettering.edu/dvipdfm/
 .. _pipenv: https://pipenv.readthedocs.io/
