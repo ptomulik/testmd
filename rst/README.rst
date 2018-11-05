@@ -1,18 +1,20 @@
-scons-tool-cxxtestgen
-=====================
+scons-tool-dvipdfm
+==================
 
-.. image:: https://badge.fury.io/py/scons-tool-cxxtestgen.svg
-    :target: https://badge.fury.io/py/scons-tool-cxxtestgen
+.. image:: https://badge.fury.io/py/scons-tool-dvipdfm.svg
+    :target: https://badge.fury.io/py/scons-tool-dvipdfm
     :alt: PyPi package version
 
-.. image:: https://travis-ci.org/ptomulik/scons-tool-cxxtestgen.svg?branch=master
-    :target: https://travis-ci.org/ptomulik/scons-tool-cxxtestgen
+.. image:: https://travis-ci.org/ptomulik/scons-tool-dvipdfm.svg?branch=master
+    :target: https://travis-ci.org/ptomulik/scons-tool-dvipdfm
     :alt: Travis CI build status
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-cxxtestgen?svg=true
-    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-cxxtestgen
+.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-dvipdfm?svg=true
+    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-dvipdfm
 
-SCons_ tool for cxxtestgen_ command.
+This is dvipdfm tool for `SCons`_. It is derived from the ``dvipdf`` tool
+present in `SCons`_ core. The code has been adapted to enable usage of
+`dvipdfm`_ program.
 
 Installation
 ------------
@@ -23,28 +25,28 @@ From pypi_
 ^^^^^^^^^^
 
 This method may be preferable if you build your project under a virtualenv. To
-add cxxtestgen tool from pypi_, type (within your wirtualenv):
+add dvipdfm tool from pypi_, type (within your wirtualenv):
 
 .. code-block:: shell
 
-      pip install scons-tool-loader scons-tool-cxxtestgen
+   pip install scons-tool-loader scons-tool-dvipdfm
 
 or, if your project uses pipenv_:
 
 .. code-block:: shell
 
-      pipenv install --dev scons-tool-loader scons-tool-cxxtestgen
+   pipenv install --dev scons-tool-loader scons-tool-dvipdfm
 
 Alternatively, you may add this to your ``Pipfile``
 
 .. code-block::
 
-    [dev-packages]
-    scons-tool-loader = "*"
-    scons-tool-cxxtestgen = "*"
+   [dev-packages]
+   scons-tool-loader = "*"
+   scons-tool-dvipdfm = "*"
 
 
-The tool will be installed as a namespaced package ``sconstool.cxxtestgen``
+The tool will be installed as a namespaced package ``sconstool.dvipdfm``
 in project's virtual environment. You may further use scons-tool-loader_
 to load the tool.
 
@@ -59,118 +61,60 @@ As a git submodule
       touch README.rst
       git init
 
-#. Add the `scons-tool-cxxtestgen`_ as a submodule:
+#. Add the `scons-tool-dvipdfm`_ as a submodule:
 
    .. code-block:: shell
 
-      git submodule add git://github.com/ptomulik/scons-tool-cxxtestgen.git site_scons/site_tools/cxxtestgen
+      git submodule add git://github.com/ptomulik/scons-tool-dvipdfm.git site_scons/site_tools/dvipdfm
 
-#. For python 2.x, create ``__init__.py`` in ``site_tools`` directory:
+#. For python 2.x create ``__init__.py`` in ``site_tools`` directory:
 
    .. code-block:: shell
 
       touch site_scons/site_tools/__init__.py
 
-   this will allow to directly import ``site_tools.cxxtestgen`` (this may be
-   required by other tools).
+   this will allow to directly import ``site_tools.dvipdfm`` (this may be required by other tools).
 
-Usage example
--------------
 
-#. Create simple test file
+Usage examples
+--------------
 
-   .. code-block:: cpp
+Converting existing ``*.dvi`` file to ``*.pdf``::
 
-      // MyTestSuite1.t.h
-      #include <cxxtest/TestSuite.h>
-      class MyTestSuite1 : public CxxTest::TestSuite
-      {
-      public:
-        void testAddition(void)
-        {
-          TS_ASSERT(1 + 1 > 1);
-          TS_ASSERT_EQUALS(1 + 1, 2);
-        }
-      };
+    # SConstruct
+    env = Environment(tools=['dvipdfm'])
+    env.DVIPDFM('foo.dvi')
 
-#. Create simple SConstruct file
+Compiling ``LaTeX`` document to ``*.dvi`` and generating ``*.pdf`` file with
+the ``DVIPDFM`` builder (note, the ``tex`` or ``default`` tool(s) must be
+loaded)::
 
-   .. code-block:: python
+    # SConstruct
+    env = Environment(tools=['tex', 'dvipdfm'])
+    env.DVIPDFM('foo.tex')
 
-      # SConstruct
-      # TODO: uncomment following lines if the tool is installed via pip/pipenv
-      # import sconstool.loader
-      # sconstool.loader.extend_toolpath(transparent=True)
-      env = Environment(tools = ['cxxtestgen'])
-      env.CxxTestGen('MyTestSuite')
+CONSTRUCTION VARIABLES
+``````````````````````
 
-#. Try it out:
+The following construction variables may be used to configure the ``DVIPDFM``
+builder:
 
-   .. code-block:: shell
-
-      scons
-
-Builders
---------
-
-- ``CxxTestGen([target], sources, **kw)`` - invokes ``cxxtestgetn ...``,
-- ``CxxTestGenPart([target], sources, **kw)`` - invokes ``cxxtestgen --part ...``,
-  this is used to generate ``*.t.cpp`` files which define tests but have no
-  ``main()``.
-- ``CxxTestGenRoot(target, **kw)`` - invokes ``cxxtestgen --root ...``, this
-  pseudo-builder generates the root ``*.t.cpp`` file that provides the
-  ``main()`` function, should be used in pair with ``CxxTestGenPart``.
-
-Construction variables used
----------------------------
-
-The following SCons construction variables might be used to customize the
-**cxxtestgen** tool.
-
-+------------------------+---------------------------------------------------+
-|        Name            |                      Description                  |
-+========================+===================================================+
-| CXXTESTBINPATH         | search path for cxxtest executables/scripts; by   |
-|                        | default it includes the following locations:      |
-|                        |                                                   |
-|                        | - ``$CXXTESTINSTALLDIR/bin``,                     |
-|                        | - ``$CXXTESTINSTALLDIR/python/python3/scripts``,  |
-|                        | - ``$CXXTESTINSTALLDIR/python/scripts``,          |
-|                        |                                                   |
-|                        | in that order.                                    |
-+------------------------+---------------------------------------------------+
-| CXXTESTGEN             | path to cxxtestgen python script; by default it   |
-|                        | will contain a result of search, first in         |
-|                        | ``$CXXTESTBINPATH``, then in SCons ``PATH``.      |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENFLAGS        | additional flags to be passed to cxxtestgen.      |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENPYTHON       | python interpreter to be used to run cxxtestgen;  |
-|                        | by default it is being chosen automatically;      |
-|                        | python3 is preferred, but if the cxxtestgen seems |
-|                        | to not support it, python2 is picked up; if       |
-|                        | neither python3 nor python2 are available in      |
-|                        | standard SCons search PATH, ``sys.executable``    |
-|                        | (the interpreter running SCons script) is used.   |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENRUNNER       | name of the listener class for cxxtestgen (used   |
-|                        | as ``--runner=$CXXTESTGENRUNNER``); defaults to   |
-|                        | ``ErrorPrinter``.                                 |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENSUFFIX       | suffix for files produced by cxxtestgen (.t.cpp). |
-+------------------------+---------------------------------------------------+
-| CXXTESTGENSRCSUFFIX    | suffix of cxxtestgen's input files (.t.h).        |
-+------------------------+---------------------------------------------------+
-| CXXTESTINSTALLDIR      | root directory of custom cxxtest installation;    |
-|                        | defaults to ``#/cxxtest``, where ``#``  is the    |
-|                        | project's top-level directory.                    |
-+------------------------+---------------------------------------------------+
+============================== ==============================================
+        Variable                                Description
+============================== ==============================================
+ ``DVIPDFM``                    the ``dvipdfm`` executable
+------------------------------ ----------------------------------------------
+ ``DVIPDFMFLAGS``               additional flags to ``dvipdfm``
+------------------------------ ----------------------------------------------
+ ``DVIPDFMCOM``                 complete commandline for ``dvipdfm``
+------------------------------ ----------------------------------------------
+ ``DVIPDFMSUFFIX``              suffix for target files, by default ``.pdf``
+============================== ==============================================
 
 
 LICENSE
 -------
-
-Copyright (c) 2018 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+Copyright (c) 2013-2018 by Paweł Tomulik
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -190,11 +134,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 
-.. _scons-tool-cxxtestgen: https://github.com/ptomulik/scons-tool-cxxtestgen
-.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader
 .. _SCons: http://scons.org
+.. _SCons test framework: https://bitbucket.org/dirkbaechle/scons_test_framework
+.. _mercurial: http://mercurial.selenic.com/
+.. _dvipdfm: http://gaspra.kettering.edu/dvipdfm/
 .. _pipenv: https://pipenv.readthedocs.io/
 .. _pypi: https://pypi.org/
-.. _cxxtestgen: http://cxxtest.com/guide.html#cxxtestgen
-
-.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
