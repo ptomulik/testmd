@@ -94,7 +94,7 @@ loaded)::
     env.DVIPDFM('foo.tex')
 
 CONSTRUCTION VARIABLES
-``````````````````````
+----------------------
 
 The following construction variables may be used to configure the ``DVIPDFM``
 builder:
