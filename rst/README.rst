@@ -48,7 +48,7 @@ or, if your project uses pipenv_:
 
 Alternatively, you may add this to your ``Pipfile``
 
-.. code-block:: ini
+.. code-block::
 
    [dev-packages]
    scons-tool-loader = "*"
@@ -114,15 +114,7 @@ CONSTRUCTION VARIABLES
 The following construction variables may be used to configure the ``kpsewhich``
 tool. They may be also provided as keyword arguments to ``KPSXxx()`` methods.
 
-============================== ==============================================
-        Variable                                Description
-============================== ==============================================
- ``KPSEWHICH``                    the ``kpsewhich`` executable
------------------------------- ----------------------------------------------
- ``KPSEWHICHFLAGS``               additional flags to ``kpsewhich``
------------------------------- ----------------------------------------------
- ``KPSVARIABLES``                 (re)define variables for ``kpsewhich``
-============================== ==============================================
+
 
 ``KPSVARIABLES`` must be a dictionary in form ``{ NAME : VALUE }``,
 for example::
