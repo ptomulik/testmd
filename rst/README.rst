@@ -48,7 +48,7 @@ or, if your project uses pipenv_:
 
 Alternatively, you may add this to your ``Pipfile``
 
-.. code-block::
+.. code-block:: ini
 
    [dev-packages]
    scons-tool-loader = "*"
