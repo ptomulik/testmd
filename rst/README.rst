@@ -122,7 +122,7 @@ for example::
   KPSVARIABLES = {"TEXMFHOME" : "/home/ptomulik/texmf"}
 
 ARGUMENTS
-`````````
+---------
 
 These arguments are accepted by some ``KPSXxx()`` methods. All the methods accept
 ``progname``. All other arguments are accepted by ``KPSFindFiles`` and
