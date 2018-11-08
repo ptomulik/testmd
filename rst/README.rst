@@ -1,22 +1,31 @@
-scons-tool-dvipdfm
-==================
+scons-tool-kpsewhich
+====================
 
-.. image:: https://badge.fury.io/py/scons-tool-dvipdfm.svg
-    :target: https://badge.fury.io/py/scons-tool-dvipdfm
+.. image:: https://badge.fury.io/py/scons-tool-kpsewhich.svg
+    :target: https://badge.fury.io/py/scons-tool-kpsewhich
     :alt: PyPi package version
 
-.. image:: https://travis-ci.org/ptomulik/scons-tool-dvipdfm.svg?branch=master
-    :target: https://travis-ci.org/ptomulik/scons-tool-dvipdfm
+.. image:: https://travis-ci.org/ptomulik/scons-tool-kpsewhich.svg?branch=master
+    :target: https://travis-ci.org/ptomulik/scons-tool-kpsewhich
     :alt: Travis CI build status
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-dvipdfm?svg=true
-    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-dvipdfm
+.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-kpsewhich?svg=true
+    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-kpsewhich
 
-This is dvipdfm tool for `SCons`_. It is derived from the ``dvipdf`` tool
-present in `SCons`_ core. The code has been adapted to enable usage of
-`dvipdfm`_ program.
+This tool provides `SCons`_ with interface to kpsewhich utility. The kpsewhich
+program is a part of `kpathsea`_ library, which in turn is a part of TeX Live
+distribution. Its purpose is to search within the `TeX directory structure`_
+(TDS) for files such as TeX classes, styles, BibTeX databases, fonts etc. For
+more informations see `kpathsea manual`_ and informations about `TeX directory
+structure`_ (TDS).
 
-Installation
+This tool appends new methods to the SCons Environment. It does not provide any
+builders, but rather equips SCons Environment with methods that call
+``kpsewhich`` program during the SConscript-reading phase. This tool does not
+produce any files, it is thought as an extension for obtaining textual
+information from external program.
+
+INSTALLATION
 ------------
 
 There are few ways to install this tool for your project.
@@ -25,17 +34,17 @@ From pypi_
 ^^^^^^^^^^
 
 This method may be preferable if you build your project under a virtualenv. To
-add dvipdfm tool from pypi_, type (within your wirtualenv):
+add kpsewhich tool from pypi_, type (within your wirtualenv):
 
 .. code-block:: shell
 
-   pip install scons-tool-loader scons-tool-dvipdfm
+   pip install scons-tool-loader scons-tool-kpsewhich
 
 or, if your project uses pipenv_:
 
 .. code-block:: shell
 
-   pipenv install --dev scons-tool-loader scons-tool-dvipdfm
+   pipenv install --dev scons-tool-loader scons-tool-kpsewhich
 
 Alternatively, you may add this to your ``Pipfile``
 
@@ -43,10 +52,10 @@ Alternatively, you may add this to your ``Pipfile``
 
    [dev-packages]
    scons-tool-loader = "*"
-   scons-tool-dvipdfm = "*"
+   scons-tool-kpsewhich = "*"
 
 
-The tool will be installed as a namespaced package ``sconstool.dvipdfm``
+The tool will be installed as a namespaced package ``sconstool.kpsewhich``
 in project's virtual environment. You may further use scons-tool-loader_
 to load the tool.
 
@@ -61,11 +70,11 @@ As a git submodule
       touch README.rst
       git init
 
-#. Add the `scons-tool-dvipdfm`_ as a submodule:
+#. Add the `scons-tool-kpsewhich`_ as a submodule:
 
    .. code-block:: shell
 
-      git submodule add git://github.com/ptomulik/scons-tool-dvipdfm.git site_scons/site_tools/dvipdfm
+      git submodule add git://github.com/ptomulik/scons-tool-kpsewhich.git site_scons/site_tools/kpsewhich
 
 #. For python 2.x create ``__init__.py`` in ``site_tools`` directory:
 
@@ -73,48 +82,78 @@ As a git submodule
 
       touch site_scons/site_tools/__init__.py
 
-   this will allow to directly import ``site_tools.dvipdfm`` (this may be required by other tools).
+   this will allow to directly import ``site_tools.kpsewhich`` (this may be required by other tools).
 
 
-Usage examples
+USAGE EXAMPLES
 --------------
 
-Converting existing ``*.dvi`` file to ``*.pdf``::
+Find files ``article.cls`` and ``amsmath.sty`` used by ``latex``::
 
-    # SConstruct
-    env = Environment(tools=['dvipdfm'])
-    env.DVIPDFM('foo.dvi')
+    env = Environment(tools = ['tex', 'kpsewhich'])
+    files = env.KPSFindFiles(['article.cls','amsmath.sty'], progname='$LATEX')
 
-Compiling ``LaTeX`` document to ``*.dvi`` and generating ``*.pdf`` file with
-the ``DVIPDFM`` builder (note, the ``tex`` or ``default`` tool(s) must be
-loaded)::
+Find all occurrences of ``unicode.sty`` file in TDS::
 
-    # SConstruct
-    env = Environment(tools=['tex', 'dvipdfm'])
-    env.DVIPDFM('foo.tex')
+    env = Environment(tools = ['kpsewhich'])
+    files = env.KPSFindAllFiles('unicode.sty')
 
-Construction variables
+Other functions (correspond directly to ``kpsewhich`` function options)::
+
+    texmf = env.KPSExpandBraces('a{b,c}d')# kpsewhich -expand-braces 'a{b,c}d'
+    texmf = env.KPSExpandPath('$TEXMF')   # kpsewhich -expand-path '$TEXMF'
+    texmf = env.KPSExpandVar('$TEXMF')    # kpsewhich -expand-var '$TEXMF'
+    texpath = env.KPSShowPath('tex')      # kpsewhich -show-path 'tex'
+    home = env.KPSVarValue('TEXMFHOME')   # kpsewhich -var-value 'TEXMFHOME'
+
+
+
+CONSTRUCTION VARIABLES
 ----------------------
 
-The following construction variables may be used to configure the ``DVIPDFM``
-builder:
+The following construction variables may be used to configure the ``kpsewhich``
+tool. They may be also provided as keyword arguments to ``KPSXxx()`` methods.
 
 ============================== ==============================================
         Variable                                Description
 ============================== ==============================================
- ``DVIPDFM``                    the ``dvipdfm`` executable
+ ``KPSEWHICH``                    the ``kpsewhich`` executable
 ------------------------------ ----------------------------------------------
- ``DVIPDFMFLAGS``               additional flags to ``dvipdfm``
+ ``KPSEWHICHFLAGS``               additional flags to ``kpsewhich``
 ------------------------------ ----------------------------------------------
- ``DVIPDFMCOM``                 complete commandline for ``dvipdfm``
+ ``KPSVARIABLES``                 (re)define variables for ``kpsewhich``
+============================== ==============================================
+
+``KPSVARIABLES`` must be a dictionary in form ``{ NAME : VALUE }``,
+for example::
+
+  KPSVARIABLES = {"TEXMFHOME" : "/home/ptomulik/texmf"}
+
+ARGUMENTS
+`````````
+
+These arguments are accepted by some ``KPSXxx()`` methods. All the methods accept
+``progname``. All other arguments are accepted by ``KPSFindFiles`` and
+``KPSFindAllFiles``.
+
+============================== ==============================================
+        Variable                                Description
+============================== ==============================================
+ ``dpi``                         corresponds to ``-dpi`` flag,
 ------------------------------ ----------------------------------------------
- ``DVIPDFMSUFFIX``              suffix for target files, by default ``.pdf``
+ ``format``                      corresponds to ``-format`` flag,
+------------------------------ ----------------------------------------------
+ ``path``                        corresponds to ``-path`` flag
+------------------------------ ----------------------------------------------
+ ``progname``                    corresponds to ``-progname`` flag
+------------------------------ ----------------------------------------------
+ ``subdir``                      corresponds to ``-subdir`` flag
 ============================== ==============================================
 
 
 LICENSE
 -------
-Copyright (c) 2013-2018 by Paweł Tomulik
+Copyright (c) 2013-2018 by Pawel Tomulik
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -136,9 +175,12 @@ SOFTWARE
 
 .. _SCons: http://scons.org
 .. _SCons test framework: https://bitbucket.org/dirkbaechle/scons_test_framework
-.. _scons-tool-dvipdfm: https://github.com/ptomulik/scons-tool-dvipdfm
-.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader
 .. _mercurial: http://mercurial.selenic.com/
-.. _dvipdfm: http://gaspra.kettering.edu/dvipdfm/
+.. _TeX directory structure: http://tug.org/twg/tds/
+.. _kpathsea: http://tug.org/kpathsea/
+.. _kpathsea manual: http://tug.org/texinfohtml/kpathsea.html
 .. _pipenv: https://pipenv.readthedocs.io/
 .. _pypi: https://pypi.org/
+.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader/
+
+.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
