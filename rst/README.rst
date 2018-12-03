@@ -42,7 +42,7 @@ Run it as follows
 
 .. code-block:: console
 
-   user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
+   user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai/sami
 
 
 Running with docker-compose_
@@ -92,29 +92,34 @@ As long as the container is running, the documentation is available at
 
 -  http://localhost:8001.
 
+
+Customizing
+-----------
+
+Several parameters can be changed via environment variables, for example
+
+.. code-block:: console
+
+   user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm -e SAMI_BUILD_DIR=/tmp/build korowai/sami
+
+Details
+-------
+
 Volume mount points exposed
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``/home/sami/project`` - bind top level directory of your project here.
 
 Working directory
------------------
+^^^^^^^^^^^^^^^^^
 
 - ``/home/sami/project``
 
-Software included
------------------
-
-- php_
-- git_
-- sami_
-
-
 Files inside container
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 In ``/usr/local/bin``
-^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""
 
 - scripts which may be used as container's command:
 
@@ -129,12 +134,12 @@ In ``/usr/local/bin``
   - ``sami-entrypoint`` - provides an entry point for docker.
 
 In ``/home/sami``
-^^^^^^^^^^^^^^^^^
+"""""""""""""""""
 
 - ``sami.conf.php`` - default configuration file for sami.
 
-Configuration variables
------------------------
+Environment variables
+^^^^^^^^^^^^^^^^^^^^^
 
 The container defines several build arguments which are copied to corresponding
 environment variables within the running container. All the arguments/variables
@@ -165,8 +170,12 @@ values applied to appropriate ``SAMI_xxx`` arguments.
 | SAMI_SOURCE_REGEX  | \.\(php\|txt\|rst\)$             | Regular expression for the source file names.           |
 +--------------------+----------------------------------+---------------------------------------------------------+
 
-How it works
-------------
+Software included
+^^^^^^^^^^^^^^^^^
+
+- php_
+- git_
+- sami_
 
 .. _php: https://php.net/
 .. _git: https://git-scm.com/
