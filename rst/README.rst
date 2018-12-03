@@ -34,13 +34,40 @@ be initially empty).
       `-- Foo
           `-- Bar.php
 
+
+Running by hand
+^^^^^^^^^^^^^^^
+
 Run it as follows
 
 .. code-block:: console
 
    user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
 
-and you shall see two new directories
+
+Running with docker-compose
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: yaml
+   :label: docker-compose.yml
+
+   version: '3'
+   services:
+      sami:
+         image: korowai/sami
+         ports:
+            - "8001:8001"
+         volumes:
+            - ./:/home/sami/project
+
+.. code-block:: console
+
+   user@pc:$ docker-compose up sami
+
+Results
+^^^^^^^
+
+Whatever method you chose, you shall see two new directories
 
 .. code-block:: console
 
