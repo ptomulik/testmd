@@ -7,10 +7,10 @@ box. It may be easily tweaked to support other projects as well.
 
 With this container you can:
 
-   - build documentation once,
-   - build documentation once and then serve it with http server,
-   - build documentation continuously (rebuilding when sources change),
-   - build documentation continuously and serve it in the same time.
+- build documentation once,
+- build documentation once and then serve it with http server,
+- build documentation continuously (rebuilding when sources change),
+- build documentation continuously and serve it in the same time.
 
 Base image
 ----------
@@ -18,15 +18,15 @@ Base image
 The container is based on php:x.y-alpine image. Currently we provide images
 based on
 
-   - ``php:7.1-alpine``,
-   - ``php:7.2-alpine``.
+- ``php:7.1-alpine``,
+- ``php:7.2-alpine``.
 
 Software included
 -----------------
 
-   - php_
-   - git_
-   - sami_
+- php_
+- git_
+- sami_
 
 
 Other files
@@ -34,12 +34,12 @@ Other files
 
 Under ``/usr/local/bin``:
 
-   - ``sami-autobuild`` [c] - builds documentation continuously (watches source directory for changes),
-   - ``sami-autoserve`` [c] - builds documentation continuously and runs http server,
-   - ``sami-build`` [c] - builds documentation once and exits,
-   - ``sami-serve`` [c] - builds source once and starts http server,
-   - ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
-   - ``sami-entrypoint`` - entry point for docker,
+- ``sami-autobuild`` [c] - builds documentation continuously (watches source directory for changes),
+- ``sami-autoserve`` [c] - builds documentation continuously and runs http server,
+- ``sami-build`` [c] - builds documentation once and exits,
+- ``sami-serve`` [c] - builds source once and starts http server,
+- ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
+- ``sami-entrypoint`` - entry point for docker,
 
 The scripts labelled with [c] may be used as docker command. The default
 command run by container is ``sami-autoserve``.
