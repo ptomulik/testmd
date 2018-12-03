@@ -29,19 +29,23 @@ Software included
 Files inside container
 ----------------------
 
-Files under ``/usr/local/bin``:
+Files in ``/usr/local/bin``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- *sami-autobuild* - builds documentation continuously (watches source directory for changes),
-- *sami-autoserve*  - builds documentation continuously and runs http server,
-- *sami-build*  - builds documentation once and exits,
-- *sami-serve*  - builds source once and starts http server,
-- sami-defaults - helper script, applies defaults to ``SAMI_xxx`` environment variables,
-- sami-entrypoint - entry point for docker,
+- scripts which may be used as container's command:
 
-The files in *italics* are scripts that may be used as container's command. The
-default command run by container is *sami-autoserve*.
+  - ``sami-autobuild`` - builds documentation continuously (watches source directory for changes),
+  - ``sami-autoserve``  - builds documentation continuously and runs http server,
+  - ``sami-build``  - builds documentation once and exits,
+  - ``sami-serve``  - builds source once and starts http server,
 
-Files under ``/home/sami``
+- other files
+
+  - ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
+  - ``sami-entrypoint`` - entry point for docker,
+
+Files in ``/home/sami``
+^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``sami.conf.php``
 
