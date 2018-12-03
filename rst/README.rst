@@ -15,11 +15,8 @@ With this container you can:
 Base image
 ----------
 
-The container is based on php:x.y-alpine image. Currently we provide images
-based on
-
-- ``php:7.1-alpine``,
-- ``php:7.2-alpine``.
+The containers provided by this project are based on ``php:x.y-alpine`` images
+(``php:7.1-alpine``, ``php:7.2-alpine``, ...).
 
 Software included
 -----------------
@@ -29,10 +26,10 @@ Software included
 - sami_
 
 
-Other files
------------
+Files inside container
+----------------------
 
-Under ``/usr/local/bin``:
+Files under ``/usr/local/bin``:
 
 - ``sami-autobuild`` [c] - builds documentation continuously (watches source directory for changes),
 - ``sami-autoserve`` [c] - builds documentation continuously and runs http server,
@@ -43,6 +40,10 @@ Under ``/usr/local/bin``:
 
 The scripts labelled with [c] may be used as docker command. The default
 command run by container is ``sami-autoserve``.
+
+Files under ``/home/sami``
+
+- ``sami.conf.php``
 
 Configuration variables
 -----------------------
