@@ -20,8 +20,8 @@ The default behavior is to build continuously and serve at the same time.
 Quick example
 -------------
 
-Assume we have the following directory hierarchy (the essential here is
-assumption that php source files are found under ``src``, also  we expect the
+Assume we have the following file hierarchy (the essential here is assumption
+that php source files are found under ``src``, also  we expect the
 documentation to be written-out somewhere under ``docs``)
 
 .. code-block:: console
@@ -34,8 +34,8 @@ documentation to be written-out somewhere under ``docs``)
           `-- Bar.php
 
 
-Running by hand
-^^^^^^^^^^^^^^^
+Running with docker_
+^^^^^^^^^^^^^^^^^^^^
 
 Run it as follows
 
@@ -181,6 +181,7 @@ Software included
 .. _sami: https://github.com/FriendsOfPHP/Sami/
 .. _Korowai: https://github.com/korowai/korowai/
 .. _Korowai Framework: https://github.com/korowai/framework/
+.. _docker: https://docker.com/
 .. _docker-compose: https://docs.docker.com/compose/
 
 .. <!--- vim: set ft=rst ts=2 sw=2 expandtab spell: -->
