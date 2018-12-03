@@ -3,7 +3,10 @@ korowai/docker-sami
 
 Docker container with sami_ PHP API doc generator. The container is designed
 to build PHP API documentation for Korowai_ and `Korowai Framework`_ out of the
-box. It may be easily tweaked to support other projects as well.
+box. It may be easily adjusted to support other projects.
+
+Features
+--------
 
 With this container you can:
 
@@ -12,11 +15,15 @@ With this container you can:
 - build documentation continuously (rebuilding when sources change),
 - build documentation continuously and serve it in the same time.
 
-Base image
-----------
+Volume mount points exposed
+---------------------------
 
-The containers provided by this project are based on ``php:x.y-alpine`` images
-(``php:7.1-alpine``, ``php:7.2-alpine``, ...).
+- ``/home/sami/project`` - bind top level directory of your project here.
+
+Working directory
+-----------------
+
+- ``/home/sami/project``
 
 Software included
 -----------------
@@ -29,8 +36,8 @@ Software included
 Files inside container
 ----------------------
 
-Files in ``/usr/local/bin``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In ``/usr/local/bin``
+^^^^^^^^^^^^^^^^^^^^^
 
 - scripts which may be used as container's command:
 
@@ -41,16 +48,23 @@ Files in ``/usr/local/bin``
 
 - other files
 
-  - ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
-  - ``sami-entrypoint`` - entry point for docker,
+  - ``sami-defaults`` - initializes ``SAMI_xxx`` variables (default values),
+  - ``sami-entrypoint`` - provides an entry point for docker.
 
-Files in ``/home/sami``
-^^^^^^^^^^^^^^^^^^^^^^^
+In ``/home/sami``
+^^^^^^^^^^^^^^^^^
 
-- ``sami.conf.php``
+- ``sami.conf.php`` - default configuration file for sami.
 
 Configuration variables
 -----------------------
+
+The container defines several build arguments which are copied to corresponding
+environment variables within the running container. All the arguments/variables
+have names starting with ``SAMI_`` prefix. All the script, and the
+configuration file ``sami.conf.php`` uses these variables, so the easiest way
+to adjust the container to your needs is to rebuild the image with custom
+values applied to appropriate ``SAMI_xxx`` arguments.
 
 +--------------------+----------------------------------+---------------------------------------------------------+
 |     Variable       |          Default Value           |                   Description                           |
