@@ -13,7 +13,9 @@ With this container you can:
 - build documentation once,
 - build documentation once and then serve it with http server,
 - build documentation continuously (rebuilding when sources change),
-- build documentation continuously and serve it in the same time.
+- build documentation continuously and serve it at the same time.
+
+The default behaviour is to build continuously and serve at the same time.
 
 Volume mount points exposed
 ---------------------------
