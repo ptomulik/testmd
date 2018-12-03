@@ -52,13 +52,21 @@ Configuration variables
 |     Variable       |          Default Value           |                   Description                           |
 +====================+==================================+=========================================================+
 | SAMI_UID           | 1000                             | UID of the user running commands within the container.  |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_GID           | 1000                             | GID of the user running commands within the container.  |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_CONFIG        | /home/sami/sami.conf.php         | Path to the config file for sami.                       |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_PROJECT_TITLE | API Documentation                | Title for the generated documentation.                  |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_SOURCE_DIR    | src                              | Top-level directory with the PHP source files.          |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_BUILD_DIR     | docs/build/html/api              | Where to output the generated documentation.            |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_CACHE_DIR     | docs/cache/html/api              | Where to write cache files.                             |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_SERVER_PORT   | 8001                             | Port numer (within container) for the http server.      |
++--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_SOURCE_REGEX  | ``'\.\(php\|txt\|rst\)$``        | Regular expression for the source file names.           |
 +--------------------+----------------------------------+---------------------------------------------------------+
 
