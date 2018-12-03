@@ -60,7 +60,7 @@ Configuration variables
 | SAMI_CACHE_DIR     | docs/cache/html/api              | Where to write cache files.                             |
 | SAMI_SERVER_PORT   | 8001                             | Port numer (within container) for the http server.      |
 | SAMI_SOURCE_REGEX  | ``'\.\(php\|txt\|rst\)$``        | Regular expression for the source file names.           |
-+-------------------+----------------------------------+---------------------------------------------------------+
++--------------------+----------------------------------+---------------------------------------------------------+
 
 How it works
 ------------
