@@ -48,17 +48,23 @@ Run it as follows
 Running with docker-compose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
-   :caption: docker-compose.yml
+- In the top level directory create ``docker-compose.yml`` containing the
+  following
 
-   version: '3'
-   services:
-      sami:
-         image: korowai/sami
-         ports:
-            - "8001:8001"
-         volumes:
-            - ./:/home/sami/project
+  .. code-block:: yaml
+
+     version: '3'
+     # ....
+     services:
+        # ...
+        sami:
+           image: korowai/sami
+           ports:
+              - "8001:8001"
+           volumes:
+              - ./:/home/sami/project
+
+then run
 
 .. code-block:: console
 
