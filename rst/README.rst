@@ -81,6 +81,13 @@ directories
    user@pc:$ ls -d docs/*
    docs/build docs/cache
 
+The documentation is written to ``docs/build/html/api``
+
+.. code-block:: console
+
+   user@pc:$ find docs -name 'index.html'
+   docs/build/html/api/index.html
+
 As long as the container is running, the documentation is available at
 
 -  http://localhost:8001.
