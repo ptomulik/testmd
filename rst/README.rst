@@ -20,7 +20,10 @@ The default behaviour is to build continuously and serve at the same time.
 Quick example
 -------------
 
-You may use the container directly on the following directory structure
+You may use the container directly on the following directory structure (the
+only important is assumption that sources are placed under ``src`` and we
+expect the documentation to be generated somewhere under ``docs``, which may
+be initially empty).
 
 .. code-block:: console
 
