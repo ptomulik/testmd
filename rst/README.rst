@@ -15,15 +15,14 @@ With this container you can:
 - build documentation continuously (rebuilding when sources change),
 - build documentation continuously and serve it at the same time.
 
-The default behaviour is to build continuously and serve at the same time.
+The default behavior is to build continuously and serve at the same time.
 
 Quick example
 -------------
 
-You may use the container directly on the following directory structure (the
-only important is assumption that php source files are found under ``src`` and
-we expect the documentation to be generated somewhere under ``docs``, which may
-be initially empty).
+Assume we have the following directory hierarchy (the essential here is
+assumption that php source files are found under ``src``, also  we expect the
+documentation to be written-out somewhere under ``docs``)
 
 .. code-block:: console
 
