@@ -10,12 +10,31 @@ Features
 
 With this container you can:
 
-- build documentation once,
+- build documentation once and exit,
 - build documentation once and then serve it with http server,
 - build documentation continuously (rebuilding when sources change),
 - build documentation continuously and serve it at the same time.
 
 The default behaviour is to build continuously and serve at the same time.
+
+Quick example
+-------------
+
+.. code-block:: console
+
+  user@pc:$ tree .
+  .
+  |-- docs
+  `-- src
+      `-- Korowai
+          `-- Component
+              `-- Ldap
+                  |-- AbstractLdap.php
+                  `-- Ldap.php
+
+.. code-block:: shell
+
+   docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
 
 Volume mount points exposed
 ---------------------------
