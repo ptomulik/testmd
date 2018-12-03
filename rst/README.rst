@@ -32,9 +32,9 @@ Quick example
                   |-- AbstractLdap.php
                   `-- Ldap.php
 
-.. code-block:: shell
+.. code-block:: console
 
-   docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
+   user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
 
 Volume mount points exposed
 ---------------------------
