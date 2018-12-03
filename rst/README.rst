@@ -1,7 +1,7 @@
 korowai/docker-sami
 ===================
 
-Docker container with sami_ PHP API doc generator. The container is designed
+Docker container with sami_ documentation generator. The container is designed
 to build PHP API documentation for Korowai_ and `Korowai Framework`_ out of the
 box. It may be easily adjusted to support other projects.
 
