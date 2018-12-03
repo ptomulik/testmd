@@ -20,21 +20,34 @@ The default behaviour is to build continuously and serve at the same time.
 Quick example
 -------------
 
+You may use the container directly on the following directory structure
+
 .. code-block:: console
 
   user@pc:$ tree .
   .
   |-- docs
   `-- src
-      `-- Korowai
-          `-- Component
-              `-- Ldap
-                  |-- AbstractLdap.php
-                  `-- Ldap.php
+      `-- Foo
+          `-- Bar
+              `-- Geez.php
+
+Run it as follows
 
 .. code-block:: console
 
    user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
+
+and you shall see two new directories
+
+.. code-block:: console
+
+   user@pc:$ ls -d docs/*
+   docs/build docs/cache
+
+As long as the container is running, the documentation is available at
+
+-  http://localhost:8001.
 
 Volume mount points exposed
 ---------------------------
