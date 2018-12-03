@@ -31,15 +31,15 @@ Files inside container
 
 Files under ``/usr/local/bin``:
 
-- ``sami-autobuild`` *[c]* - builds documentation continuously (watches source directory for changes),
-- ``sami-autoserve`` *[c]* - builds documentation continuously and runs http server,
-- ``sami-build`` *[c]* - builds documentation once and exits,
-- ``sami-serve`` *[c]* - builds source once and starts http server,
-- ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
-- ``sami-entrypoint`` - entry point for docker,
+- *sami-autobuild* - builds documentation continuously (watches source directory for changes),
+- *sami-autoserve*  - builds documentation continuously and runs http server,
+- *sami-build*  - builds documentation once and exits,
+- *sami-serve*  - builds source once and starts http server,
+- sami-defaults - helper script, applies defaults to ``SAMI_xxx`` environment variables,
+- sami-entrypoint - entry point for docker,
 
-The scripts labelled with *[c]* may be used as docker command. The default
-command run by container is ``sami-autoserve``.
+The files in *italics* are scripts that may be used as container's command. The
+default command run by container is *sami-autoserve*.
 
 Files under ``/home/sami``
 
@@ -80,4 +80,3 @@ How it works
 .. _Korowai Framework: https://github.com/korowai/framework/
 
 .. <!--- vim: set ft=rst ts=2 sw=2 expandtab spell: -->
-
