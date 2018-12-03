@@ -1,178 +1,73 @@
-scons-tool-kpsewhich
-====================
+korowai/docker-sami
+===================
 
-.. image:: https://badge.fury.io/py/scons-tool-kpsewhich.svg
-    :target: https://badge.fury.io/py/scons-tool-kpsewhich
-    :alt: PyPi package version
+Docker container with sami_ PHP API doc generator. The container is designed
+to build PHP API documentation for Korowai_ and `Korowai Framework`_ out of the
+box. It may be easily tweaked to support other projects as well.
 
-.. image:: https://travis-ci.org/ptomulik/scons-tool-kpsewhich.svg?branch=master
-    :target: https://travis-ci.org/ptomulik/scons-tool-kpsewhich
-    :alt: Travis CI build status
+With this container you can:
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-kpsewhich?svg=true
-    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-kpsewhich
+   - build documentation once,
+   - build documentation once and then serve it with http server,
+   - build documentation continuously (rebuilding when sources change),
+   - build documentation continuously and serve it in the same time.
 
-This tool provides `SCons`_ with interface to kpsewhich utility. The kpsewhich
-program is a part of `kpathsea`_ library, which in turn is a part of TeX Live
-distribution. Its purpose is to search within the `TeX directory structure`_
-(TDS) for files such as TeX classes, styles, BibTeX databases, fonts etc. For
-more informations see `kpathsea manual`_ and informations about `TeX directory
-structure`_ (TDS).
+Base image
+----------
 
-This tool appends new methods to the SCons Environment. It does not provide any
-builders, but rather equips SCons Environment with methods that call
-``kpsewhich`` program during the SConscript-reading phase. This tool does not
-produce any files, it is thought as an extension for obtaining textual
-information from external program.
+The container is based on php:x.y-alpine image. Currently we provide images
+based on
 
-INSTALLATION
+   - ``php:7.1-alpine``,
+   - ``php:7.2-alpine``.
+
+Software included
+-----------------
+
+   - php_
+   - git_
+   - sami_
+
+
+Other files
+-----------
+
+Under ``/usr/local/bin``:
+
+   - ``sami-autobuild`` [c] - builds documentation continuously (watches source directory for changes),
+   - ``sami-autoserve`` [c] - builds documentation continuously and runs http server,
+   - ``sami-build`` [c] - builds documentation once and exits,
+   - ``sami-serve`` [c] - builds source once and starts http server,
+   - ``sami-defaults`` - helper script, applies defaults to ``SAMI_xxx`` environment variables,
+   - ``sami-entrypoint`` - entry point for docker,
+
+The scripts labelled with [c] may be used as docker command. The default
+command run by container is ``sami-autoserve``.
+
+Configuration variables
+-----------------------
+
++--------------------+----------------------------------+---------------------------------------------------------+
+|     Variable       |          Default Value           |                   Description                           |
++====================+==================================+=========================================================+
+| SAMI_UID           | 1000                             | UID of the user running commands within the container.  |
+| SAMI_GID           | 1000                             | GID of the user running commands within the container.  |
+| SAMI_CONFIG        | /home/sami/sami.conf.php         | Path to the config file for sami.                       |
+| SAMI_PROJECT_TITLE | API Documentation                | Title for the generated documentation.                  |
+| SAMI_SOURCE_DIR    | src                              | Top-level directory with the PHP source files.          |
+| SAMI_BUILD_DIR     | docs/build/html/api              | Where to output the generated documentation.            |
+| SAMI_CACHE_DIR     | docs/cache/html/api              | Where to write cache files.                             |
+| SAMI_SERVER_PORT   | 8001                             | Port numer (within container) for the http server.      |
+| SAMI_SOURCE_REGEX  | ``'\.\(php\|txt\|rst\)$``        | Regular expression for the source file names.           |
++-------------------+----------------------------------+---------------------------------------------------------+
+
+How it works
 ------------
 
-There are few ways to install this tool for your project.
+.. _php: https://php.net/
+.. _git: https://git-scm.com/
+.. _sami: https://github.com/FriendsOfPHP/Sami/
+.. _Korowai: https://github.com/korowai/korowai/
+.. _Korowai Framework: https://github.com/korowai/framework/
 
-From pypi_
-^^^^^^^^^^
-
-This method may be preferable if you build your project under a virtualenv. To
-add kpsewhich tool from pypi_, type (within your wirtualenv):
-
-.. code-block:: shell
-
-   pip install scons-tool-loader scons-tool-kpsewhich
-
-or, if your project uses pipenv_:
-
-.. code-block:: shell
-
-   pipenv install --dev scons-tool-loader scons-tool-kpsewhich
-
-Alternatively, you may add this to your ``Pipfile``
-
-.. code-block::
-
-   [dev-packages]
-   scons-tool-loader = "*"
-   scons-tool-kpsewhich = "*"
-
-
-The tool will be installed as a namespaced package ``sconstool.kpsewhich``
-in project's virtual environment. You may further use scons-tool-loader_
-to load the tool.
-
-As a git submodule
-^^^^^^^^^^^^^^^^^^
-
-#. Create new git repository:
-
-   .. code-block:: shell
-
-      mkdir /tmp/prj && cd /tmp/prj
-      touch README.rst
-      git init
-
-#. Add the `scons-tool-kpsewhich`_ as a submodule:
-
-   .. code-block:: shell
-
-      git submodule add git://github.com/ptomulik/scons-tool-kpsewhich.git site_scons/site_tools/kpsewhich
-
-#. For python 2.x create ``__init__.py`` in ``site_tools`` directory:
-
-   .. code-block:: shell
-
-      touch site_scons/site_tools/__init__.py
-
-   this will allow to directly import ``site_tools.kpsewhich`` (this may be required by other tools).
-
-
-USAGE EXAMPLES
---------------
-
-Find files ``article.cls`` and ``amsmath.sty`` used by ``latex``::
-
-    env = Environment(tools = ['tex', 'kpsewhich'])
-    files = env.KPSFindFiles(['article.cls','amsmath.sty'], progname='$LATEX')
-
-Find all occurrences of ``unicode.sty`` file in TDS::
-
-    env = Environment(tools = ['kpsewhich'])
-    files = env.KPSFindAllFiles('unicode.sty')
-
-Other functions (correspond directly to ``kpsewhich`` function options)::
-
-    texmf = env.KPSExpandBraces('a{b,c}d')# kpsewhich -expand-braces 'a{b,c}d'
-    texmf = env.KPSExpandPath('$TEXMF')   # kpsewhich -expand-path '$TEXMF'
-    texmf = env.KPSExpandVar('$TEXMF')    # kpsewhich -expand-var '$TEXMF'
-    texpath = env.KPSShowPath('tex')      # kpsewhich -show-path 'tex'
-    home = env.KPSVarValue('TEXMFHOME')   # kpsewhich -var-value 'TEXMFHOME'
-
-
-
-CONSTRUCTION VARIABLES
-----------------------
-
-The following construction variables may be used to configure the ``kpsewhich``
-tool. They may be also provided as keyword arguments to ``KPSXxx()`` methods.
-
-
-
-``KPSVARIABLES`` must be a dictionary in form ``{ NAME : VALUE }``,
-for example::
-
-  KPSVARIABLES = {"TEXMFHOME" : "/home/ptomulik/texmf"}
-
-ARGUMENTS
----------
-
-These arguments are accepted by some ``KPSXxx()`` methods. All the methods accept
-``progname``. All other arguments are accepted by ``KPSFindFiles`` and
-``KPSFindAllFiles``.
-
-============================== ==============================================
-        Variable                                Description
-============================== ==============================================
- ``dpi``                         corresponds to ``-dpi`` flag,
------------------------------- ----------------------------------------------
- ``format``                      corresponds to ``-format`` flag,
------------------------------- ----------------------------------------------
- ``path``                        corresponds to ``-path`` flag
------------------------------- ----------------------------------------------
- ``progname``                    corresponds to ``-progname`` flag
------------------------------- ----------------------------------------------
- ``subdir``                      corresponds to ``-subdir`` flag
-============================== ==============================================
-
-
-LICENSE
--------
-Copyright (c) 2013-2018 by Pawel Tomulik
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
-.. _SCons: http://scons.org
-.. _SCons test framework: https://bitbucket.org/dirkbaechle/scons_test_framework
-.. _mercurial: http://mercurial.selenic.com/
-.. _TeX directory structure: http://tug.org/twg/tds/
-.. _kpathsea: http://tug.org/kpathsea/
-.. _kpathsea manual: http://tug.org/texinfohtml/kpathsea.html
-.. _pipenv: https://pipenv.readthedocs.io/
-.. _pypi: https://pypi.org/
-.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader/
-
-.. <!--- vim: set expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
+.. <!--- vim: set ft=rst ts=2 sw=2 expandtab spell: -->
