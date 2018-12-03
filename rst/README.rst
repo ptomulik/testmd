@@ -21,8 +21,8 @@ Quick example
 -------------
 
 You may use the container directly on the following directory structure (the
-only important is assumption that sources are placed under ``src`` and we
-expect the documentation to be generated somewhere under ``docs``, which may
+only important is assumption that php source files are found under ``src`` and
+we expect the documentation to be generated somewhere under ``docs``, which may
 be initially empty).
 
 .. code-block:: console
@@ -49,7 +49,7 @@ Running with docker-compose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: yaml
-   :label: docker-compose.yml
+   :caption: docker-compose.yml
 
    version: '3'
    services:
