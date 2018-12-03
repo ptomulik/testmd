@@ -32,8 +32,7 @@ be initially empty).
   |-- docs
   `-- src
       `-- Foo
-          `-- Bar
-              `-- Geez.php
+          `-- Bar.php
 
 Run it as follows
 
