@@ -45,8 +45,8 @@ Run it as follows
    user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai-sami
 
 
-Running with docker-compose
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Running with docker-compose_
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the top level directory create ``docker-compose.yml`` containing the
 following
@@ -64,7 +64,7 @@ following
          volumes:
             - ./:/home/sami/project
 
-then run
+Then run
 
 .. code-block:: console
 
@@ -165,5 +165,6 @@ How it works
 .. _sami: https://github.com/FriendsOfPHP/Sami/
 .. _Korowai: https://github.com/korowai/korowai/
 .. _Korowai Framework: https://github.com/korowai/framework/
+.. _docker-compose: https://docs.docker.com/compose/
 
 .. <!--- vim: set ft=rst ts=2 sw=2 expandtab spell: -->
