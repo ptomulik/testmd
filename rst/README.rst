@@ -73,7 +73,8 @@ Then run
 Results
 ^^^^^^^
 
-Whatever method you chose, you shall see two new directories
+Whatever method you chose to run the container, you shall see two new
+directories
 
 .. code-block:: console
 
