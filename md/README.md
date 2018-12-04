@@ -1,311 +1,211 @@
-# ptomulik-portsng
-[![Puppet Forge](https://img.shields.io/puppetforge/v/ptomulik/portsng.svg)](https://forge.puppet.com/ptomulik/portsng)
-[![Build Status](https://travis-ci.org/ptomulik/puppet-portsng.png?branch=master)](https://travis-ci.org/ptomulik/puppet-portsng)
-[![Coverage Status](https://coveralls.io/repos/ptomulik/puppet-portsng/badge.png?branch=master)](https://coveralls.io/r/ptomulik/puppet-portsng?branch=master)
-[![Code Climate](https://codeclimate.com/github/ptomulik/puppet-portsng/badges/gpa.svg)](https://codeclimate.com/github/ptomulik/puppet-portsng)
+korowai/docker-sami
+===================
 
-## <a id="table-of-contents"></a>Table of Contents
+Docker container with [sami](https://github.com/FriendsOfPHP/Sami/)
+documentation generator. The container is designed to build PHP API
+documentation for [Korowai](https://github.com/korowai/korowai/) and
+[Korowai Framework](https://github.com/korowai/framework/) out of the
+box. It may be easily adjusted to support other projects.
 
-1. [Overview](#overview)
-2. [Module Description](#module-description)
-3. [Setup](#setup)
-    * [What portsng affects](#what-portsng-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with portsng](#beginning-with-portsng)
-4. [Troubleshooting](#troubleshooting)
-5. [Limitations](#limitations)
-6. [Development](#development)
+Features
+--------
 
-## <a id="overview"></a>Overview
+With this container you can:
 
-This is an enhanced __ports__ provider for package resource (FreeBSD).
-[FreeBSD Ports and Packages Collection](https://www.freebsd.org/ports/)
-offers a simple way for users and administrators to install applications.
-This provider enables puppet to manage FreeBSD ports on agent OS.
+-   build documentation once and exit,
+-   build documentation once and then serve it with http server,
+-   build documentation continuously (rebuilding when sources change),
+-   build documentation continuously and serve it at the same time.
 
-The module requires ``port-maintenance-tools`` to be installed on agent.
+The default behavior is to build continuously and serve at the same
+time.
 
-## <a id="module-description"></a>Module Description
+Quick example
+-------------
 
-The module is an alternative for puppet's built-int __ports__ provider.
-It provides additional features and is free of several issues found in the
-built-int __ports__ provider. For details see [remarks](#remarks).
+Assume we have the following file hierarchy (the essential here is
+assumption that php source files are found under `src`, also we expect
+the documentation to be written-out somewhere under `docs`)
 
-\[[Table of Contents](#table-of-contents)\]
-
-## <a id="setup"></a>Setup
-
-### <a id="what-portsng-affects"></a>What portsng affects
-
-* installs, upgrades, reinstalls and uninstalls packages,
-* modifies FreeBSD ports options' files `/var/db/ports/*/options.local` or
-  `/var/db/ports/*/options` (if really outdated ports tree is used).
-
-\[[Table of Contents](#table-of-contents)\]
-
-### <a id="setup-requirements"></a>Setup Requirements
-
-You may need to enable __pluginsync__ in your `puppet.conf`.
-
-\[[Table of Contents](#table-of-contents)\]
-
-### <a id="beginning-with-portsng"></a>Beginning with portsng
-
-Its usage is essentially same as for the original *ports* provider. Just select
-*portsng* as the package provider
-
-```puppet
-Package { provider => portsng }
+``` {.sourceCode .console}
+user@pc:$ tree .
+.
+|-- docs
+`-- src
+    `-- Foo
+        `-- Bar.php
 ```
 
-Below I just put some examples specific to new features of *portsng*.
+### Running with docker
 
-#### <a id="example-1---using-package_settings"></a>Example 1 - using *package_settings*
+Run it as follows
 
-Use *package_settings* to ensure that appropriate compilation options are set
-for a port. Normally (without puppet) you would set these with ``make config``
-command. In the following example we ensure that ``www/apache22`` is installed
-with ``SUEXEC`` enabled:
-
-```puppet
-package { 'www/apache22':
-  package_settings => {'SUEXEC' => true}
-}
+``` {.sourceCode .console}
+user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai/sami
 ```
 
-\[[Table of Contents](#table-of-contents)\]
+### Running with docker-compose
 
-#### <a id="example-2---using-uninstall_options-to-cope-with-dependency-problems"></a> Example 2 - using *uninstall_options* to cope with dependency problems
+In the top level directory create `docker-compose.yml` containing the
+following
 
-Sometimes, the FreeBSD package manager refuses to uninstall a package if there
-are other packages installed that depend on this one. In such situations we may
-use *uninstall_options* to (recursively) uninstall all the packages dependant
-on the one being uninstalled. If [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)
-is used on FreeBSD as a package manager (default since 10.3), one has to write:
-
-```puppet
-package { 'www/apache22':
-  ensure => absent,
-  uninstall_options => ['-R','-y']
-}
+``` {.sourceCode .yaml}
+version: '3'
+# ....
+services:
+   # ...
+   sami:
+      image: korowai/sami
+      ports:
+         - "8001:8001"
+      volumes:
+         - ./:/home/sami/project
 ```
 
-When still using ports with ancient
-[pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html)
-package manager one would write in its manifest:
+Then run
 
-```puppet
-package { 'www/apache22':
-  ensure => absent,
-  uninstall_options => ['-r']
-}
+``` {.sourceCode .console}
+user@pc:$ docker-compose up sami
 ```
 
-\[[Table of Contents](#table-of-contents)\]
+### Results
 
-#### <a id="example-3---using-install_options"></a>Example 3 - using *install_options*
+Whatever method you chose to run the container, you shall see two new
+directories
 
-The new *portsng* provider implements *install_options* feature. The flags
-provided via *install_options* are passed to [portupgrade](https://www.freebsd.org/cgi/man.cgi?query=portupgrade)
-command when installing, reinstalling or upgrading packages. With no
-*install_options* provided, sensible defaults are selected by *portsng* provider.
-
-Let's say we want to install precompiled package, if available (`-P` flag).
-Write the following manifest:
-
-```puppet
-package { 'www/apache22':
-  ensure => present,
-  install_options => ['-P', '-M', {'BATCH' => 'yes'}]
-}
+``` {.sourceCode .console}
+user@pc:$ ls -d docs/*
+docs/build docs/cache
 ```
 
-Now, if we run puppet, we'll see the command:
+The documentation is written to `docs/build/html/api`
 
-```console
-~ # puppet agent -t --debug --trace
-...
-Debug: Executing '/usr/local/sbin/portupgrade -N -P -M BATCH=yes www/apache22'
-...
+``` {.sourceCode .console}
+user@pc:$ find docs -name 'index.html'
+docs/build/html/api/index.html
 ```
 
-Note, that the *portsng* provider adds some flags by its own (`-N` in the above
-example). What is added/removed is preciselly stated in provider's generated
-documentation.
+As long as the container is running, the documentation is available at
 
-\[[Table of Contents](#table-of-contents)\]
+-   <http://localhost:8001>.
 
-## <a id="troubleshooting"></a>Troubleshooting
+Customizing
+-----------
 
-* puppet is unable to find information about not yet installed ports
+Several parameters can be changed via environment variables, for example
 
-  - try to run manually (as root)
-
-    ```console
-    ~ # make seach -C /usr/ports/misc/figlet
-    ```
-
-    if it prints something like "Please run make index", then follow that
-    advice. You may also check ``/usr/ports`` for ``INDEX-*`` files and if
-    they're absent, then regenerate index with ``make index``. Note, that
-    it may take a while.
-
-* portupgrade hangs when called from puppet (on some older FreeBSD versions)
-
-  - it may be the [script(1)](https://www.freebsd.org/cgi/man.cgi?script%281%29)
-    command hanging. You may try to run the following script to fix pkgtools
-
-    ```console
-    #!/bin/sh
-
-    set -e
-
-    # Fix for hanging "script -qa ... " in pkgtools.rb used by portupgrade
-    if [ -d '/usr/local/lib/ruby' ]; then
-      echo "/usr/local/lib/ruby is a directory";
-      for F in `find /usr/local/lib/ruby -name 'pkgtools.rb' -type f`; do
-        UNCHMOD=false;
-        echo "patching $F...";
-        test -w $F || (chmod u+w $F; UNCHMOD=true);
-        sed -e "s/\[script_path(), '-qa', file, \*args\]/[script_path(), '-t', '0', '-qa', file, \*args]/" \
-            -e "s/\['\/usr\/bin\/script', '-qa', file, \*args\]/['\/usr\/bin\/script', '-t', '0', '-qa', file, \*args]/" \
-            -i '' $F;
-        if $UNCHMOD; then chmod u-w $F; fi
-      done
-    fi
-    ```
-
-    The script may also be [downloaded from github](https://raw.githubusercontent.com/ptomulik/puppet-portsng/master/.fixes/fix-hanging-pkgtools.sh)
-
-* installation fails with error message
-
-  ```console
-  /usr/local/sbin/portupgrade:569:in `chdir': HOME/LOGDIR not set (ArgumentError)
-  ```
-
-  - this is caused by portupgrade v. 2.4.10.X, see
-    [FreeBSD Bug #175281](https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=175281),
-  - install another version of portupgrade to fix this.
-
-\[[Table of Contents](#table-of-contents)\]
-
-## <a id="limitations"></a>Limitations
-
-* If there are several ports installed with same *portname* - for example
-  `docbook` - then `puppet resource package docbook` will list only one of
-  them (the last one from `portversion`s list - usually the most recent). It is
-  so, because `portsng` uses *portorigins* to identify its instances (as `name`
-  paramateter). None of the existing `instances` is identified by `puppet` as
-  an instance of `docbook` and `puppet` falls back to use provider's `query`
-  method. But `query` handles only one package per name (in this case the last
-  one from *portversion*'s list if chosen). This is an issue, which will not
-  probably be fixed, so you're encouraged to use *portorigins*.
-
-## <a id="remarks"></a>Remarks
-
-### <a id="how-it-corresponds"></a> How it corresponds to the puppet's built-in __ports__ provider
-
-Main motivation for this module being developed was that the puppet's
-built-in __ports__ provider had several defects and missing features at time of
-this writing. By implementing it from scratch, I hoped (and, I think, managed)
-to provide all these missing features and to release a module free of all the
-bugs (and misconceptions) I found in the built-in one. So below is short
-description of what was achieved.
-
-The new features include:
-
-  * *install_options* - extra CLI flags passed to *portupgrade* when
-    installing, reinstalling and upgrading packages,
-  * *uninstall_options* - extra CLI flags passed to
-    [pkg_deinstall(1)](https://www.freebsd.org/cgi/man.cgi?query=pkg_deinstall&sektion=1)
-    (the ancient [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html)
-    toolstack) or [pkg delete](https://www.freebsd.org/cgi/man.cgi?query=pkg&sektion=8)
-    ([pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html)) when
-    uninstalling packages,
-  * *package_settings* - configuration options for package, the ones you
-    usually set with ``make config``,
-  * works wit both the ancient
-    [pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) and new
-    [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) package
-    databases,
-  * *upgradeable* (tested, the original puppet provider declared that it's
-    upgradeable, but it never worked for me),
-  * *portorigins* (instead of *portnames*) are used internally to identify
-    package instances,
-  * [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
-    is used to find installed packages (instead of *pkg_info*),
-  * [make search](http://www.freebsd.org/cgi/man.cgi?query=ports&sektion=7) is
-    used to find (not-installed) ports listed in puppet manifests,
-  * several issues resolved,
-
-The *package_settings* is simply an `{OPTION => value}` hash, with boolean
-values. The *portsng* provider ensures that package is compiled with prescribed
-*package_settings*. Normally you would set these options with *make config*
-command using ncurses-based frontend. Here, you can define *package_settings*
-in your puppet manifest. If a package is already installed and you change its
-*package_settings* in manifest file, the package gets rebuilt with new options
-and reinstalled.
-
-Instead of *portnames*, *portorigins* are used to identify *portsng* instances
-(see [FreeBSD ports collection and it's
-terminology](#freebsd-ports-collection-and-its-terminology)). This copes with
-several problems caused by portnames' ambiguity (see [FreeBSD ports collection
-and ambiguity of
-portnames](#freebsd-ports-collection-and-ambiguity-of-portnames)). You can now
-install and mainain ports that have common *portname* (but different
-portorigins). Examples of such packages include *mysql-client* or *ruby* (see
-below).
-
-The [portversion](http://www.freebsd.org/cgi/man.cgi?query=portversion&manpath=ports&sektion=1)
-utility is used to find installed ports. It's better than using
-[pkg_info](http://www.freebsd.org/cgi/man.cgi?query=pkg_info&sektion=1) for
-several reasons. First, it is said to be faster, because it uses compiled
-version of ports INDEX file. Second, it works with both - the ancient
-[pkg](https://docs.freebsd.org/doc/9.0-RELEASE/usr/share/doc/freebsd/en/books/handbook/packages-using.html) database and the
-new [pkgng](http://www.freebsd.org/doc/handbook/pkgng-intro.html) database,
-providing seamless interface to any of them. Third, it provides package names
-and their "out-of-date" statuses in a single call, so we don't need to
-separatelly check out-of-date status for installed packages. This version of
-*portsng* works with old *pkg* database as well as with *pkgng*, using
-*portversion*.
-
-\[[Table of Contents](#table-of-contents)\]
-
-#### <a id="freebsd-ports-collection-and-its-terminology"></a>FreeBSD ports collection and its terminology
-
-We use the following terminology when referring ports/packages:
-
-  * a string in form `'apache22'` or `'ruby'` is referred to as *portname*
-  * a string in form `'apache22-2.2.25'` or `'ruby-1.8.7.371,1'` is referred to
-    as a *pkgname*
-  * a string in form `'www/apache22'` or `'lang/ruby18'` is referred to as a
-    port *origin* or *portorigin*
-
-See [http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html](http://www.freebsd.org/doc/en/books/porters-handbook/makefile-naming.html)
-
-Port *origins* are used as primary identifiers for *portsng* instances. It's recommended to use *portorigins* instead of *portnames* as package names in manifest files.
-
-\[[Table of Contents](#table-of-contents)\]
-
-#### <a id="freebsd-ports-collection-and-ambiguity-of-portnames"></a>FreeBSD ports collection and ambiguity of portnames
-
-Using *portnames* (e.g. `apache22`) as package names in manifests is allowed.
-The *portname*s, however, are ambiguous, meaning that port search may find
-multiple ports matching the given *portname*. For example `'mysql-client'`
-package has three ports at the time of this writing  (2013-11-30):
-`mysql-client-5.1.71`, `mysql-client-5.5.33`, and `mysql-client-5.6.13` with
-origins `databases/mysql51-client`, `databases/mysql55-client` and
-`databases/mysql56-client` respectively. If none of these ports are installed
-and you use this ambiguous *portname* in your manifest, you'll se the following
-warning:
-
-```console
-Warning: Puppet::Type::Package::ProviderPorts: Found 3 ports named 'mysql-client': 'databases/mysql51-client', 'databases/mysql55-client', 'databases/mysql56-client'. Only 'databases/mysql56-client' will be ensured.
+``` {.sourceCode .console}
+user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm -e SAMI_BUILD_DIR=/tmp/build korowai/sami
 ```
 
-\[[Table of Contents](#table-of-contents)\]
+Details
+-------
 
-## <a id="development"></a>Development
-The project is held at github:
-* [https://github.com/ptomulik/puppet-portsng](https://github.com/ptomulik/puppet-portsng)
-Issue reports, patches, pull requests are welcome!
+### Volume mount points exposed
+
+-   `/home/sami/project` - bind top level directory of your project
+    here.
+
+### Working directory
+
+-   `/home/sami/project`
+
+### User running the commands
+
+Commands are executed within container by container\'s internal user
+called `sami`. By default it has `UID=1000` and `GID=1000`, thus all the
+generated files will have owner with `UID=1000` and `GID=1000`.
+
+The container may be rebuilt with custom UID and GID by setting build
+arguments `SAMI_UID` and `SAMI_GID`.
+
+### Files inside container
+
+#### In `/usr/local/bin`
+
+-   scripts which may be used as container\'s command:
+    -   `sami-autobuild` - builds documentation continuously (watches
+        source directory for changes),
+    -   `sami-autoserve` - builds documentation continuously and runs
+        http server,
+    -   `sami-build` - builds documentation once and exits,
+    -   `sami-serve` - builds source once and starts http server,
+-   other files
+    -   `sami-defaults` - initializes `SAMI_xxx` variables (default
+        values),
+    -   `sami-entrypoint` - provides an entry point for docker.
+
+#### In `/home/sami`
+
+-   `sami.conf.php` - default configuration file for sami.
+
+### Build arguments & environment variables
+
+The container defines several build arguments which are copied to
+corresponding environment variables within the running container. All
+the arguments/variables have names starting with `SAMI_` prefix. All the
+`sami-*` scripts, and the configuration file `sami.conf.php` respect
+these variables, so the easiest way to adjust the container to your
+needs is to set environment variables (`-e` flag to
+[docker](https://docker.com/)). There are three exceptions currently \--
+`SAMI_UID`, `SAMI_GID` and `SAMI_PORT` must be defined at build time, so
+they may only be changed via docker\'s build arguments.
+
+  --------------------------------------------------------------------------------------
+  Argument               Default Value              Description
+  ---------------------- -------------------------- ------------------------------------
+  SAMI\_UID              1000                       UID of the user running commands
+                                                    within the container.
+
+  SAMI\_GID              1000                       GID of the user running commands
+                                                    within the container.
+
+  SAMI\_CONFIG           /home/sami/sami.conf.php   Path to the config file for sami.
+
+  SAMI\_PROJECT\_TITLE   API Documentation          Title for the generated
+                                                    documentation.
+
+  SAMI\_SOURCE\_DIR      src                        Top-level directory with the PHP
+                                                    source files.
+
+  SAMI\_BUILD\_DIR       docs/build/html/api        Where to output the generated
+                                                    documentation.
+
+  SAMI\_CACHE\_DIR       docs/cache/html/api        Where to write cache files.
+
+  SAMI\_SERVER\_PORT     8001                       Port numer (within container) for
+                                                    the http server.
+
+  SAMI\_SOURCE\_REGEX    `\.\(php\|txt\|rst\)$`     Regular expression for source
+                                                    files\' discovery.
+  --------------------------------------------------------------------------------------
+
+### Software included
+
+-   [php](https://php.net/)
+-   [git](https://git-scm.com/)
+-   [sami](https://github.com/FriendsOfPHP/Sami/)
+
+LICENSE
+-------
+
+Copyright (c) 2018 by Paweł Tomulik \<<ptomulik@meil.pw.edu.pl>\>
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+\"Software\"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
