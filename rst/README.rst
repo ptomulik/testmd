@@ -114,6 +114,16 @@ Working directory
 
 - ``/home/sami/project``
 
+User running the commands
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Commands are executed within container by container's internal user called
+``sami``. By default it has ``UID=1000`` and ``GID=1000``, thus all the
+generated files will have owner with ``UID=1000`` and ``GID=1000``.
+
+The container may be rebuilt with custom UID and GID by setting build arguments
+``SAMI_UID`` and ``SAMI_GID``.
+
 Files inside container
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -137,18 +147,20 @@ In ``/home/sami``
 
 - ``sami.conf.php`` - default configuration file for sami.
 
-Environment variables
-^^^^^^^^^^^^^^^^^^^^^
+Build arguments & environment variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The container defines several build arguments which are copied to corresponding
 environment variables within the running container. All the arguments/variables
-have names starting with ``SAMI_`` prefix. All the script, and the
-configuration file ``sami.conf.php`` uses these variables, so the easiest way
-to adjust the container to your needs is to rebuild the image with custom
-values applied to appropriate ``SAMI_xxx`` arguments.
+have names starting with ``SAMI_`` prefix. All the ``sami-*`` scripts, and the
+configuration file ``sami.conf.php`` respect these variables, so the easiest
+way to adjust the container to your needs is to set environment variables
+(``-e`` flag to docker_). These are three exceptions currently -- ``SAMI_UID``,
+``SAMI_GID`` and ``SAMI_PORT`` must be defined at build time, so they may only
+be changed via docker's build arguments.
 
 +--------------------+----------------------------------+---------------------------------------------------------+
-|     Variable       |          Default Value           |                   Description                           |
+|     Argument       |          Default Value           |                   Description                           |
 +====================+==================================+=========================================================+
 | SAMI_UID           | 1000                             | UID of the user running commands within the container.  |
 +--------------------+----------------------------------+---------------------------------------------------------+
@@ -175,6 +187,29 @@ Software included
 - php_
 - git_
 - sami_
+
+LICENSE
+-------
+
+Copyright (c) 2018 by Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE
 
 .. _php: https://php.net/
 .. _git: https://git-scm.com/
