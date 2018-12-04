@@ -24,7 +24,7 @@ Assume we have the following file hierarchy (the essential here is
 assumption that php source files are found under `src`, also we expect
 the documentation to be written-out somewhere under `docs`)
 
-``` sourceCode console
+```console
 user@pc:$ tree .
 .
 |-- docs
@@ -38,7 +38,7 @@ user@pc:$ tree .
 Run it as
 follows
 
-``` sourceCode console
+```console
 user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai/sami
 ```
 
@@ -47,7 +47,7 @@ user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm korowai/sa
 In the top level directory create `docker-compose.yml` containing the
 following
 
-``` sourceCode yaml
+```yaml
 version: '3'
 # ....
 services:
@@ -62,7 +62,7 @@ services:
 
 Then run
 
-``` sourceCode console
+```console
 user@pc:$ docker-compose up sami
 ```
 
@@ -71,14 +71,14 @@ user@pc:$ docker-compose up sami
 Whatever method you chose to run the container, you shall see two new
 directories
 
-``` sourceCode console
+```console
 user@pc:$ ls -d docs/*
 docs/build docs/cache
 ```
 
 The documentation is written to `docs/build/html/api`
 
-``` sourceCode console
+```console
 user@pc:$ find docs -name 'index.html'
 docs/build/html/api/index.html
 ```
@@ -92,7 +92,7 @@ As long as the container is running, the documentation is available at
 Several parameters can be changed via environment variables, for
 example
 
-``` sourceCode console
+```console
 user@pc:$ docker run -v "$(pwd):/home/sami/project" -p 8001:8001 --rm -e SAMI_BUILD_DIR=/tmp/build korowai/sami
 ```
 
