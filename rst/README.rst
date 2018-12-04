@@ -178,7 +178,7 @@ be changed via docker's build arguments.
 +--------------------+----------------------------------+---------------------------------------------------------+
 | SAMI_SERVER_PORT   | 8001                             | Port numer (within container) for the http server.      |
 +--------------------+----------------------------------+---------------------------------------------------------+
-| SAMI_SOURCE_REGEX  | \.\(php\|txt\|rst\)$             | Regular expression for the source file names.           |
+| SAMI_SOURCE_REGEX  | ``\.\(php\|txt\|rst\)$``         | Regular expression for source files' discovery.         |
 +--------------------+----------------------------------+---------------------------------------------------------+
 
 Software included
