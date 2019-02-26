@@ -7,23 +7,23 @@ Compound kinds
 +-----------------------+-----------------------------------------------------------------+
 | Compound kind         | Description                                                     |
 +=======================+=================================================================+
-| Table (regular)       | Typical DB table.                                               |
+| Table (regular)       | Regular DB table with data.                                     |
 +-----------------------+-----------------------------------------------------------------+
 | Table (junction)      | Establishes relations between two or more other tables.         |
 +-----------------------+-----------------------------------------------------------------+
-| View                  | Used mostly to visualize junctions from junction tables.        |
+| View                  | Regular view.                                                   |
 +-----------------------+-----------------------------------------------------------------+
-| Type (regular)        | A PL/SQL type. May be an object type.                           |
+| Type                  | A regular PL/SQL type. May be an object type.                   |
 +-----------------------+-----------------------------------------------------------------+
-| Type (regular base)   | A base type for a regular object type.                          |
+| Type (base)           | A base type for a regular object type.                          |
 +-----------------------+-----------------------------------------------------------------+
 | Type (junction)       | An object type used to define a junction table.                 |
 +-----------------------+-----------------------------------------------------------------+
-| Type (junction base)  | A base type for junction object type.                           |
+| Type (junction base)  | A base type for junction object.                                |
 +-----------------------+-----------------------------------------------------------------+
 | Type (view)           | An object type used to define a view.                           |
 +-----------------------+-----------------------------------------------------------------+
-| Type (view base)      | A base type for view object type.                               |
+| Type (view base)      | A base type for view object.                                    |
 +-----------------------+-----------------------------------------------------------------+
 | Package               | A PL/SQL package with functions, procedures, etc.               |
 +-----------------------+-----------------------------------------------------------------+
