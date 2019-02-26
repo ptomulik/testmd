@@ -4,9 +4,7 @@ Veetou package for Oracle DB
 Naming conventions
 ^^^^^^^^^^^^^^^^^^
 
-All veetou-related DB symbols related start with ``v2u_`` prefix. Althrough the
-PL/SQL is case-insensitive, we still stick to coding conventions summarized in
-the following table
+We still stick to coding conventions summarized in the following table.
 
 +-----------------------+--------+-----------+-------------+------------------------------+
 | Compound kind         | Case   |  Prefix   | Suffix      |         Example              |
@@ -31,3 +29,9 @@ the following table
 +-----------------------+--------+-----------+-------------+------------------------------+
 | Package               | mixed  | ``V2U_``  |             | ``V2U_Util``                 |
 +-----------------------+--------+-----------+-------------+------------------------------+
+
+Although SQL is case-insensitive, we still follow the above case-sensitivity
+rules in our SQL scripts. This helps guessing the type of object identified
+by a given name.
+
+.. <!--- vim: set spell expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
