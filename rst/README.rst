@@ -4,7 +4,7 @@ Veetou package for Oracle DB
 Naming conventions
 ^^^^^^^^^^^^^^^^^^
 
-We still stick to coding conventions summarized in the following table.
+Naming conventions are summarized in the following table.
 
 +-----------------------+--------+-----------+-------------+------------------------------+
 | Compound kind         | Case   |  Prefix   | Suffix      |         Example              |
