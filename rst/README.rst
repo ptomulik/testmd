@@ -28,8 +28,8 @@ Compound kinds
 | Package               | A PL/SQL package with functions, procedures, etc.              |
 +-----------------------+----------------------------------------------------------------+
 
-Naming conventions
-^^^^^^^^^^^^^^^^^^
+Naming conventions for different compounds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Naming conventions by compound kind
 
