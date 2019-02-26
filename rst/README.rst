@@ -28,31 +28,6 @@ Compound kinds
 | Package               | A PL/SQL package with functions, procedures, etc.              |
 +-----------------------+----------------------------------------------------------------+
 
-
-Veetou DB modules
-^^^^^^^^^^^^^^^^^
-
-The database objects of veetou are organized into "modules". Think about a
-module as of a set of related types, tables and views. 
-
-+------+---------------------+-----------------------------------------------------------+
-| ID   | Module name         | Description                                               |
-+======+=====================+===========================================================+
-| KO   | Karty Osiągnięć     | A set of tables with data obtained from so-called "Karty  |
-|      |                     | Osiągnięć" (a kind of mass-report PDF files exported from |
-|      |                     | the source system).                                       |
-+------+---------------------+-----------------------------------------------------------+
-| DZ   | USOS DZ             | A set of USOS destination tables. Most of these tables    |
-|      |                     | bear names starting with ``dz_`` prefix.                  |
-+------+---------------------+-----------------------------------------------------------+
-| UU   | USOS Update         | A set of tables produced by our SQL scripts. These tables |
-|      |                     | are designed to resemble DZ tables. UU tables store an    |
-|      |                     | initially processed data merged from different sources    |
-|      |                     | (KO tables, etc.). The content of UU tables may be used   |
-|      |                     | update USOS DZ tables quite easily. The UU tables         |
-|      |                     | also provide extra columns for diagnostics (debugging).   |
-+------+---------------------+-----------------------------------------------------------+
-
 Naming conventions
 ^^^^^^^^^^^^^^^^^^
 
@@ -85,5 +60,30 @@ Naming conventions by compound kind
 Although SQL is case-insensitive, we still follow the above case-sensitivity
 rules in our SQL scripts. This helps guessing the type of object identified
 by a given name.
+
+
+Veetou DB modules
+^^^^^^^^^^^^^^^^^
+
+The database objects of veetou are organized into "modules". Think about a
+module as of a set of related types, tables and views.
+
++------+---------------------+-----------------------------------------------------------+
+| ID   | Module name         | Description                                               |
++======+=====================+===========================================================+
+| KO   | Karty Osiągnięć     | A set of tables with data obtained from so-called "Karty  |
+|      |                     | Osiągnięć" (a kind of mass-report PDF files exported from |
+|      |                     | the source system).                                       |
++------+---------------------+-----------------------------------------------------------+
+| DZ   | USOS DZ             | A set of USOS destination tables. Most of these tables    |
+|      |                     | bear names starting with ``dz_`` prefix.                  |
++------+---------------------+-----------------------------------------------------------+
+| UU   | USOS Update         | A set of tables produced by our SQL scripts. These tables |
+|      |                     | are designed to resemble DZ tables. UU tables store an    |
+|      |                     | initially processed data merged from different sources    |
+|      |                     | (KO tables, etc.). The content of UU tables may be used   |
+|      |                     | update USOS DZ tables quite easily. The UU tables         |
+|      |                     | also provide extra columns for diagnostics (debugging).   |
++------+---------------------+-----------------------------------------------------------+
 
 .. <!--- vim: set spell expandtab tabstop=2 shiftwidth=2 syntax=rst: -->
