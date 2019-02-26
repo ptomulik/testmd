@@ -70,7 +70,8 @@ module as of a set of related types, tables and views.
 +------+---------------------+-----------------------------------------------------------+
 | ID   | Module name         | Description                                               |
 +======+=====================+===========================================================+
-|      | Basis               | A set of base tables not tied to any of the other modules |
+|      | Basis               | A set of base tables not specifically tied to any of the  |
+|      |                     | other modules.                                            |
 +------+---------------------+-----------------------------------------------------------+
 | KO   | Karty Osiągnięć     | A set of tables with data obtained from so-called "Karty  |
 |      |                     | Osiągnięć" (a kind of mass-report PDF files exported from |
@@ -87,8 +88,9 @@ module as of a set of related types, tables and views.
 |      |                     | also provide extra columns for diagnostics (debugging).   |
 +------+---------------------+-----------------------------------------------------------+
 
-Tables, views and types belonging to a given module get additional prefix to
-their names (tables and views from a module have same prefix).
+Tables, views and types belonging to a given module (except the basis module)
+get additional prefix to their names (tables and views from a module have same
+prefix).
 
 +------+---------------------+-----------------------------------------------------------+
 | ID   | Prefix              | Examples                                                  |
