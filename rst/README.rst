@@ -45,10 +45,11 @@ module as of a set of related types, tables and views.
 | DZ   | USOS DZ             | A set of USOS destination tables. Most of these tables    |
 |      |                     | bear names starting with ``dz_`` prefix.                  |
 +------+---------------------+-----------------------------------------------------------+
-| UU   | USOS Update Tables  | A set of tables produced by our SQL scripts. They hold an |
-|      |                     | initially processed data from different sources (such as  |
-|      |                     | the KO tables). The content of UU tables may be used to   |
-|      |                     | update actual USOS tables quite easily. The UU tables     |
+| UU   | USOS Update         | A set of tables produced by our SQL scripts. These tables |
+|      |                     | are designed to resemble DZ tables. UU tables store an    |
+|      |                     | initially processed data merged from different sources    |
+|      |                     | (KO tables, etc.). The content of UU tables may be used   |
+|      |                     | update USOS DZ tables quite easily. The UU tables         |
 |      |                     | also provide extra columns for diagnostics (debugging).   |
 +------+---------------------+-----------------------------------------------------------+
 
