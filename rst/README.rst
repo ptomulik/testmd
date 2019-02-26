@@ -81,7 +81,7 @@ module as of a set of related types, tables and views.
 |      |                     | bear names starting with ``dz_`` prefix.                  |
 +------+---------------------+-----------------------------------------------------------+
 | UU   | USOS Update         | A set of tables produced by our SQL scripts. These tables |
-|      |                     | are designed to resemble DZ tables. UU tables store an    |
+|      |                     | are designed to resemble DZ tables. UU tables store       |
 |      |                     | initially processed data merged from different sources    |
 |      |                     | (KO tables, etc.). The content of UU tables may be used   |
 |      |                     | update USOS DZ tables quite easily. The UU tables         |
