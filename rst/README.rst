@@ -58,8 +58,7 @@ Naming conventions by compound kind
 +-----------------------+--------+-----------+-------------+-----------------------------+
 
 Although SQL is case-insensitive, we still follow the above case-sensitivity
-rules in our SQL scripts. This helps guessing the type of object identified
-by a given name.
+rules in our SQL scripts. This helps guessing the compound kind from its name.
 
 
 Veetou DB modules
