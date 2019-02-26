@@ -37,7 +37,7 @@ module as of a set of related types, tables and views.
 
 +------+---------------------+-----------------------------------------------------------+
 | ID   | Module name         | Description                                               |
-+------+---------------------+-----------------------------------------------------------+
++======+=====================+===========================================================+
 | KO   | Karty Osiągnięć     | A set of tables with data obtained from so-called "Karty  |
 |      |                     | Osiągnięć" (a kind of mass-report PDF files exported from |
 |      |                     | the source system).                                       |
