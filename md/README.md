@@ -1,4 +1,4 @@
 # GPG Test
 
-Test 2
+Test 2 from cygwin
 
