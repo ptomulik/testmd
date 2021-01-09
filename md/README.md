@@ -1,184 +1,325 @@
-# phptailors/docker-doctum
+# Get Releases
 
-[![](https://img.shields.io/docker/stars/phptailors/doctum.svg)](https://hub.docker.com/r/phptailors/doctum/ "Docker Stars")
-[![](https://img.shields.io/docker/pulls/phptailors/doctum.svg)](https://hub.docker.com/r/phptailors/doctum/ "Docker Pulls")
+This action retrieves an array of releases from a remote GitHub repository
+returning it as JSON content.
 
-Docker container with [doctum](https://github.com/code-lts/doctum/)
-documentation generator.
+## Inputs
 
-## Image versions
+### token
 
-@MICROBADGES@
+Personal token.
 
-## Features
+Personal GitHub token may be provided to perform authentication in order to
+avoid rate limiting and other GitHub restrictions that apply to anonymous
+users. If token is missing or empty, authentication is not performed and
+requests are sent anonymously.
 
-With this container you can:
+### owner
 
-  - build documentation once and exit,
-  - build documentation once and then serve it with http server,
-  - build documentation continuously (rebuilding when sources change),
-  - build documentation continuously and serve it at the same time.
+**Required** Repository owner.
 
-The default behavior is to build continuously and serve at the same time.
+Owner of the remote repository being queried, for example ``github`` for
+[github/docs](https://github.com/github/docs) repository.
 
-## Quick example
+### repo
 
-Assume we have the following file hierarchy (the essential here is assumption
-that php source files are found under `src`, also we expect the documentation
-to be written-out somewhere under `docs`)
+**Required** Repository name.
 
-```console
-user@@pc:$ tree .
-.
-|-- docs
-`-- src
-    `-- Foo
-        `-- Bar.php
-```
+Name of the remote repository being queried, for example ``docs`` for
+[github/docs](https://github.com/github/docs) repository.
 
-### Running with docker
+### per\_page
 
-Run it as follows
+Page size.
 
-```console
-user@@pc:$ docker run --rm -it -v "$(pwd):/code" -p 8001:8001 -u "`id -u`:`id -g`" phptailors/doctum
-```
+GitHub API enforces pagination. The page size is settable, maximum page
+size is 100. Default page size is 30. This input changes the default page size
+used by paginator, the whole list is retrieved page by page and assembled on
+client side.
 
-### Running with docker-compose
+### max\_entries
 
-In the top level directory create `docker-compose.yml` containing the following
+Max number of entries retrieved from remote repository.
+
+### name
+
+String used to filter retrieved releases by name.
+
+Select releases whose names match given criteria. The parameter may be set
+to a specific release name, may be a regular expression (possibly with
+flags) or may be missing or empty to allow any name (the same may be achieved
+by name to ``*``).
+
+#### Examples:
+
+Allow any name,
 
 ```yaml
-version: '3'
-# ....
-services:
-   # ...
-   doctum:
-      image: phptailors/doctum
-      ports:
-         - "8001:8001"
-      volumes:
-         - ./:/code
-      user: "${MYUID:-1000}:${MYGID:-1000}"
-      environment:
-        - MYUID
-        - MYGID
+use: ptomulik/get-releases
+    with:
+        name: "*"
 ```
 
-Then run
+Select release(s) with name == "specific"
 
-```console
-user@@pc:$ MYUID=`id -u` MYGID=`id -g` docker-compose up doctum
+```yaml
+use: ptomulik/get-releases
+    with:
+        name: "specific"
 ```
 
-### Results
+Select releases whose names match a regular expession, the regular expession
+may also contain flags
 
-Whatever method you chose to run the container, you shall see two new directories
-
-```console
-user@@pc:$ ls -d docs/*
-docs/build docs/cache
+```yaml
+use: ptomulik/get-releases
+    with:
+        name: "/^v?5.3.1$/"
 ```
 
-The documentation is written to `docs/build/html/api`
-
-```console
-user@@pc:$ find docs -name 'index.html'
-docs/build/html/api/index.html
+```yaml
+use: ptomulik/get-releases
+    with:
+        name: "/^latest$/i"
 ```
 
-As long as the container is running, the documentation is available at
+### tag\_name
 
-  - <http://localhost:8001>.
+String used to filter retrieved releases by tag_name.
 
-## Customizing
+Select releases whose tag names match given criteria. The parameter may be set
+to a specific name, may be a regular expression (possibly with flags) or may be
+missing or empty to allow any name (the same may be achieved by name to ``*``).
 
-Several parameters can be changed via environment variables, for example we can
-change build to ``build/docs/api`` dir as follows
 
-```console
-user@@pc:$ docker run --rm -it -v "$(pwd):/code" -p 8001:8001 -u "`id -u`:`id -g`"  -e DOCTUM_BUILD_DIR=build/docs/api phptailors/doctum
+### draft
+
+Value used to filter retrieved releases by draft status.
+
+Allows selecting draft/non-draft releases. Suported values are ``false``,
+``true`` and ``*``. If missing or empty, allows releases with any draft status.
+
+### prerelease
+
+Value used to filter retrieved releases by prerelease status.
+
+Allows selecting prereleases/non-prereleases.Suported values are ``false``,
+``true`` and ``*``. If missing or empty, allows releases with any draft status.
+
+### sort
+
+List of properties used for sorting the retrieved releases.
+
+Comma-separated list of property names, each optionally followed by order
+specifier - ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
+(descending). Used to sort the resultant array.'
+
+### Examples:
+
+Sort by ``id``.
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        sort: 'id'
 ```
 
-## Details
+Sort by ``id`` in descendant order.
 
-### Volume mount points exposed
+```yaml
+use: ptomulik/get-releases
+    with:
+        sort: 'id DSC'
+```
 
-  - `/code` - bind top level directory of your project here.
+Sort by ``draft`` status in ascendant order (``false`` goes first) then by
+``name`` in descendant order.
 
-### Working directory
+```yaml
+use: ptomulik/get-releases
+    with:
+        sort: 'draft = ASC, name = DSC'
+```
 
-  - `/code`
+### order
 
-### Files inside container
+Default sort order.
 
-#### In `/usr/local/bin`
+Allowed values are ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
+(descending).
 
-  - scripts which may be used as container's command:
-      - `autobuild` - builds documentation continuously (watches
-        source directory for changes),
-      - `autoserve` - builds documentation continuously and runs
-        http server,
-      - `build` - builds documentation once and exits,
-      - `serve` - builds source once and starts http server,
-  - other files
-      - `doctum-defaults` - sets `DEFAULT_DOCTUM_xxx` variables (default values
-        for `DOCTUM_xxx` variables),
-      - `doctum-env` - initializes `DOCTUM_xxx` variables,
-      - `doctum-entrypoint` - provides an entry point for docker.
+### select
 
-#### In `/etc/doctum`
+List of properties to be returned.
 
-  - `doctum.conf.php` - default configuration file for doctum.
+List of properties to be included in each entry of the result. This should
+be a space or comma separated list of keywords. If missing or empty, allows all
+properties (the same may be achieved with ``"*"``).
 
-### Build arguments & environment variables
+#### Examples:
 
-The container defines several build arguments. Some of them are copied to
-corresponding environment variables (E) within the running container. Some of
-these environment variables are mutable (M) at runtime. The scripts, and the
-configuration file `doctum.conf.php` respect most of these variables, so the
-easiest way to adjust the container to your needs is to set environment
-variables at runtime (`-e` flag to [docker](https://docker.com/)).
+Select only ``name`` and ``url``
 
-| Argument                  | Default Value                    | E | M | Description                                            |
-| ------------------------- | -------------------------------- | - | - | ------------------------------------------------------ |
-| DOCTUM\_BUILD\_DIR        | docs/build/html/api              | + | + | Where to output the generated documentation.           |
-| DOCTUM\_CACHE\_DIR        | docs/cache/html/api              | + | + | Where to write cache files.                            |
-| DOCTUM\_CONFIG            | /etc/doctum/doctum.conf.php      | + | + | Path to the config file for doctum.                    |
-| DOCTUM\_FLAGS             | -v --force --ignore-parse-errors | + | + | Commandline flags passed to doctum.                    |
-| DOCTUM\_PHAR\_URL         |                                  | - | - | URL used to download doctum.phar at build time.        |
-| DOCTUM\_PHAR\_SHA256\_URL |                                  | - | - | URL used to download doctum.phar.sha256 at build time. |
-| DOCTUM\_PROJECT\_TITLE    | API Documentation                | + | + | Title for the generated documentation.                 |
-| DOCTUM\_SERVER\_PORT      | 8001                             | + | - | Port numer (within container) for the http server.     |
-| DOCTUM\_SOURCE\_DIR       | src                              | + | + | Colon-separated directories with the PHP source files. |
-| DOCTUM\_SOURCE\_REGEX     | `\.\(php\\|txt\\|rst\)$`         | + | + | Regular expression for source files' discovery.        |
-| DOCTUM\_THEME             | default                          | + | + | Doctum theme.                                          |
-| DOCTUM\_WORKDIR           | /code                            | + | - | Volume mount point and default working directory.      |
+```yaml
+use: ptomulik/get-releases
+    with:
+        select: 'name, url'
+```
 
-### Software included
+### slice
 
-  - [php](https://php.net/)
-  - [git](https://git-scm.com/)
-  - [doctum](https://github.com/code-lts/doctum/)
+The range of entries to be returned.
 
-## LICENSE
+Determines the range of entries to be sliceed after sorting.
 
-Copyright (c) 2020 by Paweł Tomulik <ptomulik@@meil.pw.edu.pl>
+### Examples
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+Return all entries
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: 'all'
+```
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+Return first entry
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: 'first'
+```
+
+Return up to 3 first entries
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: 'first 3'
+```
+
+Return last entry
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: 'last'
+```
+
+Return up to 3 last entries
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: 'last 3'
+```
+
+Return entries 2 to 4 (zero-based indices)
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: '2 ... 4'
+```
+
+Return entries from 2 to end of array
+
+```yaml
+use: ptomulik/get-releases
+    with:
+        slice: '2 ...'
+```
+
+## Outputs
+
+### json
+
+The result as JSON string.
+
+### base64
+
+The ``json`` string encoded in BASE64.
+
+### count
+
+Number of entries on output.
+
+## Example usage
+
+### Get & Print Releases
+
+The following workflow prints to console releases retrieved from remote
+repository. The workflow may be triggered
+[manually](https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/),
+and most of the action's inputs may be provided via HTML form.
+
+Note that ``work_dispatch`` only works on default branch.
+
+```yaml
+name: Get & Print Releases
+
+on:
+    workflow_dispatch:
+        inputs:
+            owner:
+                description: 'Owner'
+                required: true
+                default: 'code-lts'
+            repo:
+                description: 'Repo'
+                required: true
+                default: 'doctum'
+            name:
+                description: 'Name'
+                required: false
+            tag_name:
+                description: 'Tag'
+                required: false
+                default: '/v5\.2\.\d+/'
+            draft:
+                description: 'Draft'
+                required: false
+            prerelease:
+                description: 'Prerelease'
+                required: false
+            sort:
+                description: 'Sort'
+                required: false
+                default: id DSC
+            select:
+                description: 'Select'
+                required: false
+                default: id, name, tag, created_at, published_at, url
+            slice:
+                description: 'Slice'
+                required: false
+
+jobs:
+    main:
+        name: Get & Print Releases
+        runs-on: ubuntu-latest
+
+        steps:
+
+            - name: Get Releases
+                id: releases
+                uses: ptomulik/get-releases@master
+                with:
+                    token:      ${{ secrets.GET_RELEASES_TOKEN }}
+                    owner:      ${{ github.event.inputs.owner }}
+                    repo:       ${{ github.event.inputs.repo }}
+                    name:       ${{ github.event.inputs.name }}
+                    tag_name:   ${{ github.event.inputs.tag_name }}
+                    draft:      ${{ github.event.inputs.draft }}
+                    prerelease: ${{ github.event.inputs.prerelease }}
+                    sort:       ${{ github.event.inputs.sort }}
+                    select:     ${{ github.event.inputs.select }}
+                    slice:      ${{ github.event.inputs.slice }}
+
+            - name: Print Releases
+                run: |
+                    echo -n 'releases: ' && jq '' <<'!'
+                    ${{ steps.releases.outputs.json }}
+                    !
+                    echo 'count: ${{ steps.releases.outputs.count }}'
+```
