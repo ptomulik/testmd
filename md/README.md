@@ -5,14 +5,14 @@
 ![code](https://github.com/ptomulik/github-action-get-releases/workflows/Code%20Quality/badge.svg?branch=master)
 
 This action retrieves an array of releases from a remote GitHub repository using GitHub
-[List releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
+[list releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
 API. By default, complete array of remote releases is returned, as retrieved by
 the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories have to post-process assets created by upstream
-repositories. A repository that puts assets released by an upstream into Docker
-images is an example. Each time, the upstream releases new versions, the
+repositories. A repository that puts into Docker images assets released by its
+upstream is an example. Each time, the upstream releases new versions, the
 repository should rebuild and publish new images. This requires, however, that
 information about existing upstream releases is available. The action enables
 us to obtain it.
