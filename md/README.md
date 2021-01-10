@@ -11,10 +11,10 @@ the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories have to post-process assets created by upstream
-repositories. A repository that puts them into Docker images is an example.
-Each time, the upstream releases new versions, the repository should rebuild
-and publish new images. This requires, however, that information about existing
-upstream releases is available. The action enables us to obtain it.
+repositories. A repository that puts the assets into Docker images is an
+example. Each time, the upstream releases new versions, the repository should
+rebuild and publish new images. This requires, however, that information about
+existing upstream releases is available. The action enables us to obtain it.
 
 ## Contents
 
