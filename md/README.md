@@ -6,9 +6,9 @@
 
 This action retrieves an array of releases from a remote GitHub repository using GitHub
 [List releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
-API. By default, complete array of remote releases is returned (in JSON
-format). By configuring certain options (action's inputs), the retrieved array
-may be processed (filtered, sorted, etc..) before it gets outputted.
+API. By default, complete array of remote releases is returned, as retrieved by
+the API client. By configuring certain options (action's inputs), the retrieved
+array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories exist only to post-process assets created by upstream
 repositories. A repository that builds Docker images with assets released by an
