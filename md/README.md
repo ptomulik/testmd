@@ -10,6 +10,12 @@ API. By default, complete array of remote releases is returned (in JSON
 format). By configuring certain options (action's inputs), the retrieved array
 may be processed (filtered, sorted, etc..) before it gets outputted.
 
+Some GitHub repositories exist only to post-process assets created by upstream
+repositories. A repository that builds Docker images with assets released by an
+upstream repository is an example. Each time, the upstream releases new
+versions, the repository should rebuild and publish images. This requires
+information about existing upstream releases.
+
 ## Contents
 
 - [Inputs](#inputs)
@@ -30,9 +36,9 @@ Here is a short summary of inputs. Inputs denoted with * are required.
 
 | input                         | description                                                 |
 | ----------------------------- | ----------------------------------------------------------- |
-| [token](#token)               | Personal token of the github user running the action        |
-| [owner](#owner)               | Owner of the upstream repository                            |
-| [repo](#repo)                 | Name of the upstream repository                             |
+| [token](#token)               | Personal token provided to GitHub API client                |
+| [owner](#owner)\*             | Owner of the upstream repository                            |
+| [repo](#repo)\*               | Name of the upstream repository                             |
 | [per\_page](#per_page)        | Page size                                                   |
 | [max\_entries](#max_entries)  | Max number of entries retrieved from remote repository      |
 | [name](#name)                 | String used to filter retrieved releases by name            |
