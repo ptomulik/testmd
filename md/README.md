@@ -20,14 +20,14 @@ action enables us to obtain it.
 ## Contents
 
 - [Inputs](#inputs)
-  - [token:](#token)
-  - [owner:](#owner)\*, [repo:](#repo)\*
-  - [per\_page:](#per_page), [max\_entries:](#max_entries)
-  - [name:](#name), [tag\_name:](#tag_name), [draft:](#draft)
-    [prerelease:](#prerelease)
-  - [sort:](#sort), [order:](#order), [select:](#select), [slice:](#slice)
+  - [token](#token)
+  - [owner](#owner)\*, [repo](#repo)\*
+  - [per\_page](#per_page), [max\_entries](#max_entries)
+  - [name](#name), [tag\_name](#tag_name), [draft](#draft)
+    [prerelease](#prerelease)
+  - [sort](#sort), [order](#order), [select](#select), [slice](#slice)
 - [Outputs](#outputs)
-  - [json:](#json), [base64:](#base64), [count:](#count)
+  - [json](#json), [base64](#base64), [count](#count)
 - [Examples](#examples)
   - [Get & Print Releases](#get--print-releases)
 
