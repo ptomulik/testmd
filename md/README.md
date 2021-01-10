@@ -6,10 +6,10 @@
 
 This action retrieves an array of releases from a remote GitHub repository using GitHub
 [List releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
-API. By default, complete array of remote releases is returned via action's
-outputs (in JSON format). By setting certain options (inputs), the retrieved
-array may be processed (filtering, sorting, selecting properties, slicing)
-before it gets assigned to output.
+API. By default, complete array of remote releases is returned (in JSON
+format). By setting certain options (inputs), the retrieved array may be
+processed (filtering, sorting, selecting properties, slicing) before it gets
+assigned to output.
 
 ## Contents
 
