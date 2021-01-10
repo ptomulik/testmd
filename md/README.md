@@ -160,7 +160,7 @@ Comma-separated list of property names, each optionally followed by order
 specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 (descending). Used to sort the resultant array.'
 
-Supported (sortable) properties:
+**Supported (sortable) properties**:
 
 |                  |                      |                 |                 |                |                |
 | ---------------- | -------------------- | --------------- | --------------- | -------------- | -------------- |
@@ -209,6 +209,14 @@ List of properties to be returned.
 List of properties to be included in each entry of the result. This should
 be a space or comma separated list of keywords. If missing or empty, allows all
 properties (the same may be achieved with ``'*'``).
+
+**Supported (selectable) properties**:
+
+|                |                  |                      |                 |                 |                |
+| -------------- | ---------------- | -------------------- | ----------------| ----------------| -------------- |
+| ``url``        | ``assets_url``   | ``upload_url``       | ``htlm_url``    | ``id``          | ``author``     |
+|``node_id``     | ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` |
+| ``created_at`` | ``published_at`` | ``assets``           | ``tarball_url`` | ``zipball_url`` | ``body``       |
 
 **Examples**:
 
