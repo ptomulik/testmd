@@ -162,7 +162,6 @@ specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 
 Supported (sortable) properties:
 
-| ---------------- | -------------------- | --------------- | --------------- | -------------- | -------------- |
 | ``url``          | ``assets_url``       | ``upload_url``  | ``htlm_url``    | ``id``         | ``node_id``    |
 | ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` | ``created_at`` |
 | ``published_at`` | ``tarball_url``      | ``zipball_url`` | ``body``        |                |                |
