@@ -40,12 +40,12 @@ Here is a short summary of inputs. Inputs denoted with * are required.
 | [token](#token)               | Personal token provided to GitHub API client                |
 | [owner](#owner)\*             | Owner of the upstream repository                            |
 | [repo](#repo)\*               | Name of the upstream repository                             |
-| [per\_page](#per_page)        | Page size                                                   |
-| [max\_entries](#max_entries)  | Max number of entries retrieved from remote repository      |
-| [name](#name)                 | String used to filter retrieved releases by name            |
-| [tag\_name](#tag_name)        | Used to filter releases by ``tag_name``                     |
-| [draft](#draft)               | Used to filter releases by ``draft`` status                 |
-| [prerelease](#prerelease)     | Used to filter retrieved releases by ``prerelease`` status  |
+| [per\_page](#per_page)        | Page size used by paginator                                 |
+| [max\_entries](#max_entries)  | Max number of requested entries                             |
+| [name](#name)                 | Used to filter retrieved releases by name                   |
+| [tag\_name](#tag_name)        | Used to filter releases by tag\_name                        |
+| [draft](#draft)               | Used to filter releases by draft status                     |
+| [prerelease](#prerelease)     | Used to filter retrieved releases by prerelease status      |
 | [sort](#sort)                 | Used for sorting the retrieved releases                     |
 | [order](#order)               | Default sort order                                          |
 | [select](#select)             | List of properties to be included                           |
