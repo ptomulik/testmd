@@ -53,8 +53,6 @@ Here is a short summary of inputs. Inputs denoted with * are required.
 
 ### token
 
-Personal token.
-
 Personal token may be provided to perform authentication in order to avoid rate
 limiting and other GitHub restrictions that apply to anonymous users. If token
 is missing or empty, authentication is not performed and requests are sent
@@ -75,8 +73,6 @@ Name of the remote repository being queried, for example ``docs`` for
 [github/docs](https://github.com/github/docs) repository.
 
 ### per\_page
-
-Page size.
 
 GitHub API enforces pagination. The page size is settable, maximum page
 size is 100. Default page size is 30. This input changes the default page size
@@ -140,21 +136,15 @@ missing or empty to allow any name (the same may be achieved by name to ``*``).
 
 ### draft
 
-Value used to filter retrieved releases by draft status.
-
 Allows selecting draft/non-draft releases. Suported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### prerelease
 
-Value used to filter retrieved releases by prerelease status.
-
-Allows selecting prereleases/non-prereleases.Suported values are ``false``,
+Allows selecting prereleases/non-prereleases. Suported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### sort
-
-List of properties used for sorting the retrieved releases.
 
 Comma-separated list of property names, each optionally followed by order
 specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
@@ -197,14 +187,11 @@ Sort by ``draft`` status in ascendig order (``false`` goes first) then by
 
 ### order
 
-Default sort order.
-
-Allowed values are ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
-(descending). If missing or empty, the default sort order is ascending.
+Default sort order. Allowed values are ``'A'``|``'ASC'`` (ascending) or
+``'D'``|``'DSC'``|``'DESC'`` (descending). If missing or empty, the default
+sort order is ascending.
 
 ### select
-
-List of properties to be returned.
 
 List of properties to be included in each entry of the result. This should
 be a space or comma separated list of keywords. If missing or empty, allows all
