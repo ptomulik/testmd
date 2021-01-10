@@ -7,16 +7,18 @@
 This action retrieves an array of releases from a remote GitHub repository using GitHub
 [List releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
 API. By default, complete array of remote releases is returned (in JSON
-format). By setting certain options (inputs), the retrieved array may be
-processed (filtered, sorted, etc..) before it gets outputted.
+format). By configuring certain options (action's inputs), the retrieved array
+may be processed (filtered, sorted, etc..) before it gets outputted.
 
 ## Contents
 
 - [Inputs](#inputs)
-  - [token](#token) [owner](#owner) [repo](#repo) [per\_page](#per_page)
-    [max\_entries](#max_entries) [name](#name) [tag\_name](#tag_name)
-    [draft](#draft) [prerelease](#prerelease) [sort](#sort) [order](#order)
-    [select](#select) [slice](#slice)
+  - [token](#token)
+  - [owner](#owner), [repo](#repo)
+  - [per\_page](#per_page), [max\_entries](#max_entries)
+  - [name](#name), [tag\_name](#tag_name), [draft](#draft)
+    [prerelease](#prerelease)
+  - [sort](#sort), [order](#order), [select](#select), [slice](#slice)
 - [Outputs](#outputs)
   - [json](#json) [base64](#base64) [count](#count)
 - [Examples](#examples)
