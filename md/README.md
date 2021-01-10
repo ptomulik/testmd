@@ -12,7 +12,7 @@ array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories have to post-process assets created by upstream
 repositories. A repository that puts the assets into Docker images is an
-example. Each time, the upstream publishes a new release, the repository should
+example. Each time the upstream publishes a new release, the repository should
 rebuild and publish new images. This requires, however, some knowledge about
 existing upstream releases. This action enables us to obtain necessary
 information directly from upstream repository.
@@ -160,6 +160,13 @@ Comma-separated list of property names, each optionally followed by order
 specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 (descending). Used to sort the resultant array.'
 
+Supported (sortable) properties:
+
+| ---------------- | -------------------- | --------------- | --------------- | -------------- | -------------- |
+| ``url``          | ``assets_url``       | ``upload_url``  | ``htlm_url``    | ``id``         | ``node_id``    |
+| ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` | ``created_at`` |
+| ``published_at`` | ``tarball_url``      | ``zipball_url`` | ``body``        |                |                |
+
 **Examples**:
 
 Sort by ``id``.
@@ -278,13 +285,21 @@ Return entries from 2 to end of array
 
 ## Outputs
 
+Here is a short summary of inputs. Inputs denoted with * are required.
+
+| output                        | description                                                 |
+| ----------------------------- | ------------------------------------------ |
+| [json](#json)                 | The result as JSON string.                 |
+| [base64](#base64)             | The [json](#json) string encoded in BASE64 |
+| [count](#count)               | The number of entries outputted            |
+
 ### json
 
 The result as JSON string.
 
 ### base64
 
-The ``json`` string encoded in BASE64.
+The [json](#json) string encoded in BASE64.
 
 ### count
 
