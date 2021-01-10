@@ -35,6 +35,8 @@ information directly from upstream repository.
 
 Here is a short summary of inputs. Inputs denoted with * are required.
 
+<p align="center">
+
 | input                         | description                                                 |
 | ----------------------------- | ----------------------------------------------------------- |
 | [token](#token)               | Personal token provided to GitHub API client                |
@@ -50,6 +52,8 @@ Here is a short summary of inputs. Inputs denoted with * are required.
 | [order](#order)               | Default sort order                                          |
 | [select](#select)             | List of properties to be included                           |
 | [slice](#slice)               | The range of entries to be returned                         |
+
+</p>
 
 ### token
 
