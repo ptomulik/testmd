@@ -10,7 +10,7 @@ API. By default, complete array of remote releases is returned, as retrieved by
 the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
-GitHub repositories exist that only post-process assets created by upstream
+Some GitHub repositories have to post-process assets created by upstream
 repositories. A repository that puts assets released by an upstream into Docker
 images is an example. Each time, the upstream releases new versions, the
 repository should rebuild and publish new images. This requires, however, that
