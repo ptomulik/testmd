@@ -11,11 +11,11 @@ the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories exist only to post-process assets created by upstream
-repositories. A repository that builds Docker images with assets released by an
-upstream repository is an example. Each time, the upstream releases new
-versions, the repository should rebuild and publish new images. This requires,
-however, that information about existing upstream releases is available. The
-action enables us to obtain it.
+repositories. A repository that puts assets released by an upstream into Docker
+images is an example. Each time, the upstream releases new versions, the
+repository should rebuild and publish new images. This requires, however, that
+information about existing upstream releases is available. The action enables
+us to obtain it.
 
 ## Contents
 
@@ -309,36 +309,36 @@ on:
     workflow_dispatch:
         inputs:
             owner:
-                description: 'Owner'
+                description: 'owner'
                 required: true
-                default: 'code-lts'
+                default: 'ptomulik'
             repo:
-                description: 'Repo'
+                description: 'repo'
                 required: true
-                default: 'doctum'
+                default: 'github-action-get-releases'
             name:
-                description: 'Name'
+                description: 'name (e.g. "Release v1.2.3")'
                 required: false
             tag_name:
-                description: 'Tag'
+                description: 'tag_name (e.g. "v1.2.3")'
                 required: false
-                default: '/v5\.2\.\d+/'
+                default: '/v0\.\d+.\d+/'
             draft:
-                description: 'Draft'
+                description: 'draft ("true" or "false")'
                 required: false
             prerelease:
-                description: 'Prerelease'
+                description: 'prerelease ("true" or "false")'
                 required: false
             sort:
-                description: 'Sort'
+                description: 'sort (e.g. "tag_name DSC, id DSC")'
                 required: false
                 default: id DSC
             select:
-                description: 'Select'
+                description: 'select (e.g. "id, tag_name, url")'
                 required: false
                 default: id, name, tag_name, created_at, published_at, url
             slice:
-                description: 'Slice'
+                description: 'slice (e.g. "first 3")'
                 required: false
 
 jobs:
@@ -373,27 +373,36 @@ jobs:
 # vim: set ft=yaml ts=4 sw=4 sts=4 et:
 ```
 
-Console output for default workflow inputs
+Console output for workflow's default inputs:
 
 ```console
 releases: [
   {
-    "id": 34601898,
-    "name": "v5.2.1",
-    "tag_name": "v5.2.1",
-    "created_at": "2020-11-30T21:08:01Z",
-    "published_at": "2020-11-30T21:10:57Z",
-    "url": "https://api.github.com/repos/code-lts/doctum/releases/34601898"
+    "id": 36197357,
+    "name": "Release v0.1.0",
+    "tag_name": "v0.1.0",
+    "created_at": "2021-01-10T16:22:17Z",
+    "published_at": "2021-01-10T16:24:35Z",
+    "url": "https://api.github.com/repos/ptomulik/github-action-get-releases/releases/36197357"
   },
   {
-    "id": 34553342,
-    "name": "v5.2.0",
-    "tag_name": "v5.2.0",
-    "created_at": "2020-11-29T21:45:55Z",
-    "published_at": "2020-11-29T21:54:06Z",
-    "url": "https://api.github.com/repos/code-lts/doctum/releases/34553342"
+    "id": 36185784,
+    "name": "Release v0.0.1",
+    "tag_name": "v0.0.1",
+    "created_at": "2021-01-09T22:44:38Z",
+    "published_at": "2021-01-09T22:45:16Z",
+    "url": "https://api.github.com/repos/ptomulik/github-action-get-releases/releases/36185784"
+  },
+  {
+    "id": 36185144,
+    "name": "Release v0.0.0",
+    "tag_name": "v0.0.0",
+    "created_at": "2021-01-09T21:41:45Z",
+    "published_at": "2021-01-09T21:54:33Z",
+    "url": "https://api.github.com/repos/ptomulik/github-action-get-releases/releases/36185144"
   }
 ]
+count: 3
 ```
 
 ## LICENSE
