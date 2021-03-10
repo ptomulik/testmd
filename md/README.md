@@ -198,7 +198,7 @@ Types
 import {
   PaginateInterface,
   PaginatingEndpoints,
-} from ("@octokit/plugin-paginate-rest");
+} from "@octokit/plugin-paginate-rest";
 ```
 
 </td></tr>
@@ -209,7 +209,7 @@ Guards
 ```typescript
 import {
   isPaginatingEndpoint
-} from ("@octokit/plugin-paginate-rest");
+} from "@octokit/plugin-paginate-rest";
 ```
 
 </td></tr>
@@ -223,6 +223,20 @@ An ``interface`` that declares all the overloads of the ``.paginate`` method.
 ### `PaginatingEndpoints`
 
 An ``interface`` which describes all API endpoints supported by the plugin. Some overloads of ``.paginate()`` method and ``composePaginateRest()`` function depend on ``PaginatingEndpoints``, using the ``keyof PaginatingEndpoints`` as a type for one of its arguments.
+
+```typescript
+import { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
+
+type DataType<T> = "data" extends keyof T ? T["data"] : unknown;
+
+async function myPaginate<R extends keyof PaginatingEndpoints>(
+  octokit: Octokit,
+  route: R,
+  parameters?: PaginatingEndpoints[R]["parameters"]
+): Promise<DataType<PaginationEndpoints[R]["response"]>> {
+  return await composePaginateRest(octokit, route, parameters);
+}
+```
 
 ### `isPaginatingEndpoint`
 
