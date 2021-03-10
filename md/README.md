@@ -197,7 +197,7 @@ TypeScript
 </th><td>
 
 ```typescript
-ipmort {
+import {
   PaginatingEndpoints,
   isPaginatingEndpoint,
 } from ("@octokit/plugin-paginate-rest");
