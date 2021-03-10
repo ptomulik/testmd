@@ -1,53 +1,216 @@
-# github-releases-validator
+# plugin-paginate-rest.js
 
-![tests](https://github.com/ptomulik/github-releases-validator/workflows/Tests/badge.svg?branch=master)
-![build](https://github.com/ptomulik/github-releases-validator/workflows/Build/badge.svg?branch=master)
-![code](https://github.com/ptomulik/github-releases-validator/workflows/Code%20Quality/badge.svg?branch=master)
+> Octokit plugin to paginate REST API endpoint responses
 
-GitHub REST API implements [list releases][list-releases] query that returns an array of releases published by given repository. The [github-releases-validator][github-releases-validator] is a node.js module which validates JSON data against a schema describing [list releases][list-releases] result. The schema used is extracted from [github/rest-api-description][rest-api-description].
+[![@latest](https://img.shields.io/npm/v/@octokit/plugin-paginate-rest.svg)](https://www.npmjs.com/package/@octokit/plugin-paginate-rest)
+[![Build Status](https://github.com/octokit/plugin-paginate-rest.js/workflows/Test/badge.svg)](https://github.com/octokit/plugin-paginate-rest.js/actions?workflow=Test)
 
 ## Usage
 
-Install the npm module
+<table>
+<tbody valign=top align=left>
+<tr><th>
+Browsers
+</th><td width=100%>
 
-```console
-user@pc:$ npm install @ptomulik/github-release-validator
+Load `@octokit/plugin-paginate-rest` and [`@octokit/core`](https://github.com/octokit/core.js) (or core-compatible module) directly from [cdn.skypack.dev](https://cdn.skypack.dev)
+
+```html
+<script type="module">
+  import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+  import {
+    paginateRest,
+    composePaginateRest,
+  } from "https://cdn.skypack.dev/@octokit/plugin-paginate-rest";
+</script>
 ```
 
-Use it in your code
+</td></tr>
+<tr><th>
+Node
+</th><td>
+
+Install with `npm install @octokit/core @octokit/plugin-paginate-rest`. Optionally replace `@octokit/core` with a core-compatible module
 
 ```js
-const validate = require('@ptomulik/github-release-validator')
-const data = [{}]
+const { Octokit } = require("@octokit/core");
+const {
+  paginateRest,
+  composePaginateRest,
+} = require("@octokit/plugin-paginate-rest");
+```
 
-if (!validate(data)) {
-  console.log(validate.errors)
+</td></tr>
+</tbody>
+</table>
+
+```js
+const MyOctokit = Octokit.plugin(paginateRest);
+const octokit = new MyOctokit({ auth: "secret123" });
+
+// See https://developer.github.com/v3/issues/#list-issues-for-a-repository
+const issues = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {
+  owner: "octocat",
+  repo: "hello-world",
+  since: "2010-10-01",
+  per_page: 100,
+});
+```
+
+If you want to utilize the pagination methods in another plugin, use `composePaginateRest`.
+
+```js
+function myPlugin(octokit, options) {
+  return {
+    allStars({owner, repo}) => {
+      return composePaginateRest(
+        octokit,
+        "GET /repos/{owner}/{repo}/stargazers",
+        {owner, repo }
+      )
+    }
+  }
 }
 ```
 
+## `octokit.paginate()`
 
-## LICENSE
+The `paginateRest` plugin adds a new `octokit.paginate()` method which accepts the same parameters as [`octokit.request`](https://github.com/octokit/request.js#request). Only "List ..." endpoints such as [List issues for a repository](https://developer.github.com/v3/issues/#list-issues-for-a-repository) are supporting pagination. Their [response includes a Link header](https://developer.github.com/v3/issues/#response-1). For other endpoints, `octokit.paginate()` behaves the same as `octokit.request()`.
 
-Copyright (c) 2021 by Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+The `per_page` parameter is usually defaulting to `30`, and can be set to up to `100`, which helps retrieving a big amount of data without hitting the rate limits too soon.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+An optional `mapFunction` can be passed to map each page response to a new value, usually an array with only the data you need. This can help to reduce memory usage, as only the relevant data has to be kept in memory until the pagination is complete.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+```js
+const issueTitles = await octokit.paginate(
+  "GET /repos/{owner}/{repo}/issues",
+  {
+    owner: "octocat",
+    repo: "hello-world",
+    since: "2010-10-01",
+    per_page: 100,
+  },
+  (response) => response.data.map((issue) => issue.title)
+);
+```
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The `mapFunction` gets a 2nd argument `done` which can be called to end the pagination early.
 
-[list-releases]: https://docs.github.com/en/rest/reference/repos#list-releases
-[github-releases-validator]: https://github.com/ptomulik/github-releases-validator
-[rest-api-description]: https://github.com/github/rest-api-description
+```js
+const issues = await octokit.paginate(
+  "GET /repos/{owner}/{repo}/issues",
+  {
+    owner: "octocat",
+    repo: "hello-world",
+    since: "2010-10-01",
+    per_page: 100,
+  },
+  (response, done) => {
+    if (response.data.find((issues) => issue.title.includes("something"))) {
+      done();
+    }
+    return response.data;
+  }
+);
+```
+
+Alternatively you can pass a `request` method as first argument. This is great when using in combination with [`@octokit/plugin-rest-endpoint-methods`](https://github.com/octokit/plugin-rest-endpoint-methods.js/):
+
+```js
+const issues = await octokit.paginate(octokit.issues.listForRepo, {
+  owner: "octocat",
+  repo: "hello-world",
+  since: "2010-10-01",
+  per_page: 100,
+});
+```
+
+## `octokit.paginate.iterator()`
+
+If your target runtime environments supports async iterators (such as most modern browsers and Node 10+), you can iterate through each response
+
+```js
+const parameters = {
+  owner: "octocat",
+  repo: "hello-world",
+  since: "2010-10-01",
+  per_page: 100,
+};
+for await (const response of octokit.paginate.iterator(
+  "GET /repos/{owner}/{repo}/issues",
+  parameters
+)) {
+  // do whatever you want with each response, break out of the loop, etc.
+  console.log(response.data.title);
+}
+```
+
+Alternatively you can pass a `request` method as first argument. This is great when using in combination with [`@octokit/plugin-rest-endpoint-methods`](https://github.com/octokit/plugin-rest-endpoint-methods.js/):
+
+```js
+const parameters = {
+  owner: "octocat",
+  repo: "hello-world",
+  since: "2010-10-01",
+  per_page: 100,
+};
+for await (const response of octokit.paginate.iterator(
+  octokit.issues.listForRepo,
+  parameters
+)) {
+  // do whatever you want with each response, break out of the loop, etc.
+  console.log(response.data.title);
+}
+```
+
+## `composePaginateRest` and `composePaginateRest.iterator`
+
+The `compose*` methods work just like their `octokit.*` counterparts described above, with the differenct that both methods require an `octokit` instance to be passed as first argument
+
+## How it works
+
+`octokit.paginate()` wraps `octokit.request()`. As long as a `rel="next"` link value is present in the response's `Link` header, it sends another request for that URL, and so on.
+
+Most of GitHub's paginating REST API endpoints return an array, but there are a few exceptions which return an object with a key that includes the items array. For example:
+
+- [Search repositories](https://developer.github.com/v3/search/#example) (key `items`)
+- [List check runs for a specific ref](https://developer.github.com/v3/checks/runs/#response-3) (key: `check_runs`)
+- [List check suites for a specific ref](https://developer.github.com/v3/checks/suites/#response-1) (key: `check_suites`)
+- [List repositories](https://developer.github.com/v3/apps/installations/#list-repositories) for an installation (key: `repositories`)
+- [List installations for a user](https://developer.github.com/v3/apps/installations/#response-1) (key `installations`)
+
+`octokit.paginate()` is working around these inconsistencies so you don't have to worry about it.
+
+If a response is lacking the `Link` header, `octokit.paginate()` still resolves with an array, even if the response returns a single object.
+
+## Types
+
+The plugin also exposes certain TypeScript types and runtime type-guards.
+
+## Usage
+
+<table>
+<tbody valign=top align=left>
+<tr><th>
+<tr><th>
+TypeScript
+</th><td>
+
+```typescript
+ipmort {
+  PaginatingEndpoints,
+  isPaginatingEndpoint,
+} from ("@octokit/plugin-paginate-rest");
+```
+
+</td></tr>
+</tbody>
+</table>
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+
+[MIT](LICENSE)
