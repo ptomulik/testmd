@@ -225,22 +225,36 @@ An ``interface`` that declares all the overloads of the ``.paginate`` method.
 An ``interface`` which describes all API endpoints supported by the plugin. Some overloads of ``.paginate()`` method and ``composePaginateRest()`` function depend on ``PaginatingEndpoints``, using the ``keyof PaginatingEndpoints`` as a type for one of its arguments.
 
 ```typescript
-import { PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
+import { Octokit } from "@octokit/core";
+import { PaginatingEndpoints, composePaginateRest } from "@octokit/plugin-paginate-rest";
 
 type DataType<T> = "data" extends keyof T ? T["data"] : unknown;
 
-async function myPaginate<R extends keyof PaginatingEndpoints>(
+async function myPaginatePlugin<E extends keyof PaginatingEndpoints>(
   octokit: Octokit,
-  route: R,
-  parameters?: PaginatingEndpoints[R]["parameters"]
-): Promise<DataType<PaginationEndpoints[R]["response"]>> {
-  return await composePaginateRest(octokit, route, parameters);
+  endpoint: E,
+  parameters?: PaginatingEndpoints[E]["parameters"]
+): Promise<DataType<PaginationEndpoints[E]["response"]>> {
+  return await composePaginateRest(octokit, endpoint, parameters);
 }
 ```
 
 ### `isPaginatingEndpoint`
 
 A type guard, ``isPaginatingEndpoint(arg)`` returns ``true`` iff ``arg`` is one of the keys in ``PaginatingEndpoints`` (is ``keyof PaginatingEndpoints``).
+
+```typescript
+import { Octokit } from "@octokit/core";
+import { EndpointOptions } from "@octokit/types";
+import { PaginatingEndpoints, composePaginateRest } from "@octokit/plugin-paginate-rest";
+
+async function myPlugin(octokit: Octokit, arg: unknown) {
+  if(isPaginatingEndpoint(arg)) {
+    return await composePaginateRest(octokit, arg);
+  }
+  // ...
+}
+```
 
 ## Contributing
 
