@@ -185,23 +185,44 @@ If a response is lacking the `Link` header, `octokit.paginate()` still resolves 
 
 ## Types
 
-The plugin also exposes certain TypeScript types and runtime type-guards.
-
-## Usage
+The plugin also exposes some types and runtime type guards for TypeScript projects.
 
 <table>
 <tbody valign=top align=left>
 <tr><th>
 <tr><th>
-TypeScript
+Types
 </th><td>
 
 ```typescript
 import {
+  PaginateInterface,
   PaginatingEndpoints,
-  isPaginatingEndpoint,
 } from ("@octokit/plugin-paginate-rest");
 ```
+
+</td></tr>
+<tr><th>
+Guards
+</th><td>
+
+```typescript
+import {
+  isPaginatingEndpoint
+} from ("@octokit/plugin-paginate-rest");
+```
+
+### `PaginateInterface`
+
+An ``interface`` that declares all the overloads of the ``.paginate`` method.
+
+### `PaginatingEndpoints`
+
+An ``interface`` which describes all API endpoints supported by the plugin. Some overloads of ``.paginate()`` method and ``composePaginateRest()`` function depend on ``PaginatingEndpoints``, using the ``keyof PaginatingEndpoints`` as a type for one of its arguments.
+
+### `isPaginatingEndpoint`
+
+A type guard, ``isPaginatingEndpoint(arg)`` returns ``true`` iff ``arg`` is one of the keys in ``PaginatingEndpoints`` (is ``keyof PaginatingEndpoints``).
 
 </td></tr>
 </tbody>
