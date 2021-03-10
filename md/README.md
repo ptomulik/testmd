@@ -216,11 +216,11 @@ import {
 </tbody>
 </table>
 
-### `PaginateInterface`
+### PaginateInterface
 
 An ``interface`` that declares all the overloads of the ``.paginate`` method.
 
-### `PaginatingEndpoints`
+### PaginatingEndpoints
 
 An ``interface`` which describes all API endpoints supported by the plugin. Some overloads of ``.paginate()`` method and ``composePaginateRest()`` function depend on ``PaginatingEndpoints``, using the ``keyof PaginatingEndpoints`` as a type for one of its arguments.
 
@@ -239,7 +239,7 @@ async function myPaginatePlugin<E extends keyof PaginatingEndpoints>(
 }
 ```
 
-### `isPaginatingEndpoint`
+### isPaginatingEndpoint
 
 A type guard, ``isPaginatingEndpoint(arg)`` returns ``true`` iff ``arg`` is one of the keys in ``PaginatingEndpoints`` (is ``keyof PaginatingEndpoints``).
 
