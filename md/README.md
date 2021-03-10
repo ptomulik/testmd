@@ -212,6 +212,10 @@ import {
 } from ("@octokit/plugin-paginate-rest");
 ```
 
+</td></tr>
+</tbody>
+</table>
+
 ### `PaginateInterface`
 
 An ``interface`` that declares all the overloads of the ``.paginate`` method.
@@ -223,10 +227,6 @@ An ``interface`` which describes all API endpoints supported by the plugin. Some
 ### `isPaginatingEndpoint`
 
 A type guard, ``isPaginatingEndpoint(arg)`` returns ``true`` iff ``arg`` is one of the keys in ``PaginatingEndpoints`` (is ``keyof PaginatingEndpoints``).
-
-</td></tr>
-</tbody>
-</table>
 
 ## Contributing
 
