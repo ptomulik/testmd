@@ -35,7 +35,7 @@ type Response = { data: { tag_name: string }[] };
 octokit.paginate(
   "GET /repos/{owner}/{repo}/releases",
   {owner: "octokit", repo: "plugin-paginate-rest.js"},
-  limit(2) as MapFunction<Response, Response["data"]>
+  limit(2) as MapFunction<Response>
 ).then((releases) => {
   console.log(releases.map((release) => release.tag_name));
 });
@@ -71,12 +71,38 @@ octokit
   });
 ```
 
+### Adjusting pagination paramaters
+
+Pagination parameters may be adjusted with ``adjust()``. This operation adjusts
+``per_page`` property to avoid retrieval of redundant records.
+
+```typescript
+import { Octokit } from "@octokit/core";
+import { paginateRest } from "@octokit/plugin-paginate-rest";
+import { limit, adjust, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
+
+const MyOctokit = Octokit.plugin(paginateRest);
+const octokit = new MyOctokit();
+const max = 2;
+
+type Response = { data: { tag_name: string }[] };
+
+// Retrieve (no more than) 2 releases and print their tag names.
+octokit.paginate(
+  "GET /repos/{owner}/{repo}/releases",
+  adjust(max, {owner: "octokit", repo: "plugin-paginate-rest.js"}),
+  limit(max) as MapFunction<Response>
+).then((releases) => {
+  console.log(releases.map((release) => release.tag_name));
+});
+```
+
 ## Limitations
 
 - incompatible with
   [paginate.iterator](https://github.com/octokit/plugin-paginate-rest.js#octokitpaginateiterator),
-- will cause bugs when a value (function) returned by ``limit()`` is used more
-  than once; namely, this is WRONG:
+- will cause bugs when a value (function) returned by ``limit()`` is reused;
+  namely, this is WRONG:
 
   ```typescript
     const first = limit(1);
