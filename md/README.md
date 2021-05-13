@@ -19,6 +19,8 @@ only few first records are required.
 
 ## Usage
 
+Applying the limit
+
 ```typescript
 import { Octokit } from "@octokit/core";
 import { paginateRest, PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
@@ -38,6 +40,8 @@ octokit.paginate(
   console.log(releases.map((release) => release.tag_name));
 });
 ```
+
+Applying the limit & map function at once.
 
 ```typescript
 import { Octokit } from "@octokit/core";
