@@ -71,7 +71,16 @@ octokit
   });
 ```
 
+## Limitations
 
+- incompatible with [paginate.iterator](https://github.com/octokit/plugin-paginate-rest.js#octokitpaginateiterator),
+- will cause bugs when a value (function) returned by ``limit()`` is used more than once, especially this is wrong
+
+  ```typescript
+    const first = limit(1);
+    octokit.paginate(..., first);
+    octokit.paginate(..., first); // !!this will not work as one would expect!!
+  ```
 
 ## LICENSE
 
