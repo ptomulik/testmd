@@ -19,7 +19,7 @@ only few first records are required.
 
 ## Usage
 
-Applying the limit
+Applying limit
 
 ```typescript
 import { Octokit } from "@octokit/core";
@@ -47,7 +47,7 @@ Example output
 [ 'v2.13.3', 'v2.13.2' ]
 ```
 
-Applying the limit & map function at once.
+Applying limit & map function at once.
 
 ```typescript
 import { Octokit } from "@octokit/core";
