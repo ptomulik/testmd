@@ -19,7 +19,7 @@ only few first records are required.
 
 ## Usage
 
-Applying limit
+### Applying limit
 
 ```typescript
 import { Octokit } from "@octokit/core";
@@ -31,7 +31,7 @@ const octokit = new MyOctokit();
 
 type Response = { data: { tag_name: string }[] };
 
-// Retrieve (no more than) 2 releases and print their names.
+// Retrieve (no more than) 2 releases and print their tag names.
 octokit.paginate(
   "GET /repos/{owner}/{repo}/releases",
   {owner: "octokit", repo: "plugin-paginate-rest.js"},
@@ -47,7 +47,7 @@ Example output
 [ 'v2.13.3', 'v2.13.2' ]
 ```
 
-Applying limit & map function at once.
+### Applying limit & map function at once.
 
 ```typescript
 import { Octokit } from "@octokit/core";
@@ -59,7 +59,7 @@ const octokit = new MyOctokit();
 
 type Response = { data: { tag_name: string }[] };
 
-// Retrieve (no more than) 2 releases and print their names.
+// Retrieve (no more than) 2 releases and print their tag names.
 octokit
   .paginate(
     "GET /repos/{owner}/{repo}/releases",
