@@ -1,4 +1,4 @@
-# List Releases
+# Paginate Rest Limit
 
 ![tests](https://github.com/ptomulik/octokit-paginate-rest-limit/workflows/Tests/badge.svg?branch=master)
 ![build](https://github.com/ptomulik/octokit-paginate-rest-limit/workflows/Build/badge.svg?branch=master)
@@ -13,8 +13,8 @@ Provides callback function that limits number of entries returned by
 The [paginate](https://github.com/octokit/plugin-paginate-rest.js#octokitpaginate)
 method gathers all entries retrieved page-by-page and returns them as a single
 array. The [octokit-paginate-rest-limit](https://github.com/ptomulik/octokit-paginate-rest-limit)
-allows to reduce the number of pages retrieved if only first few entries are
-required.
+allows to reduce the number of entries returned (and pages retrieved) when
+only few first records are required.
 
 ## Usage
 
@@ -26,18 +26,38 @@ import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
 const MyOctokit = Octokit.plugin(paginateRest);
 const octokit = new MyOctokit();
 
-type Endpoint = PaginatingEndpoints["GET /repos/{owner}/{repo}/releases"];
-type Response = Endpoint["response"];
-type Releases = Response["data"];
+type T = { data: { tag_name: string }[] };
 
-// Retrieve only 2 releases
+// Retrieve (no more than) 2 releases and print their names.
 octokit.paginate(
   "GET /repos/{owner}/{repo}/releases",
-  {owner: "ptomulik", repo: "octokit-paginate-rest-limit"},
-  limit(2) as MapFunction<Response, Releases>
+  {owner: "octokit", repo: "plugin-paginate-rest.js"},
+  limit(2) as MapFunction<T, T["data"]>
 ).then((releases) => {
-  console.log(releases.map((release) => release.name));
+  console.log(releases.map((release) => release.tag_name));
 });
+```
+
+```typescript
+import { Octokit } from "@octokit/core";
+import { paginateRest, PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
+import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
+
+const MyOctokit = Octokit.plugin(paginateRest);
+const octokit = new MyOctokit();
+
+type T = { data: { tag_name: string }[] };
+
+// Retrieve (no more than) 2 releases and print their names.
+octokit
+  .paginate(
+    "GET /repos/{owner}/{repo}/releases",
+    { owner: "octokit", repo: "plugin-paginate-rest.js" },
+    limit(2, ({ data }: T) => data.map((release) => release.tag_name))
+  )
+  .then((names) => {
+    console.log(names);
+  });
 ```
 
 
