@@ -23,7 +23,7 @@ Applying the limit
 
 ```typescript
 import { Octokit } from "@octokit/core";
-import { paginateRest, PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
+import { paginateRest } from "@octokit/plugin-paginate-rest";
 import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
 
 const MyOctokit = Octokit.plugin(paginateRest);
@@ -41,12 +41,18 @@ octokit.paginate(
 });
 ```
 
+Example output
+
+```console
+[ 'v2.13.3', 'v2.13.2' ]
+```
+
 Applying the limit & map function at once.
 
 ```typescript
 import { Octokit } from "@octokit/core";
-import { paginateRest, PaginatingEndpoints } from "@octokit/plugin-paginate-rest";
-import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
+import { paginateRest } from "@octokit/plugin-paginate-rest";
+import { limit } from "@ptomulik/octokit-paginate-rest-limit";
 
 const MyOctokit = Octokit.plugin(paginateRest);
 const octokit = new MyOctokit();
