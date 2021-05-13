@@ -71,10 +71,11 @@ octokit
   });
 ```
 
-### Adjusting pagination paramaters
+### Adjusting request paramaters
 
-Pagination parameters may be adjusted with ``adjust()``. This operation adjusts
-``per_page`` property to avoid retrieval of redundant records.
+Pagination parameters may be adjusted with ``adjust(max, parameters)``.
+This operation adjusts ``per_page`` property of ``parameters`` to avoid
+fetching redundant records.
 
 ```typescript
 import { Octokit } from "@octokit/core";
@@ -87,7 +88,8 @@ const max = 2;
 
 type Response = { data: { tag_name: string }[] };
 
-// Retrieve (no more than) 2 releases and print their tag names.
+// Retrieve (no more than) `max` releases and print their tag names.
+// The `per_page` is set to `max`.
 octokit.paginate(
   "GET /repos/{owner}/{repo}/releases",
   adjust(max, {owner: "octokit", repo: "plugin-paginate-rest.js"}),
