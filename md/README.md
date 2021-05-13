@@ -29,13 +29,13 @@ import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
 const MyOctokit = Octokit.plugin(paginateRest);
 const octokit = new MyOctokit();
 
-type T = { data: { tag_name: string }[] };
+type Response = { data: { tag_name: string }[] };
 
 // Retrieve (no more than) 2 releases and print their names.
 octokit.paginate(
   "GET /repos/{owner}/{repo}/releases",
   {owner: "octokit", repo: "plugin-paginate-rest.js"},
-  limit(2) as MapFunction<T, T["data"]>
+  limit(2) as MapFunction<Response, Response["data"]>
 ).then((releases) => {
   console.log(releases.map((release) => release.tag_name));
 });
@@ -51,14 +51,14 @@ import { limit, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
 const MyOctokit = Octokit.plugin(paginateRest);
 const octokit = new MyOctokit();
 
-type T = { data: { tag_name: string }[] };
+type Response = { data: { tag_name: string }[] };
 
 // Retrieve (no more than) 2 releases and print their names.
 octokit
   .paginate(
     "GET /repos/{owner}/{repo}/releases",
     { owner: "octokit", repo: "plugin-paginate-rest.js" },
-    limit(2, ({ data }: T) => data.map((release) => release.tag_name))
+    limit(2, ({ data }: Response) => data.map((release) => release.tag_name))
   )
   .then((names) => {
     console.log(names);
