@@ -11,7 +11,8 @@ Provides callback function that limits number of entries returned by
 [@octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js).
 
 The [paginate](https://github.com/octokit/plugin-paginate-rest.js#octokitpaginate)
-method gathers all entries retrieved page-by-page and returns them as a single
+method provided by [@octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js).
+gathers all entries retrieved page-by-page and returns them as a single
 array. The [octokit-paginate-rest-limit](https://github.com/ptomulik/octokit-paginate-rest-limit)
 allows to reduce the number of entries returned (and pages retrieved) when
 only few first records are required.
