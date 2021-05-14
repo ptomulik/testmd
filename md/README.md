@@ -33,7 +33,7 @@ directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 <script type="module">
   import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
   import { paginateRest } from "https://cdn.skypack.dev/@octokit/plugin-paginate-rest";
-  import { limit, adjust } from "https://cdn.skypack.dev/@ptomulik/octokit-paginate-rest-limit";
+  import { limit, adjust, MapFunction } from "https://cdn.skypack.dev/@ptomulik/octokit-paginate-rest-limit";
 </script>
 ```
 
@@ -54,7 +54,7 @@ then import modules in your code
 ```typescript
 import { Octokit } from "@octokit/core";
 import { paginateRest } from "@octokit/plugin-paginate-rest";
-import { limit, adjust } from "@ptomulik/octokit-paginate-rest-limit";
+import { limit, adjust, MapFunction } from "@ptomulik/octokit-paginate-rest-limit";
 ```
 
 </td></tr>
