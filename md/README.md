@@ -20,6 +20,49 @@ only few first records are required.
 
 ## Usage
 
+<table>
+<tbody valign=top align=left>
+<tr><th>
+Browsers
+</th><td width=100%>
+Load `@ptomulik/octokit-paginate-rest-limit` (and other related modules)
+directly from [cdn.skypack.dev](https://cdn.skypack.dev)
+
+```html
+<script type="module">
+  import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+  import { paginateRest } from "https://cdn.skypack.dev/@octokit/plugin-paginate-rest";
+  import { limit, adjust } from "https://cdn.skypack.dev/@ptomulik/octokit-paginate-rest-limit";
+</script>
+```
+</td></tr>
+<tr><th>
+Node
+</th><td width=100%>
+Install `@ptomulik/octokit-paginate-rest-limit` and other related modules with
+
+```console
+npm install @ptomulik/octokit-paginate-rest-limit @octokit/plugin-paginate-rest @octokit/core
+```
+
+Then import in your module
+
+```typescript
+import { Octokit } from "@octokit/core";
+import { paginateRest } from "@octokit/plugin-paginate-rest";
+import { limit, adjust } from "@ptomulik/octokit-paginate-rest-limit";
+```
+
+```html
+<script type="module">
+  import { Octokit } from ""
+  import { limit, adjust } from "https://cdn.skypack.dev/@ptomulik/octokit-paginate-rest-limit"
+</script>
+```
+</td></tr>
+</tbody>
+</table>
+
 ### Applying limit
 
 ```typescript
