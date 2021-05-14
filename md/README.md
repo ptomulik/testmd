@@ -4,6 +4,7 @@
 ![build](https://github.com/ptomulik/octokit-paginate-rest-limit/workflows/Build/badge.svg?branch=master)
 ![code](https://github.com/ptomulik/octokit-paginate-rest-limit/workflows/Code%20Quality/badge.svg?branch=master)
 [![coverage](https://coveralls.io/repos/github/ptomulik/octokit-paginate-rest-limit/badge.svg?branch=master)](https://coveralls.io/github/ptomulik/octokit-paginate-rest-limit?branch=master)
+[![@latest](https://img.shields.io/npm/v/@ptomulik/octokit-paginate-rest-limit.svg)](https://www.npmjs.com/package/@ptomulik/octokit-paginate-rest-limit)
 
 ### Description
 
@@ -26,7 +27,7 @@ only few first records are required.
 Browsers
 </th><td width=100%>
 
-Load ``@ptomulik/octokit-paginate-rest-limit`` (and other related modules)
+Load ``@ptomulik/octokit-paginate-rest-limit`` (and related modules)
 directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 
 ```html
@@ -42,8 +43,7 @@ directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 Node
 </th><td>
 
-Install ``@ptomulik/octokit-paginate-rest-limit`` and other related modules
-with
+Install ``@ptomulik/octokit-paginate-rest-limit`` (and related modules) with
 
 ```console
 npm install @ptomulik/octokit-paginate-rest-limit @octokit/plugin-paginate-rest @octokit/core
@@ -113,7 +113,7 @@ octokit
   });
 ```
 
-### Adjusting request paramaters
+### Adjusting request parameters
 
 Pagination parameters may be adjusted with ``adjust(max, parameters)``.
 This operation adjusts ``per_page`` property of ``parameters`` to avoid
