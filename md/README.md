@@ -38,7 +38,7 @@ directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 </td></tr>
 <tr><th>
 Node
-</th><td width=100%>
+</th><td>
 Install ``@ptomulik/octokit-paginate-rest-limit`` and other related modules
 with
 
