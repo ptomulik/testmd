@@ -25,7 +25,7 @@ only few first records are required.
 <tr><th>
 Browsers
 </th><td width=100%>
-Load `@ptomulik/octokit-paginate-rest-limit` (and other related modules)
+Load ``@ptomulik/octokit-paginate-rest-limit`` (and other related modules)
 directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 
 ```html
@@ -39,7 +39,8 @@ directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 <tr><th>
 Node
 </th><td width=100%>
-Install `@ptomulik/octokit-paginate-rest-limit` and other related modules with
+Install ``@ptomulik/octokit-paginate-rest-limit`` and other related modules
+with
 
 ```console
 npm install @ptomulik/octokit-paginate-rest-limit @octokit/plugin-paginate-rest @octokit/core
