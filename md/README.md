@@ -7,8 +7,8 @@ Preparations
 clone git@github.com/ptomulik/contentiaddev.git && cd contentiaddev/
 ```
 
-Create .ddev/config.local.yaml and provide settings specific to your project,
-see https://ddev.readthedocs.io/en/stable/users/extend/config_yaml/
+Create ``.ddev/config.local.yaml`` and provide settings specific to your
+project, see [confid.yaml documentation](https://ddev.readthedocs.io/en/stable/users/extend/config_yaml/)
 
 make directory named ``web`` and put website code there.
 
